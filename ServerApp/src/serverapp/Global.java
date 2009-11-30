@@ -1,0 +1,17 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package serverapp;
+
+/**
+ *
+ * @author Серёжа
+ */
+public class Global {
+        public static int PACKET_SIZE = 4096;
+        public static int ClientPort = 4899;
+        public static int IncomingPort = 4898;
+        public static int max_users = 10000;
+}
