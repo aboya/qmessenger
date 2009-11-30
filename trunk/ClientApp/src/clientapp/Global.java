@@ -12,7 +12,7 @@ package clientapp;
 public class Global {
     public static int ServerPort = 4898;  // port for outgoing connectuon
     public static int IncomingPort = 4899;
-    public static String ServAddr = "192.168.2.2";
+    public static String ServAddr = "192.168.2.3";
     public static int PACKET_SIZE = 4096;
 
 }
