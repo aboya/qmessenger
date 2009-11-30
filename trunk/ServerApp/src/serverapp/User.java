@@ -40,17 +40,17 @@ public class User extends Thread{
                 queue.SendToUser(ip, message);
             }
         }
-        catch(SocketException e)
-        {
-           Log.Write("user:" + this.ip + " disconected");
-        }
         catch(Exception e)
         {
+            Log.Write("user:" + this.ip + " disconected");
             Log.WriteException(e);
-            queue.RemoveUser(this);
         }
+        // ignoring errors
+        try {
+            messages.CloseConnection();
+        }catch(Exception e){ }
+        queue.RemoveUser(this);
         this.isRun = false;
-        
     }
     //Send message to client
     public void SendMessage(String message) throws Exception
