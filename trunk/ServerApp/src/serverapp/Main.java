@@ -13,7 +13,7 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) {
        ListenIncomingConnections m =  new ListenIncomingConnections();
-       new dbConnection();
+      // new dbConnection();
        m.Listen();
     }
 
