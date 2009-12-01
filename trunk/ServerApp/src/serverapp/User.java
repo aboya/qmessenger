@@ -21,6 +21,7 @@ public class User extends Thread{
 
     public User(Socket inputSocket, Socket outputSocket, ConnectionQueue Q) {
        // messages = new Messages(inputSocket, outputSocket, this);
+        messages = new FormatedMessages(inputSocket, outputSocket, this);
         this.isRun = false;
         ip = inputSocket.getInetAddress().getHostAddress();
         queue = Q;
