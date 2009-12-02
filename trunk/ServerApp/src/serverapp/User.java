@@ -6,6 +6,7 @@
 package serverapp;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Vector;
 /**
  *
  * @author Серёжа
@@ -58,6 +59,10 @@ public class User extends Thread{
     {
          messages.SendMessage(message);
     }
+    public void SendTextMessage(Vector<User> userList, String txtMessage) throws Exception
+    {
+        messages.SendTextMessageTo(userList, txtMessage);
+    }
 
     public void AuthenticatieUser(String username, String password)
     {
@@ -78,11 +83,11 @@ public class User extends Thread{
 
     public void SendFileTo(User ruser, String FileName, long FileSize)
     {
-        messages.SendFileTo(ruser, FileName, FileSize);
+       // messages.SendFileTo(ruser, FileName, FileSize);
     }
     public void ReceiveFileFrom(User ruser)
     {
-        messages.ReceiveFileFrom(ruser);
+       // messages.ReceiveFileFrom(ruser);
     }
     public int getUserID()
     {

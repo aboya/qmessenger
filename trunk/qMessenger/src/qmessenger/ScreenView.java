@@ -43,9 +43,9 @@ public class ScreenView {
     LinkedList<Object> viewObjects = new LinkedList<Object>();
      public void run()
      {
-         Display display = new Display();
-         shell = new Shell(display);
-         shell.setText("qMessenger");
+        Display display = new Display();
+        shell = new Shell(display);
+        shell.setText("qMessenger");
          //createContents(shell);
         Listener resizeListner = new Listener() {
                public void handleEvent(Event e) {

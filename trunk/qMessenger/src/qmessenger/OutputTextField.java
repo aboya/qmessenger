@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author Администратор
  */
-public class OutputTextField {
+public class OutputTextField extends Controll{
     Text txt;
 
     public OutputTextField(Composite composite) {

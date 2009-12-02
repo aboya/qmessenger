@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package serverapp;
+package clientapp;
 
 /**
  *
@@ -11,9 +11,10 @@ package serverapp;
  */
 public class Global {
         public static int PACKET_SIZE = 4096;
-        public static int ClientPort = 4899;
-        public static int IncomingPort = 4898;
+        public static int IncomingPort = 4899;
+        public static int ServerPort = 4898;
         public static int max_users = 10000;
-
+        public static String ServAddr = "192.168.2.3";
         public static  String  TextMessege = "txtMessage";
 }
+
