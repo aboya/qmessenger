@@ -35,7 +35,7 @@ public class UserControls {
         buttonSendMessage = new ButtonSendMessage(composite);
         controlsList.add(buttonSendMessage);
     }
-    public void Resize(Rectangle rect)
+    public void Resize(Rectangle rect) throws Exception
     {
         int i, n  = controlsList.size();
         for(i = 0; i < n; i++)
