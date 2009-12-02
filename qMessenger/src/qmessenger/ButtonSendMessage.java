@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Display;
  *
  * @author Администратор
  */
-public class ButtonSendMessage {
+public class ButtonSendMessage extends Controll {
     Button button;
     public ButtonSendMessage(Composite composite) {
         button = new Button(composite, SWT.PUSH);

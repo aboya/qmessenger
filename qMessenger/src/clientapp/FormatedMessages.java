@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package serverapp;
+package clientapp;
 
 import java.net.Socket;
 import java.util.Vector;
@@ -37,8 +37,8 @@ public class FormatedMessages extends Messages{
         for(i = 0; i < n; i++)
         {
             u = userList.get(i);
-            u.SendMessage(Global.TextMessege);
-            u.SendMessage(txtMesseage);
+           // u.SendMessage(Global.TextMessege);
+           // u.SendMessage(txtMesseage);
         }
     }
     public void SendFileTo()

@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.TreeItem;
  *
  * @author Администратор
  */
-public class UserList {
+public class UserList extends  Controll {
     GridData data;
     Tree tree;
     Composite shell;
@@ -90,6 +90,7 @@ public class UserList {
             tree.addSelectionListener(adapter);
 
     }
+
     public  void Resize(Rectangle rect)
     {
         tree.setBounds(shell.getBounds().width-160, 10, 140, shell.getBounds().height-60);

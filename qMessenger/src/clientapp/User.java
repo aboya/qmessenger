@@ -5,6 +5,7 @@
 
 package clientapp;
 import java.net.*;
+import java.util.Vector;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.net.*;
 public class User extends Thread {
     //Socket SocketIn;
     //Socket SocketOut;
-    Messages message;
+    FormatedMessages message;
     public User()
     {
         
@@ -34,14 +35,14 @@ public class User extends Thread {
             System.out.println(e);
         }
     }
-    public void Connect()
+    public void Connect() throws Exception
     {
-        //Socket s = new Socket(null, port)
         try {
+
             Socket SocketOut = new Socket(Global.ServAddr, Global.ServerPort);
             ServerSocket inp = new ServerSocket(Global.IncomingPort, 0);
             Socket SocketIn = inp.accept();
-            message = new Messages(SocketIn, SocketOut);
+            message = new FormatedMessages(SocketIn, SocketOut, this);
             this.start();
             this.Chat();
         }catch(Exception e)
@@ -63,7 +64,10 @@ public class User extends Thread {
         {
             Log.WriteException(e);
         }
-     
+    }
+    public void SendTextMessageTo(Vector<User> userList, String txtMessage) throws Exception
+    {
+        message.SendTextMessageTo(userList, txtMessage);
     }
 
 }
