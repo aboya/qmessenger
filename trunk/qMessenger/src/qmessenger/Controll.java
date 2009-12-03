@@ -14,8 +14,8 @@ import org.eclipse.swt.graphics.Rectangle;
  * @author Администратор
  */
 public class Controll {
-    public void Resize(Rectangle rect) throws Exception{
-        throw new Exception("Resize not overiden");
+    public void Resize(Rectangle rect) {
+       
     }
 
 }
