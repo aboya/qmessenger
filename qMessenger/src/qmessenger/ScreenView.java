@@ -29,9 +29,8 @@ import org.eclipse.swt.widgets.TrayItem;
 public class ScreenView {
     UserControls userControls;
     Shell shell;
- private TrayItem trayItem;
-     private MenuItem hideShellMenuItem;
-    private MenuItem showShellMenuItem;
+ 
+
 
 
 
@@ -41,14 +40,14 @@ public class ScreenView {
     }
 
     LinkedList<Object> viewObjects = new LinkedList<Object>();
-     public void run()
+     public void run() 
      {
         Display display = new Display();
         shell = new Shell(display);
         shell.setText("qMessenger");
          //createContents(shell);
         Listener resizeListner = new Listener() {
-               public void handleEvent(Event e) {
+               public void handleEvent(Event e)  {
                    Rectangle rect = shell.getBounds();
                    rect.width = Math.max(rect.width, 300);
                    rect.height = Math.max(rect.height, 500);
@@ -61,81 +60,13 @@ public class ScreenView {
         shell.addListener(SWT.Move, resizeListner);
         userControls = new UserControls(shell, display);
         shell.setSize(500, 400);
-        final Menu menu = new Menu(shell);
-
-         shell.open();
-        final Tray tray = shell.getDisplay().getSystemTray();
-        trayItem = new TrayItem(tray, SWT.NONE);
-        trayItem.setToolTipText("SWT TrayItem");
-        //Image image1 = new Image(display, "");
-       // trayItem.setImage(image1);
-
-
-        trayItem.addListener(SWT.Show, new Listener() {
-            public void handleEvent(Event event) {
-                System.out.println("show menu");
-            }
-        });
-        trayItem.addListener(SWT.Hide, new Listener() {
-            public void handleEvent(Event event) {
-                System.out.println("hide menu");
-            }
-        });
-        trayItem.addListener(SWT.Selection, new Listener() {
-            public void handleEvent(Event event) {
-                System.out.println("selection menu (left button clicked)");
-            }
-        });
-        trayItem.addListener(SWT.DefaultSelection, new Listener() {
-            public void handleEvent(Event event) {
-                System.out.println("default selection menu (left button double-clicked)");
-                showShell();
-            }
-        });
-        trayItem.addListener(SWT.MenuDetect, new Listener() {
-            public void handleEvent(Event event) {
-                menu.setVisible(true);
-            }
-        });
-        
-        shell.setMenu(menu);
-
-        showShellMenuItem = new MenuItem(menu, SWT.NONE);
-        showShellMenuItem.setText("Show Shell");
-        showShellMenuItem.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                showShell();
-            }
-        });
-
-        hideShellMenuItem = new MenuItem(menu, SWT.NONE);
-        hideShellMenuItem.setText("Hide Shell");
-        hideShellMenuItem.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                hideShell();
-            }
-        });
-        MenuItem closeShellMenuItem = new MenuItem(menu, SWT.NONE);
-        closeShellMenuItem.setText("quit");
-        closeShellMenuItem.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                shell.dispose(); // strange - it may be hard tested !
-            }
-        });
-        shell.addListener(SWT.Close, new Listener() {
-
-            public void handleEvent(Event e) {
-                e.doit = false;
-                hideShell();
-
-            }
-        });
+        shell.open();
 
 
 
 
-        showShellMenuItem.setEnabled(false);
-        hideShellMenuItem.setEnabled(true);
+
+
 
 
          while (!shell.isDisposed()) {
@@ -147,19 +78,7 @@ public class ScreenView {
          //display.addListener(SWT.CLOSE, resizeListner);
          
    }
-    private void showShell() {
-        shell.setVisible(true);
-        shell.setActive();
-        showShellMenuItem.setEnabled(false);
-        hideShellMenuItem.setEnabled(true);
 
-    }
-
-    private void hideShell() {
-        shell.setVisible(false);
-        showShellMenuItem.setEnabled(true);
-        hideShellMenuItem.setEnabled(false);
-    }
 
 
 

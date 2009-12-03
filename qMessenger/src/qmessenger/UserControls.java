@@ -5,12 +5,13 @@
 
 package qmessenger;
 
-import java.util.LinkedList;
-import java.util.List;
+
+import clientapp.Log;
 import java.util.Vector;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  *
@@ -34,12 +35,22 @@ public class UserControls {
         controlsList.add(outputTextField);
         buttonSendMessage = new ButtonSendMessage(composite);
         controlsList.add(buttonSendMessage);
+        TrayMenu trayMenu = new TrayMenu((Shell)composite);
+        controlsList.add(trayMenu);
     }
-    public void Resize(Rectangle rect) throws Exception
+    public void Resize(Rectangle rect)
     {
         int i, n  = controlsList.size();
         for(i = 0; i < n; i++)
-            controlsList.get(i).Resize(rect);
+        {
+            try {
+                controlsList.get(i).Resize(rect);
+            }
+            catch(Exception e) {
+                Log.WriteException(e);
+            
+            }
+        }
     }
 
 
