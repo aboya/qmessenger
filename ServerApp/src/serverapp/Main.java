@@ -12,9 +12,10 @@ import java.io.*;
  */
 public class Main {
     public static void main(String[] args) {
-       ListenIncomingConnections m =  new ListenIncomingConnections();
+        FacutlyTree tr = new FacutlyTree("Tree.xml");
+      // ListenIncomingConnections m =  new ListenIncomingConnections();
       // new dbConnection();
-       m.Listen();
+     //  m.Listen();
     }
 
 }
