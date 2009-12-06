@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author Администратор
  */
-public class InputTextField extends Controll {
+public class InputTextField extends BaseControl {
     Text txt;
     public InputTextField(Composite composite) {
           txt = new Text(composite, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER);

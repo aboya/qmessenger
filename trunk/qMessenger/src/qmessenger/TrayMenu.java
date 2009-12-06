@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.TrayItem;
  *
  * @author Администратор
  */
-public class TrayMenu extends Controll{
+public class TrayMenu extends BaseControl{
     private TrayItem trayItem;
     final private  Menu menu;
     final private  Tray tray;
