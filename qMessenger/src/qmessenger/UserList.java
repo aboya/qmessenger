@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.TreeItem;
  *
  * @author Администратор
  */
-public class UserList extends  Controll {
+public class UserList extends  BaseControl {
     GridData data;
     Tree tree;
     Composite shell;

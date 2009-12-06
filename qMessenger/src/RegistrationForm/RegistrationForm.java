@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package qmessenger;
+package RegistrationForm;
 
 /**
  *
@@ -26,16 +26,18 @@ import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
 
 
-public class ScreenView {
-    UserControls userControls;
-    Shell shell;  
-    public ScreenView() {
+public class RegistrationForm {
+    RegistrationFormControls userControls;
+    Shell shell;
+    public RegistrationForm() {
     }
-     public void run() 
+     public void run()
      {
         Display display = new Display();
         shell = new Shell(display);
-        shell.setText("qMessenger");
+
+
+        shell.setText("Sign Up");
          //createContents(shell);
         Listener resizeListner = new Listener() {
                public void handleEvent(Event e)  {
@@ -49,7 +51,7 @@ public class ScreenView {
          };
         shell.addListener(SWT.Resize, resizeListner);
         shell.addListener(SWT.Move, resizeListner);
-        userControls = new UserControls(shell, display);
+        userControls = new RegistrationFormControls(shell, display);
         shell.setSize(500, 400);
         shell.open();
 
@@ -67,7 +69,7 @@ public class ScreenView {
          }
          display.dispose();
          //display.addListener(SWT.CLOSE, resizeListner);
-         
+
    }
 
 
@@ -76,8 +78,8 @@ public class ScreenView {
    private void createContents(Composite composite) {
 
 
-     
-     
-  
+
+
+
    }
 }

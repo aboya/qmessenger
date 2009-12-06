@@ -23,10 +23,10 @@ public class UserControls {
     OutputTextField outputTextField;
     ButtonSendMessage buttonSendMessage;
 
-    Vector<Controll> controlsList;
+    Vector<BaseControl> controlsList;
 
     public UserControls(Composite composite, Display display) {
-        controlsList = new Vector<Controll>();
+        controlsList = new Vector<BaseControl>();
         userList = new UserList(composite, display);
         controlsList.add(userList);
         inputTextField = new InputTextField(composite);

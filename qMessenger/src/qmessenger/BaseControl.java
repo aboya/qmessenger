@@ -13,7 +13,7 @@ import org.eclipse.swt.graphics.Rectangle;
  *
  * @author Администратор
  */
-public class Controll {
+public class BaseControl {
     public void Resize(Rectangle rect) {
        
     }

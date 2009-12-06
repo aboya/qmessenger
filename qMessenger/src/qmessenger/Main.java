@@ -4,7 +4,7 @@
  */
 
 package qmessenger;
-import clientapp.User;
+import RegistrationForm.RegistrationForm;
 
 /**
  *
@@ -17,9 +17,10 @@ public class Main {
      */
 
 public static void main(String args[]) throws Exception {
-        User u = new User();
+        //User u = new User();
         //u.Connect();
-        new ScreenView().run();
+        //new ScreenView().run();
+         new RegistrationForm().run();
     
 
   }
