@@ -39,7 +39,7 @@ public class UserList extends  BaseControl {
              tree = new Tree(composite, SWT.CHECK | SWT.BORDER);
 	     data = new GridData(GridData.FILL_BOTH);
 	     tree.setLayoutData(data);
-	     fillTree(tree);
+	     fillTree();
              tree.setBounds(composite.getBounds().width - 120, 10, 100, composite.getBounds().height - 60);
              SelectionAdapter adapter = new SelectionAdapter() {
 
@@ -97,7 +97,7 @@ public class UserList extends  BaseControl {
     }
 
     
-     private void fillTree(Tree tree) {
+     private void fillTree() {
 	     // Turn off drawing to avoid flicker
 	     tree.setRedraw(false);
 
