@@ -6,12 +6,11 @@
 package serverapp;
 
 
-import com.sun.istack.internal.SAXException2;
+
 import java.util.Map;
 import java.util.TreeMap;
 import org.xml.sax.*;
 import javax.xml.parsers.SAXParserFactory; 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 
 /**
@@ -51,7 +50,7 @@ public class FacutlyTree extends HandlerBase {
     {
         Integer val;
         String fname;
-        val = Integer.getInteger(attrs.getValue("id"));
+        val = Integer.parseInt((String)attrs.getValue("id"));
         if(val == null) {
             isCorrect = false;
             throw new SAXException("can not find attribute ID for tag:" + name);
@@ -64,13 +63,13 @@ public class FacutlyTree extends HandlerBase {
         ids.put(val, name);
         String errorMess = ""; // not null !!
         try {
-            errorMess = dbConnection.CheckFacultyNode(connection, val, name);
+            errorMess =(String) dbFunc.CheckFacultyNode(connection, val, name);
         }catch( Exception e )
         {
             Log.WriteException(e);
             isCorrect = false;
         }
-        if(errorMess != null) throw new SAXException(errorMess);
+        if(errorMess != null  ) throw new SAXException(errorMess);
     }
 
 }
