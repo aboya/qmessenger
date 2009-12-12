@@ -7,21 +7,26 @@ package serverapp;
 
 
 
+
+
+
 import java.sql.Connection;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.*;
-import java.sql.CallableStatement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.Statement;
 /**
  *
  * @author Администратор
  */
 public class dbConnection {
-    Connection conn = null;
-    CallableStatement cStmt;
+   // Connection conn = null;
+   // CallableStatement cStmt;
+     Statement  cStmt;
+     Connection conn = null;
 
 
 
@@ -32,20 +37,8 @@ public class dbConnection {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             conn = DriverManager.getConnection (url, userName, password);
-            /*
-            cStmt = conn.prepareCall("{call GetAll}");
-            boolean hadResults = cStmt.execute();
-            
-            while(hadResults)
-            {
-                ResultSet rs = cStmt.getResultSet();
-                rs.next();
-                Object v = rs.getObject("test1");
-                hadResults = cStmt.getMoreResults();
-            }
-             * */
+            cStmt = conn.createStatement();
 
-          //  PreparedStatement ps = connection.prepareStatement();
          }
         catch (Exception ex) {
             Log.WriteException(ex);
@@ -53,44 +46,25 @@ public class dbConnection {
     }
     public ResultSet ExecuteQuery(String cmd) throws Exception
     {
-        cStmt = conn.prepareCall(cmd);
-        if( cStmt.execute() ) return cStmt.getResultSet();
-        return null;
+        return cStmt.executeQuery(cmd);
     }
     public Object ExecuteScalar(String cmd)throws Exception
     {
-        cStmt = conn.prepareCall(cmd);
-        if( cStmt.execute() ) {
-            ResultSet rs = cStmt.getResultSet();
-            rs.getObject(0);
+        ResultSet rs = cStmt.executeQuery(cmd);
+        if( rs.next() ) {
+            return rs.getObject(1);
         }
         return null;
     }
     public void ExecuteNonQuery(String cmd) throws Exception
     {
-        cStmt = conn.prepareCall(cmd);
-        cStmt.execute();
+        cStmt.execute(cmd);
     }
     private static DataSource getJdbcConnectionPool() throws NamingException {
         Context c = new InitialContext();
         return (DataSource) c.lookup("jdbc:mysql://127.0.0.1:3306/qMessenger");
     }
-    /**
-     *
-     * @author Администратор
-     * if Id fond in db than cheks if node in db equals current node
-     *      if not equal - than error
-     *      else very good and continue workin
-     * else add new pair in db with current node and id
-     */
-    public static String CheckFacultyNode(dbConnection connection, int id, String node) throws Exception
-    {
-        String nname =(String) connection.ExecuteScalar(
-            String.format("select AddNewNode(%d,%s)", id, node)
-                );
-        if(nname != null) return "this id is used for " +  nname;
-        return null;
-    }
+
     public void Close()
     {
         try {
