@@ -26,5 +26,4 @@ public class dbFunc {
         if(nname != null && nname.length() > 0 && !nname.equalsIgnoreCase(node)) return "this id is used for " +  nname;
         return null;
     }
-
 }

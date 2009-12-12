@@ -21,12 +21,16 @@ public class RegistrationFormControls extends BaseControl{
 
     Vector<BaseControl> controlsList;
     UserNameField userName;
+    StructureTree structureTree;
 
 
     public RegistrationFormControls(Composite composite, Display display) {
         controlsList = new Vector<BaseControl>();
         userName = new UserNameField(composite);
         controlsList.add(userName);
+        structureTree = new StructureTree(composite);
+        controlsList.add(structureTree);
+        
        //  userName.Resize(new Rectangle(0, 0, 10, 20));
 
     }
