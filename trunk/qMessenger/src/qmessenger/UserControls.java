@@ -38,7 +38,7 @@ public class UserControls {
         TrayMenu trayMenu = new TrayMenu((Shell)composite);
         controlsList.add(trayMenu);
     }
-    public void Resize(Rectangle rect)
+    public void Resize(Rectangle rect) throws Exception
     {
         int i, n  = controlsList.size();
         for(i = 0; i < n; i++)

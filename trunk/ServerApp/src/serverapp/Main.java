@@ -13,9 +13,9 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) {
         FacutlyTree tr = new FacutlyTree("Tree.xml");
-      // ListenIncomingConnections m =  new ListenIncomingConnections();
+        ListenIncomingConnections m =  new ListenIncomingConnections();
       // new dbConnection();
-     //  m.Listen();
+         m.Listen();
     }
 
 }
