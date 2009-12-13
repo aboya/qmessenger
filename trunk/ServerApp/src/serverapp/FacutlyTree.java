@@ -26,15 +26,17 @@ public class FacutlyTree extends HandlerBase {
     public FacutlyTree(String fileName) {
         xmlFileName = fileName;
         ids = new TreeMap<Integer, String>();
+        connection = new dbConnection();
         this.ReloadTree();
     }
     public void ReloadTree()
     {
-        connection = new dbConnection();
+       
         isCorrect = true;
         ids.clear();
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         try {
+            connection.Connect();
             SAXParser saxParser = saxParserFactory.newSAXParser();
             saxParser.parse(xmlFileName, this);
             
