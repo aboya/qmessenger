@@ -27,22 +27,23 @@ public class dbConnection {
    // CallableStatement cStmt;
      Statement  cStmt;
      Connection conn = null;
-
+     String url = "jdbc:mysql://127.0.0.1:3306/qMessenger";
+     String userName = "root";
+     String password = "admin";
 
 
     public dbConnection() {
-        String url = "jdbc:mysql://127.0.0.1:3306/qMessenger";
-        String userName = "root";
-        String password = "admin";
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conn = DriverManager.getConnection (url, userName, password);
-            cStmt = conn.createStatement();
-
          }
         catch (Exception ex) {
             Log.WriteException(ex);
         }
+    }
+    public void Connect() throws Exception
+    {
+        conn = DriverManager.getConnection (url, userName, password);
+        cStmt = conn.createStatement();
     }
     public ResultSet ExecuteQuery(String cmd) throws Exception
     {

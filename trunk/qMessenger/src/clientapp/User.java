@@ -15,9 +15,10 @@ public class User extends Thread {
     //Socket SocketIn;
     //Socket SocketOut;
     FormatedMessages message;
+    public int isAuth;
     public User()
     {
-        
+        isAuth = -1;
     }
     public void Chat()
     {
@@ -54,11 +55,12 @@ public class User extends Thread {
     public void run()
     {
         try {
-            while(true)
-            {
-                String s = message.ReceiveMessage();
-                System.out.println(s);
-            }
+           // while(true)
+         //   {
+               // String s = message.ReceiveMessage();
+               // System.out.println(s);
+           // }
+            message.ListenForMessages();
 
         }catch(Exception e)
         {
@@ -68,6 +70,25 @@ public class User extends Thread {
     public void SendTextMessageTo(Vector<User> userList, String txtMessage) throws Exception
     {
         message.SendTextMessageTo(userList, txtMessage);
+        while(true) {
+            
+        }
     }
+    public boolean AuthenticateUser() throws Exception
+    {
+        InetAddress thisIp =InetAddress.getLocalHost();
+        String ip = thisIp.toString();
+        this.isAuth = -1;
+        message.AuthenticateUser(ip);
+        while(this.isAuth < 0) {
+            sleep(1000);
+        }
+        if(this.isAuth == 1) return true;
+        else return false;
+    }
+
+
+
+ 
 
 }

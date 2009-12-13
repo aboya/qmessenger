@@ -16,4 +16,5 @@ public class Global {
         public static int max_users = 10000;
 
         public static  String  TextMessege = "txtMessage";
+        public static String Auth = "authUser";
 }

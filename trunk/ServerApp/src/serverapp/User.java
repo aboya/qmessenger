@@ -4,6 +4,7 @@
  */
 
 package serverapp;
+import com.mysql.jdbc.log.Log4JLogger;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Vector;
@@ -19,6 +20,7 @@ public class User extends Thread{
     boolean isRun;
     ConnectionQueue queue;
     FormatedMessages messages;
+    dbConnection connection;
 
     public User(Socket inputSocket, Socket outputSocket, ConnectionQueue Q) {
        // messages = new Messages(inputSocket, outputSocket, this);
@@ -26,6 +28,7 @@ public class User extends Thread{
         this.isRun = false;
         ip = inputSocket.getInetAddress().getHostAddress();
         queue = Q;
+        connection = new dbConnection();
     }
     // Listen incoming messages and redirect to users
     @Override
@@ -34,6 +37,7 @@ public class User extends Thread{
         try {
             this.isRun = true;
             String message;
+            /*
             while(true)
             {
                 message = messages.ReceiveMessage();
@@ -41,6 +45,8 @@ public class User extends Thread{
                 String ip = Utils.GetIpFromMessage(message);
                 queue.SendToUser(ip, message);
             }
+             * */
+            messages.ListenForMessages();
         }
         catch(Exception e)
         {
@@ -64,10 +70,6 @@ public class User extends Thread{
         messages.SendTextMessageTo(userList, txtMessage);
     }
 
-    public void AuthenticatieUser(String username, String password)
-    {
-
-    }
     public void SendFile(String [] userNames, String fileName, byte [] packet, int lenght, int totalLength)
     {
         int i, n = userNames.length;
@@ -92,5 +94,20 @@ public class User extends Thread{
     public int getUserID()
     {
         return  id;
+    }
+    public void AuthenticateUser()
+    {
+        Boolean Auth = false;
+        try {
+            connection.Connect();
+            Auth = (Boolean)connection.ExecuteScalar(String.format("Call FindUser('%s')", this.ip)
+                    );
+            connection.Close();
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        messages.AuthenticateUserPostBack(Auth);
+
     }
 }

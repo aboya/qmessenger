@@ -16,7 +16,7 @@ import java.net.Socket;
 public class Messages {
     private Socket SocketIn;
     private Socket SocketOut;
-    private User user;
+    protected  User user;
     public Messages(Socket in, Socket out, User usr)
     {
         this.SocketIn = in;

@@ -17,12 +17,13 @@ public class FormatedMessages extends Messages{
     public FormatedMessages(Socket in, Socket out, User usr) {
         super(in, out, usr);
     }
-    private void Receive() throws Exception
+    public void ListenForMessages() throws Exception
     {
-        String metaData = this.ReceiveMessage();
-        if(metaData == Global.TextMessege) this.ReceiveMessage();
-
-        return;
+        while(true) {
+            String metaData = this.ReceiveMessage();
+            if(metaData.equals(Global.TextMessege)) this.ReceiveMessage();
+            else if(metaData.equals(Global.Auth)) this.AuthenticateUser();
+        }
     }
     public void ReceiveTextMessage() throws Exception
     {
@@ -43,6 +44,20 @@ public class FormatedMessages extends Messages{
     }
     public void SendFileTo()
     {
+    }
+    public void AuthenticateUser()
+    {
+        this.user.AuthenticateUser();
+    }
+    public void AuthenticateUserPostBack(Boolean Auth)
+    {
+        try {
+           this.SendMessage(Global.Auth);
+           this.SendMessage(Auth.toString());
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
     }
 
 }
