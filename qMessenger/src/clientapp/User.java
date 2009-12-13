@@ -45,7 +45,8 @@ public class User extends Thread {
             Socket SocketIn = inp.accept();
             message = new FormatedMessages(SocketIn, SocketOut, this);
             this.start();
-            this.Chat();
+            this.AuthenticateUser();
+            //this.Chat();
         }catch(Exception e)
         {
             Log.WriteException(e);

@@ -19,7 +19,7 @@ public class Main {
 public static void main(String args[]) throws Exception {
         User u = new User();
         u.Connect();
-        u.AuthenticateUser();
+ 
         //new ScreenView().run();
         // new RegistrationForm().run();
     
