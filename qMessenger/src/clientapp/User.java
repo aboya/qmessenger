@@ -46,7 +46,6 @@ public class User extends Thread {
             message = new FormatedMessages(SocketIn, SocketOut, this);
             this.start();
             this.AuthenticateUser();
-            //this.Chat();
         }catch(Exception e)
         {
             Log.WriteException(e);
@@ -79,6 +78,7 @@ public class User extends Thread {
     {
         InetAddress thisIp =InetAddress.getLocalHost();
         String ip = thisIp.toString();
+        ip = ip.substring(ip.indexOf("/")+1);
         this.isAuth = -1;
         message.AuthenticateUser(ip);
         while(this.isAuth < 0) {

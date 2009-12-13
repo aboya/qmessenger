@@ -14,7 +14,7 @@ public class Global {
         public static int IncomingPort = 4899;
         public static int ServerPort = 4898;
         public static int max_users = 10000;
-        public static String ServAddr = "192.168.2.3";
+        public static String ServAddr = "192.168.2.2";
         public static  String  TextMessege = "txtMessage";
         public static String Auth = "authUser";
 }
