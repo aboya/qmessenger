@@ -17,5 +17,6 @@ public class Global {
         public static String ServAddr = "192.168.2.2";
         public static  String  TextMessege = "txtMessage";
         public static String Auth = "authUser";
+        public static String RequestStructureTree = "reqStructTree";
 }
 

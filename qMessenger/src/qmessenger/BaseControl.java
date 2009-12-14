@@ -14,8 +14,13 @@ import org.eclipse.swt.graphics.Rectangle;
  * @author Администратор
  */
 public class BaseControl {
+    protected String ControlName = "";
     public void Resize(Rectangle rect) {
        
+    }
+    public String getControlName()
+    {
+        return ControlName;
     }
 
 }

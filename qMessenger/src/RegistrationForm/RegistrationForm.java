@@ -29,16 +29,15 @@ import org.eclipse.swt.widgets.TrayItem;
 public class RegistrationForm {
     RegistrationFormControls userControls;
     Shell shell;
-    public RegistrationForm() {
-    }
+    String xmlTree;
+     public RegistrationForm(String xml) {
+         this.xmlTree = xml;
+     }
      public void run()
      {
         Display display = new Display();
         shell = new Shell(display);
-
-
         shell.setText("Sign Up");
-         //createContents(shell);
         Listener resizeListner = new Listener() {
                public void handleEvent(Event e)  {
                    Rectangle rect = shell.getBounds();
@@ -53,16 +52,11 @@ public class RegistrationForm {
         shell.addListener(SWT.Move, resizeListner);
         userControls = new RegistrationFormControls(shell, display);
         shell.setSize(500, 400);
+        StructureTree structTree = (StructureTree)  userControls.getControlByName("StructureTree");
+        structTree.fillTree(xmlTree);
+
         shell.open();
-
-
-
-
-
-
-
-
-         while (!shell.isDisposed()) {
+        while (!shell.isDisposed()) {
            if (!display.readAndDispatch()) {
              display.sleep();
            }
@@ -72,14 +66,4 @@ public class RegistrationForm {
 
    }
 
-
-
-
-   private void createContents(Composite composite) {
-
-
-
-
-
-   }
 }

@@ -6,7 +6,7 @@
 package RegistrationForm;
 
 import clientapp.Log;
-import java.io.File;
+import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.eclipse.swt.SWT;
@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import qmessenger.BaseControl;
 import org.w3c.dom.*;
+import org.xml.sax.InputSource;
 
 
 /**
@@ -33,16 +34,19 @@ public class StructureTree extends BaseControl {
         tree = new Tree(shell,  SWT.BORDER|SWT.CHECK);
 	data = new GridData(GridData.FILL_BOTH);
 	tree.setLayoutData(data);
-	fillTree();
+        this.ControlName = "StructureTree";
     }
-    private  void fillTree()  
+    public  void fillTree(String xml)
     {
 
         try {
-           File fp = new File("Tree.Xml");
-           DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
-           DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
-           Document doc = docBuilder.parse(fp);
+           //File fp = new File("Tree.Xml");
+           DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+           DocumentBuilder db = factory.newDocumentBuilder();
+           InputSource inStream = new InputSource();
+           inStream.setCharacterStream(new StringReader(xml));
+           Document doc = db.parse(inStream);
+
            Element rootElement = doc.getDocumentElement();
            String s = rootElement.getNodeName();
            TreeItem rootItem = new TreeItem(tree, SWT.NONE);

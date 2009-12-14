@@ -17,7 +17,7 @@ import qmessenger.InputTextField;
  *
  * @author Администратор
  */
-public class RegistrationFormControls extends BaseControl{
+public class RegistrationFormControls {
 
     Vector<BaseControl> controlsList;
     UserNameField userName;
@@ -34,7 +34,6 @@ public class RegistrationFormControls extends BaseControl{
        //  userName.Resize(new Rectangle(0, 0, 10, 20));
 
     }
-    @Override
     public void Resize(Rectangle rect)
     {
         
@@ -48,8 +47,16 @@ public class RegistrationFormControls extends BaseControl{
                 Log.WriteException(e);
 
             }
-        }
-        
+        }   
     }
+    public BaseControl getControlByName(String name)
+    {
+        for(int i = 0; i < controlsList.size(); i++)
+        {
+            BaseControl c = controlsList.get(i);
+            if(c.getControlName().equals(name)) return c;
+        }
+        return null;
 
+    }
 }
