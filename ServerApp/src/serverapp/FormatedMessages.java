@@ -5,6 +5,7 @@
 
 package serverapp;
 
+import java.io.File;
 import java.net.Socket;
 import java.util.Vector;
 
@@ -23,6 +24,7 @@ public class FormatedMessages extends Messages{
             String metaData = this.ReceiveMessage();
             if(metaData.equals(Global.TextMessege)) this.ReceiveMessage();
             else if(metaData.equals(Global.Auth)) this.AuthenticateUser();
+            else if(metaData.equals(Global.RequestStructureTree)) this.ResponseStructureTree();
         }
     }
     public void ReceiveTextMessage() throws Exception
@@ -58,6 +60,12 @@ public class FormatedMessages extends Messages{
         {
             Log.WriteException(e);
         }
+    }
+    public void ResponseStructureTree() throws Exception
+    {
+        this.SendMessage(Global.RequestStructureTree);
+        this.SendMessage(Global.XmlTree);
+
     }
 
 }

@@ -37,15 +37,6 @@ public class User extends Thread{
         try {
             this.isRun = true;
             String message;
-            /*
-            while(true)
-            {
-                message = messages.ReceiveMessage();
-                System.out.println(message);
-                String ip = Utils.GetIpFromMessage(message);
-                queue.SendToUser(ip, message);
-            }
-             * */
             messages.ListenForMessages();
         }
         catch(Exception e)
@@ -56,7 +47,9 @@ public class User extends Thread{
         // ignoring errors
         try {
             messages.CloseConnection();
-        }catch(Exception e){ }
+        }catch(Exception e){
+
+        }
         queue.RemoveUser(this);
         this.isRun = false;
     }
@@ -103,6 +96,7 @@ public class User extends Thread{
             Auth = (Boolean)connection.ExecuteScalar(String.format("Call FindUser('%s')", this.ip)
                     );
             connection.Close();
+            if(Auth == null) Auth = false;
         }catch(Exception e)
         {
             Log.WriteException(e);
