@@ -7,6 +7,8 @@ package serverapp;
 
 
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Map;
 import java.util.TreeMap;
 import org.xml.sax.*;
@@ -31,11 +33,12 @@ public class FacutlyTree extends HandlerBase {
     }
     public void ReloadTree()
     {
-       
+        
         isCorrect = true;
         ids.clear();
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         try {
+            Global.XmlTree = readFileAsString(xmlFileName);
             connection.Connect();
             SAXParser saxParser = saxParserFactory.newSAXParser();
             saxParser.parse(xmlFileName, this);
@@ -73,5 +76,17 @@ public class FacutlyTree extends HandlerBase {
         }
         if(errorMess != null  ) throw new SAXException(errorMess);
     }
+    private static String readFileAsString(String filePath) throws java.io.IOException{
+        byte[] buffer = new byte[(int) new File(filePath).length()];
+        FileInputStream f = new FileInputStream(filePath);
+        f.read(buffer);
+        return new String(buffer);
+    }
+
+    /**
+     * @return the xml
+     */
+
+
 
 }

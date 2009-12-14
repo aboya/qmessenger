@@ -17,4 +17,7 @@ public class Global {
 
         public static  String  TextMessege = "txtMessage";
         public static String Auth = "authUser";
+        public static String  RequestStructureTree = "reqStructTree";
+
+        public static String XmlTree;
 }
