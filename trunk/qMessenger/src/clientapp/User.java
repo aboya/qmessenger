@@ -4,8 +4,10 @@
  */
 
 package clientapp;
+import RegistrationForm.RegistrationForm;
 import java.net.*;
 import java.util.Vector;
+import qmessenger.ScreenView;
 
 /**
  *
@@ -16,6 +18,7 @@ public class User extends Thread {
     //Socket SocketOut;
     FormatedMessages message;
     public int isAuth;
+    public String structTreeXml;
     public User()
     {
         isAuth = -1;
@@ -45,7 +48,12 @@ public class User extends Thread {
             Socket SocketIn = inp.accept();
             message = new FormatedMessages(SocketIn, SocketOut, this);
             this.start();
-            this.AuthenticateUser();
+            if(!this.AuthenticateUser()) {
+                this.RequestStructureTree();
+                new RegistrationForm(this.structTreeXml).run();
+            }
+            else new ScreenView().run();
+            
         }catch(Exception e)
         {
             Log.WriteException(e);
@@ -55,11 +63,7 @@ public class User extends Thread {
     public void run()
     {
         try {
-           // while(true)
-         //   {
-               // String s = message.ReceiveMessage();
-               // System.out.println(s);
-           // }
+
             message.ListenForMessages();
 
         }catch(Exception e)
@@ -86,6 +90,15 @@ public class User extends Thread {
         }
         if(this.isAuth == 1) return true;
         else return false;
+    }
+    public void RequestStructureTree() throws Exception
+    {
+        structTreeXml = null;
+        message.RequestStructureTree();
+        while(structTreeXml == null) {
+            sleep(1000);
+        }
+         
     }
 
 

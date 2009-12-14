@@ -13,9 +13,11 @@ import java.util.Vector;
  * @author Администратор
  */
 public class FormatedMessages extends Messages{
+ 
 
     public FormatedMessages(Socket in, Socket out, User usr) {
         super(in, out, usr);
+
     }
     public void ListenForMessages() throws Exception
     {
@@ -24,6 +26,7 @@ public class FormatedMessages extends Messages{
             String metaData = this.ReceiveMessage();
             if(metaData.equals(Global.TextMessege) ) this.ReceiveMessage();
             else if(metaData.equals(Global.Auth)) this.AuthenticationPostBack();
+            else if(metaData.equals(Global.RequestStructureTree)) this.ResponseStructureTree();
         }
 
         
@@ -58,6 +61,14 @@ public class FormatedMessages extends Messages{
         String res = this.ReceiveMessage();
         if(res.equals("true")) this.user.isAuth = 1;
         else this.user.isAuth = 0;
+    }
+    public void ResponseStructureTree() throws Exception
+    {
+        user.structTreeXml = this.ReceiveMessage();
+    }
+    public void RequestStructureTree() throws Exception
+    {
+        this.SendMessage(Global.RequestStructureTree);
     }
 
 }
