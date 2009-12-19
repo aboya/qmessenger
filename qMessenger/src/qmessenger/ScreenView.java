@@ -52,6 +52,7 @@ public class ScreenView {
         userControls = new UserControls(shell, display);
         shell.setSize(500, 400);
         shell.open();
+        shell.setActive();
 
 
 

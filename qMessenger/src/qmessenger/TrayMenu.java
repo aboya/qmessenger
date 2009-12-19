@@ -8,6 +8,8 @@ package qmessenger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -28,16 +30,15 @@ public class TrayMenu extends BaseControl{
     private MenuItem showShellMenuItem;
     final private Shell shell;
 
-    public TrayMenu(Shell _shell) {
+    public TrayMenu(Shell _shell, Display display) {
         this.shell = _shell;
         menu = new Menu(shell);
         tray = shell.getDisplay().getSystemTray();
         trayItem = new TrayItem(tray, SWT.NONE);
         trayItem.setToolTipText("SWT TrayItem");
-        //Image image1 = new Image(display, "");
-       // trayItem.setImage(image1);
+        Image img = new Image(display, "TrayIcon.png");
+        trayItem.setImage(img);
        
-
 
         trayItem.addListener(SWT.Show, new Listener() {
             public void handleEvent(Event event) {

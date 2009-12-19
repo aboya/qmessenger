@@ -35,7 +35,7 @@ public class UserControls {
         controlsList.add(outputTextField);
         buttonSendMessage = new ButtonSendMessage(composite);
         controlsList.add(buttonSendMessage);
-        TrayMenu trayMenu = new TrayMenu((Shell)composite);
+        TrayMenu trayMenu = new TrayMenu((Shell)composite, display);
         controlsList.add(trayMenu);
     }
     public void Resize(Rectangle rect)  
