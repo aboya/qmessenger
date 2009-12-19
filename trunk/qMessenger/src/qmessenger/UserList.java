@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+
 /**
  *
  * @author Администратор
@@ -88,15 +89,12 @@ public class UserList extends  BaseControl {
 
              };
             tree.addSelectionListener(adapter);
-
     }
 
     public  void Resize(Rectangle rect)
     {
         tree.setBounds(shell.getBounds().width-160, 10, 140, shell.getBounds().height-60);
     }
-
-    
      private void fillTree() {
 	     // Turn off drawing to avoid flicker
 	     tree.setRedraw(false);
