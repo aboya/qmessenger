@@ -56,6 +56,7 @@ public class RegistrationForm {
         structTree.fillTree(xmlTree);
 
         shell.open();
+        shell.setActive();
         while (!shell.isDisposed()) {
            if (!display.readAndDispatch()) {
              display.sleep();

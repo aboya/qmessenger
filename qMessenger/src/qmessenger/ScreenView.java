@@ -71,14 +71,4 @@ public class ScreenView {
          
    }
 
-
-
-
-   private void createContents(Composite composite) {
-
-
-     
-     
-  
-   }
 }
