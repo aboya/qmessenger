@@ -15,10 +15,7 @@ public class Global {
         public static int ServerPort = 4898;
         public static int max_users = 10000;
         public static String ServAddr = "192.168.2.2";
-        public static String TextMessege = "txtMessage";
-        public static String Auth = "authUser";
-        public static String RequestStructureTree = "reqStructTree";
-        public static String RequestRegistration = "reqReg";
+
         public static User user = null;
 }
 

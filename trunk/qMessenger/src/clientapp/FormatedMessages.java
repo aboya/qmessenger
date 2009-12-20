@@ -22,20 +22,16 @@ public class FormatedMessages extends Messages{
     public void ListenForMessages() throws Exception
     {
         while(true) {
-
             String metaData = this.ReceiveMessage();
-            if(metaData.equals(Global.TextMessege) ) this.ReceiveMessage();
-            else if(metaData.equals(Global.Auth)) this.AuthenticationPostBack();
-            else if(metaData.equals(Global.RequestStructureTree)) this.ResponseStructureTree();
-            else if(metaData.endsWith(Global.RequestRegistration)) this.user.isRegister = 1;
-        }
-
-        
+            if(metaData.equals(FormatCharacters.TextMessege) ) this.ReceiveMessage();
+            else if(metaData.equals(FormatCharacters.Auth)) this.AuthenticationPostBack();
+            else if(metaData.equals(FormatCharacters.RequestStructureTree)) this.ResponseStructureTree();
+        }        
     }
     public void ReceiveTextMessage() throws Exception
     {
         String txtMessage = this.ReceiveMessage();
-        this.SendMessage(Global.TextMessege);
+        this.SendMessage(FormatCharacters.TextMessege);
         this.SendMessage(txtMessage);
     }
     public void SendTextMessageTo(Vector<User> userList, String txtMesseage) throws Exception
@@ -54,7 +50,7 @@ public class FormatedMessages extends Messages{
     }
     public boolean AuthenticateUser(String ip) throws Exception
     {
-        this.SendMessage(Global.Auth);
+        this.SendMessage(FormatCharacters.Auth);
         this.SendMessage(ip);
         String response = this.ReceiveMessageSync();
         // cool & quick way to check true :)))))
@@ -73,12 +69,12 @@ public class FormatedMessages extends Messages{
     }
     public String RequestStructureTree() throws Exception
     {
-        this.SendMessage(Global.RequestStructureTree);
+        this.SendMessage(FormatCharacters.RequestStructureTree);
         return this.ReceiveMessageSync();
     }
     public boolean RegisterUser(int structureId) throws Exception
     {
-        this.SendMessage(Global.RequestRegistration);
+        this.SendMessage(FormatCharacters.RequestRegistration);
         this.SendMessage(String.valueOf(structureId));
         String response = this.ReceiveMessageSync();
         if(response.length() == 4) return true;
