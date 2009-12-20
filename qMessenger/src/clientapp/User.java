@@ -5,8 +5,10 @@
 
 package clientapp;
 import RegistrationForm.RegistrationForm;
+import UserGUIControls.uMessageBox;
 import java.net.*;
 import java.util.Vector;
+import org.eclipse.swt.SWT;
 import qmessenger.ScreenView;
 
 /**
@@ -31,7 +33,6 @@ public class User extends Thread {
                 java.io.BufferedReader r = new java.io.BufferedReader (new java.io.InputStreamReader (System.in));
                 String s;
                 s = r.readLine();
-               // this.SocketOut.getOutputStream().write(s.getBytes(),0,s.length());
                 this.message.SendMessage(s);
             }
         }catch(Exception e)
@@ -41,16 +42,28 @@ public class User extends Thread {
     }
     public void Connect() throws Exception
     {
+        Socket SocketOut,SocketIn;
+        
         try {
+            
+            SocketOut = new Socket(Global.ServAddr, Global.ServerPort);
 
-            Socket SocketOut = new Socket(Global.ServAddr, Global.ServerPort);
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+            uMessageBox messageBox = new uMessageBox("Cannot Connect to server",  SWT.ICON_ERROR);
+            messageBox.open();
+            return;
+        }
+        try {
             ServerSocket inp = new ServerSocket(Global.IncomingPort, 0);
-            Socket SocketIn = inp.accept();
+            SocketIn = inp.accept();
             message = new FormatedMessages(SocketIn, SocketOut, this);
             this.start();
             if(!this.AuthenticateUser()) {
                 this.RequestStructureTree();
-                new RegistrationForm(this.structTreeXml).run();
+                int RetCode = new RegistrationForm(this.structTreeXml).run();
+                if(RetCode == SWT.CLOSE ) this.Disconnect();
             }
             else new ScreenView().run();
             
@@ -63,9 +76,7 @@ public class User extends Thread {
     public void run()
     {
         try {
-
             message.ListenForMessages();
-
         }catch(Exception e)
         {
             Log.WriteException(e);
@@ -99,6 +110,16 @@ public class User extends Thread {
             sleep(1000);
         }
          
+    }
+    public void Disconnect()
+    {
+        try {
+            message.CloseConnection();
+            this.interrupt();
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
     }
 
 
