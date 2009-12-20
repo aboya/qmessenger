@@ -6,6 +6,7 @@
 package qmessenger;
  
 import RegistrationForm.RegistrationForm;
+import clientapp.Global;
 import clientapp.User;
 
 /**
@@ -20,6 +21,7 @@ public class Main {
 
 public static void main(String args[]) throws Exception {
         User u = new User();
+        Global.user = u;
         u.Connect();
  
         //new ScreenView().run();

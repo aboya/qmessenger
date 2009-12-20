@@ -9,21 +9,15 @@ package RegistrationForm;
  *
  * @author Администратор
  */
-import java.util.LinkedList;
+import UserGUIControls.uMessageBox;
+import clientapp.Global;
+import clientapp.Log;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Tray;
-import org.eclipse.swt.widgets.TrayItem;
 
 
 public class RegistrationForm {
@@ -53,8 +47,46 @@ public class RegistrationForm {
         shell.addListener(SWT.Move, resizeListner);
         userControls = new RegistrationFormControls(shell, display);
         shell.setSize(500, 400);
-        StructureTree structTree = (StructureTree)  userControls.getControlByName("StructureTree");
+        final StructureTree structTree = (StructureTree)  userControls.getControlByName("StructureTree");
         structTree.fillTree(xmlTree);
+
+        Listener pushRegButton = new Listener() {
+
+            public void handleEvent(Event arg0)  {
+
+                int id = structTree.getSelectedId();
+                boolean isRegister;
+                if(id == 0) {
+                    uMessageBox msg = new uMessageBox("Select your name", SWT.ERROR);
+                    msg.open();
+                    return;
+                }
+                try {
+                   isRegister =  Global.user.RegisterUser(id);
+                }catch(Exception e)
+                {
+                    uMessageBox msg = new uMessageBox("Registration failed", SWT.ERROR);
+                    msg.open();
+                    Log.WriteException(e);
+                    ReturnCode = SWT.CLOSE;
+                    return;
+                }
+                if(isRegister == false)
+                {
+                    uMessageBox msg = new uMessageBox("Registration failed", SWT.ERROR);
+                    msg.open();
+                    ReturnCode = SWT.CLOSE;
+                    return;
+                }
+                uMessageBox msg = new uMessageBox("Registration Sucessfull", SWT.OK);
+                msg.open();
+
+                ReturnCode = 0;
+                shell.close();
+            }
+        };
+        RegButton regButton = (RegButton) userControls.getControlByName("RegButton");
+        regButton.addListner(pushRegButton, SWT.Selection);
 
         shell.open();
         //shell.setActive();
