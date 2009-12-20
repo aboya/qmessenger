@@ -59,6 +59,7 @@ public class ConnectionQueue {
                if(usr.equals(user))
                {
                    it.remove();
+                   usr.DisconnectUser();
                    return;
                }
            }while(it.hasNext());

@@ -33,23 +33,28 @@ public class ListenIncomingConnections {
         @Override
         public void run()
         {
-            try{
-                ServerSocket s = new ServerSocket(Global.IncomingPort,0);
-                while(true)
-                {
-                    Socket inputSocket,outputSocket = null;
-                    inputSocket = s.accept();
-                    outputSocket = new Socket(inputSocket.getInetAddress(), Global.ClientPort);
-                    queue.PushUser(new User(inputSocket, outputSocket, queue));
-                    Log.Write("host:" + inputSocket.getInetAddress() + " connected");
+           ServerSocket s = null;
+           try {
+             s = new ServerSocket(Global.IncomingPort,0);
+           }catch(Exception e) {
+               Log.WriteException(e);
+               return;
+           }
+           while(true)
+           {
+              try {
 
-                }
-            }catch(Exception e)
-            {
-                Log.WriteException(e);
-            }
+                   
+                   Socket inputSocket,outputSocket = null;
+                   inputSocket = s.accept();
+                   outputSocket = new Socket(inputSocket.getInetAddress(), Global.ClientPort);
+                   queue.PushUser(new User(inputSocket, outputSocket, queue));
+                   Log.Write("host:" + inputSocket.getInetAddress() + " connected");
+               }catch(Exception e)
+               {
+                  Log.WriteException(e);
+               }
+           }
         }
-        
     }
-
 }

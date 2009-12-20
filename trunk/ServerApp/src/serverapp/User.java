@@ -44,9 +44,10 @@ public class User extends Thread{
             Log.Write("user:" + this.ip + " disconected");
             Log.WriteException(e);
         }
+
         // ignoring errors
         try {
-            messages.CloseConnection();
+            this.DisconnectUser();
         }catch(Exception e){
 
         }
@@ -74,6 +75,7 @@ public class User extends Thread{
     public void DisconnectUser() throws Exception
     {
         messages.CloseConnection();
+        this.interrupt();
     }
 
     public void SendFileTo(User ruser, String FileName, long FileSize)

@@ -14,6 +14,7 @@ public class Global {
         public static int ClientPort = 4899;
         public static int IncomingPort = 4898;
         public static int max_users = 10000;
+        public static  int MAXLEN = 18;
 
         public static  String  TextMessege = "txtMessage";
         public static String Auth = "authUser";
