@@ -107,16 +107,8 @@ public class User extends Thread{
         connection.Close();
         messages.AuthenticateUserPostBack(Auth);
     }
-    public void RegisterUser(String structureId)
+    public Boolean RegisterUser(String structureId)
     {
-        try {
-            connection.Connect();
-            connection.ExecuteNonQuery(String.format("Call AddUser('%s',%s)", this.ip, structureId));
-            //connection.ExecuteScalar(String.format("Call AddUser('%s',%s)", this.ip, structureId));
-        }catch(Exception e)
-        {
-            Log.WriteException(e);
-        }
-        connection.Close();
+        return dbFunc.RegisterUser(connection, ip, structureId);
     }
 }

@@ -26,4 +26,17 @@ public class dbFunc {
         if(nname != null && nname.length() > 0 && !nname.equalsIgnoreCase(node)) return "this id is used for " +  nname;
         return null;
     }
+    public static boolean RegisterUser(dbConnection connection,String ip, String structureId)
+    {
+        try {
+            connection.Connect();
+            connection.ExecuteNonQuery(String.format("Call AddUser('%s',%s)", ip, structureId));
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+            return false;
+        }
+        connection.Close();
+        return true;
+    }
 }
