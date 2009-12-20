@@ -17,4 +17,9 @@ public class FormatCharacters {
         public static final int TextMessage = 1;
         public static final int BinaryData = 2;
         public static final int UserAutorization = 3;
+        
+        public static String TextMessege = "txtMessage";
+        public static String Auth = "authUser";
+        public static String RequestStructureTree = "reqStructTree";
+        public static String RequestRegistration = "reqReg";
 }

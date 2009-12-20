@@ -20,25 +20,9 @@ public class User extends Thread {
     //Socket SocketOut;
     FormatedMessages message;
     public String structTreeXml;
-    public int isRegister;
     public User()
     {
-        isRegister = -1;
-    }
-    public void Chat()
-    {
-        try {
-            while(true)
-            {
-                java.io.BufferedReader r = new java.io.BufferedReader (new java.io.InputStreamReader (System.in));
-                String s;
-                s = r.readLine();
-                this.message.SendMessage(s);
-            }
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }
+
     }
     public void Connect() throws Exception
     {
@@ -60,8 +44,8 @@ public class User extends Thread {
             SocketIn = inp.accept();
             message = new FormatedMessages(SocketIn, SocketOut, this);
             this.start();
+            this.RequestStructureTree();
             if(!this.AuthenticateUser()) {
-                this.RequestStructureTree();
                 int RetCode = new RegistrationForm(this.structTreeXml).run();
                 if(RetCode == SWT.CLOSE ) this.Disconnect();
                 if(RetCode == 0) new ScreenView().run();
@@ -119,9 +103,5 @@ public class User extends Thread {
     {
         return message.RegisterUser(structureId);
     }
-
-
-
- 
 
 }

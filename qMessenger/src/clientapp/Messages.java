@@ -25,16 +25,16 @@ public class Messages {
     }
     protected void SendMessage(String message) throws Exception
     {
-            String res = String.valueOf(message.length()) + FormatCharacters.marker;
-            res += message;
-            SocketOut.getOutputStream().write(res.getBytes(), 0, res.length());
+        String res = String.valueOf(message.length()) + FormatCharacters.marker;
+        res += message;
+        SocketOut.getOutputStream().write(res.getBytes(), 0, res.length());
     }
     // send message to socket from read
     protected void SendMessageSync(String message) throws Exception
     {
-            String res = String.valueOf(message.length()) + FormatCharacters.marker;
-            res += message;
-            SocketIn.getOutputStream().write(res.getBytes(), 0, res.length());
+        String res = String.valueOf(message.length()) + FormatCharacters.marker;
+        res += message;
+        SocketIn.getOutputStream().write(res.getBytes(), 0, res.length());
     }
     protected  String ReceiveMessage() throws Exception
     {
@@ -52,13 +52,12 @@ public class Messages {
         res = "";
         while(Length > 0)
         {
-             readed = SocketIn.getInputStream().read(b, 0, Global.PACKET_SIZE);
+             readed = SocketIn.getInputStream().read(b, 0, Math.min(Length, Global.PACKET_SIZE));
              res += new String(b, 0, readed);
              Length -= readed;
         }
         return res;
     }
-    
     protected  String ReceiveMessageSync() throws Exception
     {
         String len, res;
@@ -75,7 +74,7 @@ public class Messages {
         res = "";
         while(Length > 0)
         {
-             readed = SocketOut.getInputStream().read(b, 0, Global.PACKET_SIZE);
+             readed = SocketOut.getInputStream().read(b, 0, Math.min(Length, Global.PACKET_SIZE));
              res += new String(b, 0, readed);
              Length -= readed;
         }
@@ -86,5 +85,4 @@ public class Messages {
         SocketIn.close();
         SocketOut.close();
     }
-
 }

@@ -5,25 +5,25 @@
 
 package qmessenger;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import org.eclipse.swt.SWT;
+import clientapp.Global;
+import clientapp.Log;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TreeEvent;
-import org.eclipse.swt.events.TreeListener;
+import org.eclipse.swt.widgets.Display;
+import java.io.StringReader;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
 
 /**
  *
@@ -33,14 +33,16 @@ public class UserList extends  BaseControl {
     GridData data;
     Tree tree;
     Composite shell;
+    Map <String, Integer> treeIds;
 
     public UserList(Composite composite, Display display) {
              this.shell = composite;
+             treeIds = new TreeMap <String, Integer>();
 
              tree = new Tree(composite, SWT.CHECK | SWT.BORDER);
 	     data = new GridData(GridData.FILL_BOTH);
 	     tree.setLayoutData(data);
-	     fillTree();
+	     fillTree(Global.user.structTreeXml);
              tree.setBounds(composite.getBounds().width - 120, 10, 100, composite.getBounds().height - 60);
              SelectionAdapter adapter = new SelectionAdapter() {
 
@@ -90,39 +92,46 @@ public class UserList extends  BaseControl {
              };
             tree.addSelectionListener(adapter);
     }
-
+    @Override
     public  void Resize(Rectangle rect)
     {
         tree.setBounds(shell.getBounds().width-160, 10, 140, shell.getBounds().height-60);
     }
-     private void fillTree() {
-	     // Turn off drawing to avoid flicker
-	     tree.setRedraw(false);
+    public  void fillTree(String xml)
+    {
 
-	     // Create five root items
-	     for (int i = 0; i < 1; i++) {
-	       TreeItem item = new TreeItem(tree, SWT.NONE);
-	       item.setText("TNU" + i);
+        try {
+            
+           //File fp = new File("Tree.Xml");
+           DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+           DocumentBuilder db = factory.newDocumentBuilder();
+           InputSource inStream = new InputSource();
+           inStream.setCharacterStream(new StringReader(xml));
+           Document doc = db.parse(inStream);
 
-	       // Create three children below the root
-	       for (int j = 0; j < 3; j++) {
-	         TreeItem child = new TreeItem(item, SWT.NONE);
-	         child.setText("Child Item " + i + " - " + j);
+           Element rootElement = doc.getDocumentElement();
+           String s = rootElement.getNodeName();
+           TreeItem rootItem = new TreeItem(tree, SWT.NONE);
+           rootItem.setText(s);
+           BuildTNUTree(rootItem,(Node) rootElement.getChildNodes().item(1));
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+	tree.setRedraw(true);
+    }
+    private void BuildTNUTree(TreeItem treeItem, Node element)
+    {
+        String s = element.getNodeName();
+        if(s.equals("#text")) return;
 
-	         // Create three grandchildren under the child
-	         for (int k = 0; k < 3; k++) {
-	           TreeItem grandChild = new TreeItem(child, SWT.NONE);
-	           grandChild.setText("Grandchild Item " + i + " - " + j + " - " + k);
+        String id = element.getAttributes().getNamedItem("id").getNodeValue();
+        treeIds.put(s, Integer.valueOf(id));
 
-                   for(int n = 0; n < 3; n++) {
-                        TreeItem ggrandChild = new TreeItem(grandChild, SWT.NONE);
-                        ggrandChild.setText("ggrand child ");
-                    }
-
-	         }
-	       }
-	     }
-	     // Turn drawing back on!
-	     tree.setRedraw(true);
-	   }
+        TreeItem newItem = new TreeItem(treeItem, SWT.NONE);
+        newItem.setText(element.getNodeName());
+        NodeList list = element.getChildNodes();
+        for(int i = 0; i < list.getLength(); i++)
+            BuildTNUTree(newItem, list.item(i));
+    }
 }
