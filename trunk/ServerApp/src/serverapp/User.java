@@ -4,10 +4,7 @@
  */
 
 package serverapp;
-import com.mysql.jdbc.log.Log4JLogger;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Vector;
 /**
  *
  * @author Серёжа
@@ -18,7 +15,7 @@ public class User extends Thread{
     int Timeout;
     int id;
     boolean isRun;
-    ConnectionQueue queue;
+    public ConnectionQueue queue;
     FormatedMessages messages;
     dbConnection connection;
 
@@ -55,22 +52,11 @@ public class User extends Thread{
         this.isRun = false;
     }
     //Send message to client
-    public void SendMessage(String message) throws Exception
+    public void SendMessage(String message, String srcIp) throws Exception
     {
-         messages.SendMessage(message);
+        messages.SendTextMessage(srcIp + ":" + message);
+         
     }
-    public void SendTextMessage(Vector<User> userList, String txtMessage) throws Exception
-    {
-        messages.SendTextMessageTo(userList, txtMessage);
-    }
-
-    public void SendFile(String [] userNames, String fileName, byte [] packet, int lenght, int totalLength)
-    {
-        int i, n = userNames.length;
-        for(i = 0; i < n; i++)
-            queue.SendToUser(userNames[i],fileName, packet, lenght, totalLength);
-    }
-
 
     public void DisconnectUser() throws Exception
     {
