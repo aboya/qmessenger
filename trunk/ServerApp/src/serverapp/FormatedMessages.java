@@ -58,8 +58,8 @@ public class FormatedMessages extends Messages{
     public void AuthenticateUserPostBack(Boolean Auth)
     {
         try {
-           this.SendMessage(Global.Auth);
-           this.SendMessage(Auth.toString());
+          // this.SendMessage(Global.Auth);
+           this.SendMessageSync(Auth.toString());
         }catch(Exception e)
         {
             Log.WriteException(e);
@@ -67,14 +67,14 @@ public class FormatedMessages extends Messages{
     }
     public void ResponseStructureTree() throws Exception
     {
-        this.SendMessage(Global.RequestStructureTree);
-        this.SendMessage(Global.XmlTree);
+        //this.SendMessage(Global.RequestStructureTree);
+        this.SendMessageSync(Global.XmlTree);
     }
     public void RegisterUser() throws Exception
     {
         String structureId = this.ReceiveMessage();
-        this.user.RegisterUser(structureId);
-        
+        String result = this.user.RegisterUser(structureId).toString();
+        this.SendMessageSync(result);   
     }
 
 }
