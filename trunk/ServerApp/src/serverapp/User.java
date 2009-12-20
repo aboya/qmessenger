@@ -93,17 +93,30 @@ public class User extends Thread{
     public void AuthenticateUser()
     {
         Boolean Auth = false;
+        Integer res;
         try {
             connection.Connect();
-            Auth = (Boolean)connection.ExecuteScalar(String.format("Call FindUser('%s')", this.ip)
+            res = (Integer)connection.ExecuteScalar(String.format("select FindUser('%s')", this.ip)
                     );
-            connection.Close();
-            if(Auth == null) Auth = false;
+           
+            Auth = res > 0;
         }catch(Exception e)
         {
             Log.WriteException(e);
         }
+        connection.Close();
         messages.AuthenticateUserPostBack(Auth);
-
+    }
+    public void RegisterUser(String structureId)
+    {
+        try {
+            connection.Connect();
+            connection.ExecuteNonQuery(String.format("Call AddUser('%s',%s)", this.ip, structureId));
+            //connection.ExecuteScalar(String.format("Call AddUser('%s',%s)", this.ip, structureId));
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        connection.Close();
     }
 }
