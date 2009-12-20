@@ -47,8 +47,11 @@ public class FormatedMessages extends Messages{
     public void SendFileTo()
     {
     }
-    public void AuthenticateUser()
+    public void AuthenticateUser() throws Exception
     {
+        // receiving ip but not using
+        // this is neccessarry !
+        String ip = this.ReceiveMessage();
         this.user.AuthenticateUser();
     }
     public void AuthenticateUserPostBack(Boolean Auth)

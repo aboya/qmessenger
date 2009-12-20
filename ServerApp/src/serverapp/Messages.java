@@ -36,17 +36,20 @@ public class Messages {
         int Length, readed;
         byte []b = new byte[Global.PACKET_SIZE];
         len = "";
-        while(true)
+        
+        for(int i = 0; i < Global.MAXLEN; i++)
         {
              SocketIn.getInputStream().read(b, 0, 1);
              if(b[0] == FormatCharacters.marker) break;
+             // i think this is close socket code... need check...
+             if(b[0] == 0 ) throw new Exception("User disconected");
              len += b[0]-'0';
         }
         Length = Integer.valueOf(len);
         res = "";
         while(Length > 0)
         {
-             readed = SocketIn.getInputStream().read(b, 0, Global.PACKET_SIZE);
+             readed = SocketIn.getInputStream().read(b, 0,Math.min(Length, Global.PACKET_SIZE));
              res += new String(b, 0, readed);
              Length -= readed;
         }
