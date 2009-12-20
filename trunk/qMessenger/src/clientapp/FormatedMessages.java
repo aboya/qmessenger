@@ -27,6 +27,7 @@ public class FormatedMessages extends Messages{
             if(metaData.equals(Global.TextMessege) ) this.ReceiveMessage();
             else if(metaData.equals(Global.Auth)) this.AuthenticationPostBack();
             else if(metaData.equals(Global.RequestStructureTree)) this.ResponseStructureTree();
+            else if(metaData.endsWith(Global.RequestRegistration)) this.user.isRegister = 1;
         }
 
         
@@ -69,6 +70,12 @@ public class FormatedMessages extends Messages{
     public void RequestStructureTree() throws Exception
     {
         this.SendMessage(Global.RequestStructureTree);
+    }
+    public void RegisterUser(int structureId) throws Exception
+    {
+        this.SendMessage(Global.RequestRegistration);
+        this.SendMessage(String.valueOf(structureId));
+        
     }
 
 }

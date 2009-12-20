@@ -7,6 +7,9 @@ package RegistrationForm;
 
 import clientapp.Log;
 import java.io.StringReader;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.eclipse.swt.SWT;
@@ -28,6 +31,8 @@ public class StructureTree extends BaseControl {
     GridData data;
     Tree tree;
     Composite shell;
+    String xml;
+    Map <String, Integer> treeIds;
 
     public StructureTree(Composite shell) {
         this.shell = shell;
@@ -35,11 +40,13 @@ public class StructureTree extends BaseControl {
 	data = new GridData(GridData.FILL_BOTH);
 	tree.setLayoutData(data);
         this.ControlName = "StructureTree";
+        treeIds = new TreeMap<String, Integer>();
     }
-    public  void fillTree(String xml)
+    public  void fillTree(String _xml)
     {
 
         try {
+            this.xml = _xml;
            //File fp = new File("Tree.Xml");
            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
            DocumentBuilder db = factory.newDocumentBuilder();
@@ -62,6 +69,10 @@ public class StructureTree extends BaseControl {
     {
         String s = element.getNodeName();
         if(s.equals("#text")) return;
+
+        String id = element.getAttributes().getNamedItem("id").getNodeValue();
+        treeIds.put(s, Integer.valueOf(id));
+
         TreeItem newItem = new TreeItem(treeItem, SWT.NONE);
         newItem.setText(element.getNodeName());
         NodeList list = element.getChildNodes();
@@ -72,6 +83,29 @@ public class StructureTree extends BaseControl {
     @Override
     public void Resize(Rectangle rect) {
         tree.setBounds(shell.getBounds().width-160, 10, 150, shell.getBounds().height-80);
+    }
+    public int findIdByName(String name)
+    {
+        return treeIds.get(name);
+    }
+    public int getSelectedId()
+    {
+        int i, n;
+        TreeItem [] items = tree.getItems();
+        LinkedList<TreeItem> Q = new LinkedList<TreeItem>();
+        n = items.length;
+        for(i = 0; i < n; i++) Q.addLast(items[i]);
+        TreeItem treeItem = null;
+        while(!Q.isEmpty())
+        {
+            treeItem = Q.getFirst();
+            Q.removeFirst();
+            if(treeItem.getChecked()) break;
+            for(i = 0; i < treeItem.getItemCount(); i++)
+                Q.addLast(treeItem.getItem(i));
+        }
+        if(treeItem == null) return 0;
+        return this.findIdByName(treeItem.getText());
     }
 
 

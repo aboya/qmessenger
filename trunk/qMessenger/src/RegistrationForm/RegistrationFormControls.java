@@ -11,7 +11,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import qmessenger.BaseControl;
-import qmessenger.InputTextField;
 
 /**
  *
@@ -22,6 +21,7 @@ public class RegistrationFormControls {
     Vector<BaseControl> controlsList;
     UserNameField userName;
     StructureTree structureTree;
+    RegButton regButton;
 
 
     public RegistrationFormControls(Composite composite, Display display) {
@@ -30,6 +30,8 @@ public class RegistrationFormControls {
         controlsList.add(userName);
         structureTree = new StructureTree(composite);
         controlsList.add(structureTree);
+        regButton = new RegButton(composite, "Register");
+        controlsList.add(regButton);
         
        //  userName.Resize(new Rectangle(0, 0, 10, 20));
 
