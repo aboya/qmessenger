@@ -9,6 +9,7 @@ package qmessenger;
  *
  * @author Администратор
  */
+import clientapp.Global;
 import java.util.LinkedList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -53,20 +54,13 @@ public class ScreenView {
         shell.setSize(500, 400);
         shell.open();
         shell.setActive();
-
-
-
-
-
-
-
-
          while (!shell.isDisposed()) {
            if (!display.readAndDispatch()) {
              display.sleep();
            }
          }
          display.dispose();
+         Global.user.Disconnect();
          //display.addListener(SWT.CLOSE, resizeListner);
          
    }

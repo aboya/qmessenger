@@ -82,7 +82,7 @@ public class RegistrationForm {
                 msg.open();
 
                 ReturnCode = 0;
-                shell.close();
+                display.close();
             }
         };
         RegButton regButton = (RegButton) userControls.getControlByName("RegButton");
