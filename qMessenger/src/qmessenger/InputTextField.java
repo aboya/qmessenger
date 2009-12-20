@@ -29,4 +29,8 @@ public class InputTextField extends BaseControl {
     {
         txt.setBounds(10, 150, 300, 100);
     }
+    public Text getTextControl()
+    {
+        return txt;
+    }
 }

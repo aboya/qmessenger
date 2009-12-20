@@ -6,8 +6,12 @@
 package qmessenger;
 
 
+import clientapp.Global;
 import clientapp.Log;
 import java.util.Vector;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -22,10 +26,13 @@ public class UserControls {
     InputTextField inputTextField;
     OutputTextField outputTextField;
     ButtonSendMessage buttonSendMessage;
+    TrayMenu trayMenu;
+    Display display;
 
     Vector<BaseControl> controlsList;
 
-    public UserControls(Composite composite, Display display) {
+    public UserControls(Composite composite, Display _display) {
+        this.display = _display;
         controlsList = new Vector<BaseControl>();
         userList = new UserList(composite, display);
         controlsList.add(userList);
@@ -35,8 +42,33 @@ public class UserControls {
         controlsList.add(outputTextField);
         buttonSendMessage = new ButtonSendMessage(composite);
         controlsList.add(buttonSendMessage);
-        TrayMenu trayMenu = new TrayMenu((Shell)composite, display);
+        trayMenu = new TrayMenu((Shell)composite, display);
         controlsList.add(trayMenu);
+
+
+        SelectionListener sListner = new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                try {
+                    String message = inputTextField.getTextControl().getText();
+                    Global.user.SendTextMessage(message);
+                    inputTextField.getTextControl().setText("");
+                }catch(Exception e)
+                {
+                    Log.WriteException(e);
+                }
+                
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent arg0) {
+
+            }
+
+
+        };
+        buttonSendMessage.getButton().addSelectionListener(sListner);
     }
     public void Resize(Rectangle rect)  
     {
@@ -48,9 +80,25 @@ public class UserControls {
             }
             catch(Exception e) {
                 Log.WriteException(e);
-            
             }
         }
+    }
+    public void AddMessageToScreen(final String message)
+    {
+        // эта хрень нужна для того что бы была возможность менять
+        // контролы из другова потока подробнее http://java.sys-con.com/node/37509
+        display.syncExec(
+            new Runnable() {
+                public void run(){
+                    outputTextField.getTextControl().append(message + "\n");
+                }
+            }
+        );
+
+    }
+
+    public void Close() {
+         trayMenu.getTrayItem().dispose();
     }
 
 

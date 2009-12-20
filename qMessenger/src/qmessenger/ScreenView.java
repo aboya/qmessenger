@@ -10,21 +10,12 @@ package qmessenger;
  * @author Администратор
  */
 import clientapp.Global;
-import java.util.LinkedList;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Tray;
-import org.eclipse.swt.widgets.TrayItem;
 
 
 public class ScreenView {
@@ -63,6 +54,15 @@ public class ScreenView {
          Global.user.Disconnect();
          //display.addListener(SWT.CLOSE, resizeListner);
          
+   }
+   public void AddMessageToScreen(String message)
+   {
+       
+      userControls.AddMessageToScreen(message);
+   }
+   public void Close()
+   {
+       userControls.Close();
    }
 
 }

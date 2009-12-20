@@ -23,27 +23,22 @@ public class FormatedMessages extends Messages{
     {
         while(true) {
             String metaData = this.ReceiveMessage();
-            if(metaData.equals(FormatCharacters.TextMessege) ) this.ReceiveMessage();
+            if(metaData.equals(FormatCharacters.TextMessege) ) this.ReceiveTextMessage();
             else if(metaData.equals(FormatCharacters.Auth)) this.AuthenticationPostBack();
             else if(metaData.equals(FormatCharacters.RequestStructureTree)) this.ResponseStructureTree();
         }        
     }
     public void ReceiveTextMessage() throws Exception
     {
+        // получили мессагу и выводим отправляем на экран
         String txtMessage = this.ReceiveMessage();
+        this.user.screenView.AddMessageToScreen(txtMessage);
+
+    }
+    public void SendTextMessage(String txtMessage) throws Exception
+    {
         this.SendMessage(FormatCharacters.TextMessege);
         this.SendMessage(txtMessage);
-    }
-    public void SendTextMessageTo(Vector<User> userList, String txtMesseage) throws Exception
-    {
-        int i, n = userList.size();
-        User u;
-        for(i = 0; i < n; i++)
-        {
-            u = userList.get(i);
-           // u.SendMessage(Global.TextMessege);
-           // u.SendMessage(txtMesseage);
-        }
     }
     public void SendFileTo()
     {

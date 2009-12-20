@@ -32,6 +32,10 @@ public class OutputTextField extends BaseControl{
 
         txt.setBounds(10, 10, 300, 100);
     }
+    public Text getTextControl()
+    {
+        return txt;
+    }
 
 
 }
