@@ -19,12 +19,10 @@ public class User extends Thread {
     //Socket SocketIn;
     //Socket SocketOut;
     FormatedMessages message;
-    public int isAuth;
     public String structTreeXml;
     public int isRegister;
     public User()
     {
-        isAuth = -1;
         isRegister = -1;
     }
     public void Chat()
@@ -73,6 +71,8 @@ public class User extends Thread {
         }catch(Exception e)
         {
             Log.WriteException(e);
+            uMessageBox messageBox = new uMessageBox("Server drop connection",  SWT.ICON_ERROR);
+            messageBox.open();
         }
     }
     @Override
@@ -97,24 +97,13 @@ public class User extends Thread {
         InetAddress thisIp =InetAddress.getLocalHost();
         String ip = thisIp.toString();
         ip = ip.substring(ip.indexOf("/")+1);
-        this.isAuth = -1;
-        message.AuthenticateUser(ip);
-        int timeout = 10;
-        while(this.isAuth < 0 && timeout > 0) {
-            sleep(1000);
-            timeout --;
-        }
-        if(this.isAuth == 1) return true;
-        else return false;
+        return  message.AuthenticateUser(ip);
+
     }
     public void RequestStructureTree() throws Exception
     {
         structTreeXml = null;
-        message.RequestStructureTree();
-        while(structTreeXml == null) {
-            sleep(1000);
-        }
-         
+        structTreeXml = message.RequestStructureTree();
     }
     public void Disconnect()
     {
@@ -128,16 +117,7 @@ public class User extends Thread {
     }
     public boolean RegisterUser(int structureId) throws Exception
     {
-        int timeout = 0;
-        isRegister = -1;
-        message.RegisterUser(structureId);
-        while(isRegister == -1 && timeout < 5)
-        {
-            sleep(1000);
-            timeout++;
-        }
-        if(isRegister > 0) return true;
-        return false;
+        return message.RegisterUser(structureId);
     }
 
 

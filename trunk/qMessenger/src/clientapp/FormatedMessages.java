@@ -52,29 +52,37 @@ public class FormatedMessages extends Messages{
     public void SendFileTo()
     {
     }
-    public void AuthenticateUser(String ip) throws Exception
+    public boolean AuthenticateUser(String ip) throws Exception
     {
         this.SendMessage(Global.Auth);
         this.SendMessage(ip);
+        String response = this.ReceiveMessageSync();
+        // cool & quick way to check true :)))))
+        if(response.length() == 4) return true;
+        return false;
     }
     public void AuthenticationPostBack() throws Exception
     {
-        String res = this.ReceiveMessage();
-        if(res.equals("true")) this.user.isAuth = 1;
-        else this.user.isAuth = 0;
+        //String res = this.ReceiveMessage();
+       // if(res.equals("true")) this.user.isAuth = 1;
+       // else this.user.isAuth = 0;
     }
     public void ResponseStructureTree() throws Exception
     {
         user.structTreeXml = this.ReceiveMessage();
     }
-    public void RequestStructureTree() throws Exception
+    public String RequestStructureTree() throws Exception
     {
         this.SendMessage(Global.RequestStructureTree);
+        return this.ReceiveMessageSync();
     }
-    public void RegisterUser(int structureId) throws Exception
+    public boolean RegisterUser(int structureId) throws Exception
     {
         this.SendMessage(Global.RequestRegistration);
         this.SendMessage(String.valueOf(structureId));
+        String response = this.ReceiveMessageSync();
+        if(response.length() == 4) return true;
+        return false;
         
     }
 

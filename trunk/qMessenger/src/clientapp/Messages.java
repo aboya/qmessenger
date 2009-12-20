@@ -29,6 +29,13 @@ public class Messages {
             res += message;
             SocketOut.getOutputStream().write(res.getBytes(), 0, res.length());
     }
+    // send message to socket from read
+    protected void SendMessageSync(String message) throws Exception
+    {
+            String res = String.valueOf(message.length()) + FormatCharacters.marker;
+            res += message;
+            SocketIn.getOutputStream().write(res.getBytes(), 0, res.length());
+    }
     protected  String ReceiveMessage() throws Exception
     {
         String len, res;
@@ -39,13 +46,36 @@ public class Messages {
         {
              SocketIn.getInputStream().read(b, 0, 1);
              if(b[0] == FormatCharacters.marker) break;
-             len += b[0]-'0';
+             len += b[0] - '0';
         }
         Length = Integer.valueOf(len);
         res = "";
         while(Length > 0)
         {
              readed = SocketIn.getInputStream().read(b, 0, Global.PACKET_SIZE);
+             res += new String(b, 0, readed);
+             Length -= readed;
+        }
+        return res;
+    }
+    
+    protected  String ReceiveMessageSync() throws Exception
+    {
+        String len, res;
+        int Length, readed;
+        byte []b = new byte[Global.PACKET_SIZE];
+        len = "";
+        while(true)
+        {
+             SocketOut.getInputStream().read(b, 0, 1);
+             if(b[0] == FormatCharacters.marker) break;
+             len += b[0] - '0';
+        }
+        Length = Integer.valueOf(len);
+        res = "";
+        while(Length > 0)
+        {
+             readed = SocketOut.getInputStream().read(b, 0, Global.PACKET_SIZE);
              res += new String(b, 0, readed);
              Length -= readed;
         }
