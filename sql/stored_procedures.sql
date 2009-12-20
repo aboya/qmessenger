@@ -68,5 +68,5 @@ CREATE DEFINER = 'root'@'localhost' FUNCTION `FindUser`(
     COMMENT ''
 BEGIN
  return (select COUNT(`user`.`UserIP`) 
- 		from user WHERE user.`UserIP` = UserIp);
+ 		from user WHERE user.`UserIP` = Ip);
 END;
