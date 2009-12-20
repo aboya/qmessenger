@@ -55,7 +55,7 @@ public class Messages {
         res = "";
         while(Length > 0)
         {
-             readed = SocketIn.getInputStream().read(b, 0,Math.min(Length, Global.PACKET_SIZE));
+             readed = SocketIn.getInputStream().read(b, 0, Math.min(Length, Global.PACKET_SIZE));
              res += new String(b, 0, readed);
              Length -= readed;
         }
@@ -80,7 +80,7 @@ public class Messages {
         res = "";
         while(Length > 0)
         {
-             readed = SocketOut.getInputStream().read(b, 0,Math.min(Length, Global.PACKET_SIZE));
+             readed = SocketOut.getInputStream().read(b, 0, Math.min(Length, Global.PACKET_SIZE));
              res += new String(b, 0, readed);
              Length -= readed;
         }

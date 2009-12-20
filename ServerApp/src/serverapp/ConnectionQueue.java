@@ -19,7 +19,7 @@ public class ConnectionQueue {
     {
         if(this.CountUsers() + 1 >= Global.max_users)
         {
-            user.SendMessage("Maximum users connected... you can not connected");
+            //user.SendMessage("Maximum users connected... you can not connected");
             Log.Write("Maximum users connected !, host:" + user.ip + " is disconected");
         }else {
             user.start();
@@ -37,13 +37,7 @@ public class ConnectionQueue {
        }while(it.hasNext());
        return null;
     }
-    // this method for console version
-    public void SendToUser(String ip, String message) throws Exception
-    {
-        User usr = this.FindUserByIp(ip);
-        if( usr == null ) System.out.println("User not found");
-        else  usr.SendMessage(message);
-    }
+
     public void SendToUser(String userName,String fileName, byte[]mess , int lenght, int totalLength)
     {
         
@@ -71,5 +65,22 @@ public class ConnectionQueue {
     public int CountUsers()
     {
         return queue.size();
+    }
+
+    public void SendMessageToUser(String txtMessage, User srcUser)
+    {
+       if(queue.isEmpty()) return;
+       ListIterator <User> it = queue.listIterator();
+       User usr;
+       do {
+           try {
+                usr = it.next();
+                usr.SendMessage(txtMessage, srcUser.ip);
+           }catch(Exception e)
+           {
+               Log.WriteException(e);
+           }
+
+       }while(it.hasNext());
     }
 }

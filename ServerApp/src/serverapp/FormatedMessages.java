@@ -5,7 +5,6 @@
 
 package serverapp;
 
-import java.io.File;
 import java.net.Socket;
 import java.util.Vector;
 
@@ -22,32 +21,25 @@ public class FormatedMessages extends Messages{
     {
         while(true) {
             String metaData = this.ReceiveMessage();
-            if(metaData.equals(Global.TextMessege)) this.ReceiveMessage();
-            else if(metaData.equals(Global.Auth)) this.AuthenticateUser();
-            else if(metaData.equals(Global.RequestStructureTree)) this.ResponseStructureTree();
-            else if(metaData.equals(Global.RequestRegistration)) this.RegisterUser();
+            if(metaData.equals(FormatCharacters.TextMessege)) this.ReceiveTextMessage();
+            else if(metaData.equals(FormatCharacters.Auth)) this.AuthenticateUser();
+            else if(metaData.equals(FormatCharacters.RequestStructureTree)) this.ResponseStructureTree();
+            else if(metaData.equals(FormatCharacters.RequestRegistration)) this.RegisterUser();
         }
     }
     public void ReceiveTextMessage() throws Exception
     {
+        // получаем от юзера мессагу и шлем(временно) всем юзерам через очередь юзеров
         String txtMessage = this.ReceiveMessage();
-        this.SendMessage(Global.TextMessege);
+        this.user.queue.SendMessageToUser(txtMessage, this.user);
+
+    }
+    public void SendTextMessage(String txtMessage) throws Exception
+    {
+        this.SendMessage(FormatCharacters.TextMessege);
         this.SendMessage(txtMessage);
     }
-    public void SendTextMessageTo(Vector<User> userList, String txtMesseage) throws Exception
-    {
-        int i, n = userList.size();
-        User u;
-        for(i = 0; i < n; i++)
-        {
-            u = userList.get(i);
-            u.SendMessage(Global.TextMessege);
-            u.SendMessage(txtMesseage);
-        }
-    }
-    public void SendFileTo()
-    {
-    }
+
     public void AuthenticateUser() throws Exception
     {
         // receiving ip but not using
@@ -58,7 +50,6 @@ public class FormatedMessages extends Messages{
     public void AuthenticateUserPostBack(Boolean Auth)
     {
         try {
-          // this.SendMessage(Global.Auth);
            this.SendMessageSync(Auth.toString());
         }catch(Exception e)
         {
@@ -67,7 +58,6 @@ public class FormatedMessages extends Messages{
     }
     public void ResponseStructureTree() throws Exception
     {
-        //this.SendMessage(Global.RequestStructureTree);
         this.SendMessageSync(Global.XmlTree);
     }
     public void RegisterUser() throws Exception
@@ -76,5 +66,6 @@ public class FormatedMessages extends Messages{
         String result = this.user.RegisterUser(structureId).toString();
         this.SendMessageSync(result);   
     }
+
 
 }
