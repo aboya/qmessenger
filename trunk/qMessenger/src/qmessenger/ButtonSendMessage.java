@@ -24,27 +24,14 @@ public class ButtonSendMessage extends BaseControl {
     public ButtonSendMessage(Composite composite) {
         button = new Button(composite, SWT.PUSH);
        
-	button.setText("Im a Push Button");
+	button.setText("Send");
 	button.pack();
-        SelectionListener sListner = new SelectionAdapter() {
 
-            @Override
-            public void widgetSelected(SelectionEvent arg0) {
-                int a;
-                a = 0;
-                System.out.println("wow");
-            }
 
-            @Override
-            public void widgetDefaultSelected(SelectionEvent arg0) {
-                int a;
-                a = 0;
-            }
-
-            
-        };
-        button.addSelectionListener(sListner);
-
+    }
+    public Button getButton()
+    {
+        return button;
     }
     public void Resize(Rectangle rect)
     {

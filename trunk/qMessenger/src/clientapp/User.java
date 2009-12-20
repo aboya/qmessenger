@@ -20,6 +20,7 @@ public class User extends Thread {
     //Socket SocketOut;
     FormatedMessages message;
     public String structTreeXml;
+    ScreenView screenView;
     public User()
     {
 
@@ -44,13 +45,16 @@ public class User extends Thread {
             SocketIn = inp.accept();
             message = new FormatedMessages(SocketIn, SocketOut, this);
             this.start();
+            this.screenView = new ScreenView();
             this.RequestStructureTree();
             if(!this.AuthenticateUser()) {
                 int RetCode = new RegistrationForm(this.structTreeXml).run();
                 if(RetCode == SWT.CLOSE ) this.Disconnect();
-                if(RetCode == 0) new ScreenView().run();
+                if(RetCode == 0) this.screenView.run();
             }
-            else new ScreenView().run();
+            else {
+                this.screenView.run();
+            }
             
         }catch(Exception e)
         {
@@ -67,15 +71,10 @@ public class User extends Thread {
         }catch(Exception e)
         {
             Log.WriteException(e);
+            this.Disconnect();
         }
     }
-    public void SendTextMessageTo(Vector<User> userList, String txtMessage) throws Exception
-    {
-        message.SendTextMessageTo(userList, txtMessage);
-        while(true) {
-            
-        }
-    }
+
     public boolean AuthenticateUser() throws Exception
     {
         InetAddress thisIp =InetAddress.getLocalHost();
@@ -93,6 +92,7 @@ public class User extends Thread {
     {
         try {
             message.CloseConnection();
+            this.screenView.Close();
             this.interrupt();
         }catch(Exception e)
         {
@@ -102,6 +102,10 @@ public class User extends Thread {
     public boolean RegisterUser(int structureId) throws Exception
     {
         return message.RegisterUser(structureId);
+    }
+    public void SendTextMessage(String txtMessage) throws Exception
+    {
+        message.SendTextMessage(txtMessage);
     }
 
 }

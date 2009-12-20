@@ -119,5 +119,13 @@ public class TrayMenu extends BaseControl{
         showShellMenuItem.setEnabled(true);
         hideShellMenuItem.setEnabled(false);
     }
+    public TrayItem getTrayItem()
+    {
+        return trayItem;
+    }
+    public Tray getTray()
+    {
+        return tray;
+    }
 
 }
