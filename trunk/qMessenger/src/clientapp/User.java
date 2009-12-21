@@ -44,6 +44,7 @@ public class User extends Thread {
             ServerSocket inp = new ServerSocket(Global.IncomingPort, 0);
             SocketIn = inp.accept();
             message = new FormatedMessages(SocketIn, SocketOut, this);
+            message.Initialize();
             this.start();
             this.screenView = new ScreenView();
             this.RequestStructureTree();

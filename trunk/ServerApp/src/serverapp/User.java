@@ -34,6 +34,7 @@ public class User extends Thread{
         try {
             this.isRun = true;
             String message;
+            messages.Initialize();
             messages.ListenForMessages();
         }
         catch(Exception e)
