@@ -14,7 +14,7 @@ import java.util.Vector;
  */
 public class FormatedMessages extends Messages{
 
-    public FormatedMessages(Socket in, Socket out, User usr) {
+    public FormatedMessages(Socket in, Socket out, User usr) throws Exception {
         super(in, out, usr);
     }
     public void ListenForMessages() throws Exception
