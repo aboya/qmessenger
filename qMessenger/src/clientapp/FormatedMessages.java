@@ -6,7 +6,6 @@
 package clientapp;
 
 import java.net.Socket;
-import java.util.Vector;
 
 /**
  *
@@ -15,10 +14,14 @@ import java.util.Vector;
 public class FormatedMessages extends Messages{
  
 
-    public FormatedMessages(Socket in, Socket out, User usr) throws Exception {
+    public FormatedMessages(Socket in, Socket out, User usr){
         
         super(in, out, usr);
 
+    }
+    public void Initialize() throws Exception
+    {
+        super.InitializeMessages();
     }
     public void ListenForMessages() throws Exception
     {
