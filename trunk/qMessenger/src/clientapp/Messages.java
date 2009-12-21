@@ -44,7 +44,7 @@ public class Messages {
         
         bufferedWriter.write(res);
  
-        bufferedWriter.close();
+        bufferedWriter.flush();
 
        // SocketOut.getOutputStream().write(res.getBytes(), 0, res.length());
     }
@@ -55,7 +55,7 @@ public class Messages {
         res += message;
         
         bufferedWriterSync.write(res);
-        bufferedWriterSync.close();
+        bufferedWriterSync.flush();
 
        // SocketIn.getOutputStream().write(res.getBytes(), 0, res.length());
     }
@@ -85,7 +85,7 @@ public class Messages {
              res += new String(c, 0, readed);
              Length -= readed;
         }
-        bufferedReader.close();
+
         return res;
     }
     protected  String ReceiveMessageSync() throws Exception
@@ -95,8 +95,6 @@ public class Messages {
         //byte []b = new byte[Global.PACKET_SIZE];
         char []c = new char[Global.PACKET_SIZE];
         len = "";
-
-        
         while(true)
         {
 
@@ -114,12 +112,17 @@ public class Messages {
              res += new String(c, 0, readed);
              Length -= readed;
         }
-        bufferedReaderSync.close();
+       // bufferedReaderSync.close();
+        
         return res;
     }
     public void CloseConnection() throws Exception
     {
         SocketIn.close();
         SocketOut.close();
+        bufferedReader.close();
+        bufferedReaderSync.close();
+        bufferedWriter.close();
+        bufferedWriterSync.close();
     }
 }
