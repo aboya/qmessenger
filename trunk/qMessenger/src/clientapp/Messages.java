@@ -21,22 +21,30 @@ public class Messages {
     private Socket SocketIn;
     private Socket SocketOut;
     protected User user;
-    BufferedReader in = null;
-    BufferedWriter out = null;
-    public Messages(Socket in, Socket out, User usr)
+    BufferedReader bufferedReader = null;
+    BufferedReader bufferedReaderSync = null;
+    BufferedWriter bufferedWriter = null;
+    BufferedWriter bufferedWriterSync = null;
+    public Messages(Socket in, Socket out, User usr) throws Exception
     {
         this.SocketIn = in;
         this.SocketOut = out;
         this.user = usr;
+        
+        this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(SocketOut.getOutputStream()));
+        bufferedWriterSync = new BufferedWriter(new OutputStreamWriter(SocketIn.getOutputStream()));
+        this.bufferedReader = new BufferedReader(new InputStreamReader(SocketIn.getInputStream()));
+        bufferedReaderSync = new BufferedReader(new InputStreamReader(SocketOut.getInputStream()));
 
     }
     protected void SendMessage(String message) throws Exception
     {
         String res = String.valueOf(message.length()) + FormatCharacters.marker;
         res += message;
-        out = new BufferedWriter(new OutputStreamWriter(SocketOut.getOutputStream()));
-        out.write(message);
-        out.close();
+        
+        bufferedWriter.write(res);
+ 
+        bufferedWriter.close();
 
        // SocketOut.getOutputStream().write(res.getBytes(), 0, res.length());
     }
@@ -45,9 +53,9 @@ public class Messages {
     {
         String res = String.valueOf(message.length()) + FormatCharacters.marker;
         res += message;
-        out = new BufferedWriter(new OutputStreamWriter(SocketIn.getOutputStream()));
-        out.write(message);
-        out.close();
+        
+        bufferedWriterSync.write(res);
+        bufferedWriterSync.close();
 
        // SocketIn.getOutputStream().write(res.getBytes(), 0, res.length());
     }
@@ -59,12 +67,12 @@ public class Messages {
         char []c = new char[Global.PACKET_SIZE];
         len = "";
                 
-        in = new BufferedReader(new InputStreamReader(SocketIn.getInputStream()));
+        
         while(true)
         {
 
             // SocketIn.getInputStream().read(b, 0, 1);
-             c[0] = (char) in.read();
+             bufferedReader.read(c, 0, 1);
              if(c[0] == FormatCharacters.marker) break;
              len += c[0] - '0';
         }
@@ -72,12 +80,12 @@ public class Messages {
         res = "";
         while(Length > 0)
         {
-             readed = in.read(c, 0, Math.min(Length, Global.PACKET_SIZE));
+             readed = bufferedReader.read(c, 0, Math.min(Length, Global.PACKET_SIZE));
              //readed = SocketIn.getInputStream().read(b, 0, Math.min(Length, Global.PACKET_SIZE));
              res += new String(c, 0, readed);
              Length -= readed;
         }
-        in.close();
+        bufferedReader.close();
         return res;
     }
     protected  String ReceiveMessageSync() throws Exception
@@ -88,12 +96,12 @@ public class Messages {
         char []c = new char[Global.PACKET_SIZE];
         len = "";
 
-        in = new BufferedReader(new InputStreamReader(SocketOut.getInputStream()));
+        
         while(true)
         {
 
             // SocketOut.getInputStream().read(b, 0, 1);
-             c[0] = (char) in.read();
+             bufferedReaderSync.read(c, 0, 1);
              if(c[0] == FormatCharacters.marker) break;
              len += c[0] - '0';
         }
@@ -101,12 +109,12 @@ public class Messages {
         res = "";
         while(Length > 0)
         {
-             readed = in.read(c, 0, Math.min(Length, Global.PACKET_SIZE));
+             readed = bufferedReaderSync.read(c, 0, Math.min(Length, Global.PACKET_SIZE));
              //readed = SocketOut.getInputStream().read(b, 0, Math.min(Length, Global.PACKET_SIZE));
              res += new String(c, 0, readed);
              Length -= readed;
         }
-        in.close();
+        bufferedReaderSync.close();
         return res;
     }
     public void CloseConnection() throws Exception
