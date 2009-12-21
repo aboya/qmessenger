@@ -7,8 +7,9 @@ package clientapp;
 
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 
@@ -21,6 +22,7 @@ public class Messages {
     private Socket SocketOut;
     protected User user;
     BufferedReader in = null;
+    BufferedWriter out = null;
     public Messages(Socket in, Socket out, User usr)
     {
         this.SocketIn = in;
@@ -32,8 +34,8 @@ public class Messages {
     {
         String res = String.valueOf(message.length()) + FormatCharacters.marker;
         res += message;
-        PrintWriter out = new PrintWriter(SocketOut.getOutputStream(), true);
-        out.print(message);
+        out = new BufferedWriter(new OutputStreamWriter(SocketOut.getOutputStream()));
+        out.write(message);
         out.close();
 
        // SocketOut.getOutputStream().write(res.getBytes(), 0, res.length());
@@ -43,8 +45,8 @@ public class Messages {
     {
         String res = String.valueOf(message.length()) + FormatCharacters.marker;
         res += message;
-        PrintWriter out = new PrintWriter(SocketIn.getOutputStream(), true);
-        out.print(message);
+        out = new BufferedWriter(new OutputStreamWriter(SocketIn.getOutputStream()));
+        out.write(message);
         out.close();
 
        // SocketIn.getOutputStream().write(res.getBytes(), 0, res.length());
