@@ -16,8 +16,8 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-        User u = new User();
-        u.Connect();
+       // User u = new User();
+       // u.Connect();
     }
 
 }
