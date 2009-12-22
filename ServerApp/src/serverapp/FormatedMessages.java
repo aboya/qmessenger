@@ -36,7 +36,6 @@ public class FormatedMessages extends Messages{
         // получаем от юзера мессагу и шлем(временно) всем юзерам через очередь юзеров
         String txtMessage = this.ReceiveMessage();
         this.user.queue.SendMessageToUser(txtMessage, this.user);
-
     }
     public void SendTextMessage(String txtMessage) throws Exception
     {

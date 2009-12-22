@@ -12,6 +12,8 @@ import java.io.*;
  */
 public class Main {
     public static void main(String[] args) {
+        ApplicationSettings.Initialize();
+        ApplicationSettings.saveProperties();
         FacutlyTree tr = new FacutlyTree("Tree.xml");
         ListenIncomingConnections m =  new ListenIncomingConnections();
       // new dbConnection();
