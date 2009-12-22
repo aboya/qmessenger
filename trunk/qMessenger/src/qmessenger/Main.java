@@ -6,9 +6,11 @@
 package qmessenger;
  
 import RegistrationForm.RegistrationForm;
+import clientapp.ApplicationSettings;
 import clientapp.Global;
 import clientapp.User;
-
+import java.io.FileOutputStream;
+import java.util.Properties;
 /**
  *
  * @author Администратор
@@ -20,6 +22,8 @@ public class Main {
      */
 
 public static void main(String args[]) throws Exception {
+        ApplicationSettings.Initialize();
+        ApplicationSettings.saveProperties();
         User u = new User();
         Global.user = u;
         u.Connect();
