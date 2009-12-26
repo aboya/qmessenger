@@ -51,7 +51,7 @@ public class ScreenView {
            }
          }
          display.dispose();
-         Global.user.Disconnect();
+         Global.getUser().Disconnect();
          //display.addListener(SWT.CLOSE, resizeListner);
          
    }

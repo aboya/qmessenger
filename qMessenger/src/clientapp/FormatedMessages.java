@@ -6,6 +6,7 @@
 package clientapp;
 
 import java.net.Socket;
+import java.util.Set;
 
 /**
  *
@@ -39,9 +40,12 @@ public class FormatedMessages extends Messages{
         this.user.screenView.AddMessageToScreen(txtMessage);
 
     }
-    public void SendTextMessage(String txtMessage) throws Exception
+    public void SendTextMessage(String txtMessage, Set<Integer> ids) throws Exception
     {
+        String sids = ids.toString();
+        sids = sids.substring(1, sids.length() - 1);
         this.SendMessage(FormatCharacters.TextMessege);
+        this.SendMessage(sids);
         this.SendMessage(txtMessage);
     }
     public void SendFileTo()

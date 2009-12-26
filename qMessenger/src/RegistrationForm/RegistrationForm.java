@@ -63,7 +63,7 @@ public class RegistrationForm {
                     return;
                 }
                 try {
-                   isRegister =  Global.user.RegisterUser(id);
+                   isRegister =  Global.getUser().RegisterUser(id);
                 }catch(Exception e)
                 {
                     uMessageBox msg = new uMessageBox("Registration failed", SWT.ERROR);

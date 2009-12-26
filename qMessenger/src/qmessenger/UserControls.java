@@ -8,6 +8,7 @@ package qmessenger;
 
 import clientapp.Global;
 import clientapp.Log;
+import java.util.Set;
 import java.util.Vector;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -52,7 +53,8 @@ public class UserControls {
             public void widgetSelected(SelectionEvent arg0) {
                 try {
                     String message = inputTextField.getTextControl().getText();
-                    Global.user.SendTextMessage(message);
+                    Set <Integer> ids = userList.getSelectedId();
+                    Global.getUser().SendTextMessage(message, ids);
                     inputTextField.getTextControl().setText("");
                 }catch(Exception e)
                 {
@@ -99,6 +101,10 @@ public class UserControls {
 
     public void Close() {
          trayMenu.getTrayItem().dispose();
+    }
+    public UserList getUserList()
+    {
+        return userList;
     }
 
 

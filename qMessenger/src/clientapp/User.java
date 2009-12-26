@@ -7,7 +7,7 @@ package clientapp;
 import RegistrationForm.RegistrationForm;
 import UserGUIControls.uMessageBox;
 import java.net.*;
-import java.util.Vector;
+import java.util.Set;
 import org.eclipse.swt.SWT;
 import qmessenger.ScreenView;
 
@@ -104,9 +104,9 @@ public class User extends Thread {
     {
         return message.RegisterUser(structureId);
     }
-    public void SendTextMessage(String txtMessage) throws Exception
+    public void SendTextMessage(String txtMessage, Set <Integer> ids) throws Exception
     {
-        message.SendTextMessage(txtMessage);
+        message.SendTextMessage(txtMessage, ids);
     }
 
 }

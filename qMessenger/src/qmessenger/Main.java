@@ -25,7 +25,7 @@ public static void main(String args[]) throws Exception {
         ApplicationSettings.Initialize();
         ApplicationSettings.saveProperties();
         User u = new User();
-        Global.user = u;
+        Global.setUser(u);
         u.Connect();
  
         //new ScreenView().run();
