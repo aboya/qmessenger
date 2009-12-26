@@ -15,6 +15,20 @@ public class Global {
         public static int ServerPort = 4898;
         public static String ServAddr = "192.168.2.2";
 
-        public static User user = null;
+        private static User user = null;
+
+    /**
+     * @return the user
+     */
+    public static User getUser() {
+        return user;
+    }
+
+    /**
+     * @param aUser the user to set
+     */
+    public static void setUser(User aUser) {
+        user = aUser;
+    }
 }
 

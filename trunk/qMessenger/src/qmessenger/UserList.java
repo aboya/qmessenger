@@ -13,7 +13,9 @@ import org.eclipse.swt.widgets.Display;
 import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.eclipse.swt.SWT;
@@ -42,7 +44,7 @@ public class UserList extends  BaseControl {
              tree = new Tree(composite, SWT.CHECK | SWT.BORDER);
 	     data = new GridData(GridData.FILL_BOTH);
 	     tree.setLayoutData(data);
-	     fillTree(Global.user.structTreeXml);
+	     fillTree(Global.getUser().structTreeXml);
              tree.setBounds(composite.getBounds().width - 120, 10, 100, composite.getBounds().height - 60);
              SelectionAdapter adapter = new SelectionAdapter() {
 
@@ -101,8 +103,7 @@ public class UserList extends  BaseControl {
     {
 
         try {
-            
-           //File fp = new File("Tree.Xml");
+
            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
            DocumentBuilder db = factory.newDocumentBuilder();
            InputSource inStream = new InputSource();
@@ -113,6 +114,8 @@ public class UserList extends  BaseControl {
            String s = rootElement.getNodeName();
            TreeItem rootItem = new TreeItem(tree, SWT.NONE);
            rootItem.setText(s);
+           treeIds.clear();
+           treeIds.put(s, Integer.parseInt(rootElement.getAttribute("id")));
            BuildTNUTree(rootItem,(Node) rootElement.getChildNodes().item(1));
         }catch(Exception e)
         {
@@ -133,5 +136,30 @@ public class UserList extends  BaseControl {
         NodeList list = element.getChildNodes();
         for(int i = 0; i < list.getLength(); i++)
             BuildTNUTree(newItem, list.item(i));
+    }
+    public int findIdByName(String name)
+    {
+        return treeIds.get(name);
+    }
+    public Set <Integer> getSelectedId()
+    {
+        int i, n;
+        TreeItem [] items = tree.getItems();
+        LinkedList<TreeItem> Q = new LinkedList<TreeItem>();
+        Set <Integer> selectedIds = new TreeSet<Integer>();
+        n = items.length;
+        for(i = 0; i < n; i++) Q.addLast(items[i]);
+        TreeItem treeItem = null;
+        while(!Q.isEmpty())
+        {
+            treeItem = Q.getFirst();
+            Q.removeFirst();
+            if(treeItem.getChecked()) 
+                selectedIds.add(this.findIdByName(treeItem.getText()));
+            
+            for(i = 0; i < treeItem.getItemCount(); i++)
+                Q.addLast(treeItem.getItem(i));
+        }
+        return selectedIds;
     }
 }
