@@ -5,6 +5,7 @@
 
 package serverapp;
 import java.net.Socket;
+import java.sql.ResultSet;
 /**
  *
  * @author Серёжа
@@ -12,10 +13,11 @@ import java.net.Socket;
 public class User extends Thread{
 
     String ip;
+    String TreeName = "";
+    int TreeId = 0;
     int Timeout;
-    int id;
     boolean isRun;
-    public ConnectionQueue queue;
+    private ConnectionQueue queue;
     FormatedMessages messages;
     dbConnection connection;
 
@@ -54,33 +56,23 @@ public class User extends Thread{
         }catch(Exception e){
 
         }
-        queue.RemoveUser(this);
+        getQueue().RemoveUser(this);
         this.isRun = false;
     }
     //Send message to client
     public void SendMessage(String message, String srcIp) throws Exception
     {
-        messages.SendTextMessage(srcIp + ":" + message);
-         
+        //messages.SendTextMessage(srcIp + ":" + message);
+        messages.SendTextMessage(this.ip +"asd" + ":" + message);
     }
-
+    public void SendMessageTo(String message, User srcUser)throws Exception
+    {
+        messages.SendTextMessage(srcUser.getTreeName() + ":" + message);
+    }
     public void DisconnectUser() throws Exception
     {
         messages.CloseConnection();
         this.interrupt();
-    }
-
-    public void SendFileTo(User ruser, String FileName, long FileSize)
-    {
-       // messages.SendFileTo(ruser, FileName, FileSize);
-    }
-    public void ReceiveFileFrom(User ruser)
-    {
-       // messages.ReceiveFileFrom(ruser);
-    }
-    public int getUserID()
-    {
-        return  id;
     }
     public void AuthenticateUser()
     {
@@ -88,19 +80,51 @@ public class User extends Thread{
         Integer res;
         try {
             connection.Connect();
-            res = (Integer)connection.ExecuteScalar(String.format("select FindUser('%s')", this.ip)
-                    );
-           
+            res = (Integer)connection.ExecuteScalar(String.format("select FindUser('%s')", this.ip));
             Auth = res > 0;
+            if(Auth) this.getUserTreeName();
         }catch(Exception e)
         {
             Log.WriteException(e);
         }
         connection.Close();
+
         messages.AuthenticateUserPostBack(Auth);
     }
-    public Boolean RegisterUser(String structureId)
+    public Boolean RegisterUser(String structureId) throws Exception
     {
-        return dbFunc.RegisterUser(connection, ip, structureId);
+        boolean res;
+        res = dbFunc.RegisterUser(connection, ip, structureId);
+        if(res) this.getUserTreeName();
+        return res;
+    }
+    public String getTreeName()
+    {
+        return TreeName;
+    }
+    public int getTreeID()
+    {
+        return TreeId;
+    }
+    private void getUserTreeName() throws Exception
+    {
+         ResultSet r = dbFunc.getUserTreeName(connection, ip, this.TreeName, this.TreeId);
+         this.TreeName = r.getString("TreeName");
+         this.TreeId = r.getInt("TreeID");
+         r.close();
+    }
+
+    /**
+     * @return the queue
+     */
+    public ConnectionQueue getQueue() {
+        return queue;
+    }
+
+    /**
+     * @param queue the queue to set
+     */
+    public void setQueue(ConnectionQueue queue) {
+        this.queue = queue;
     }
 }

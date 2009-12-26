@@ -1,11 +1,11 @@
 <TNU id="1">  
 <Faculty id="2">
     <Mathematics id="3">
-      <decanat id="4"></decanat>
+      <MathDecanat id="4"></MathDecanat>
     </Mathematics>
     <Phisics id="5">
-      <decanat id="6">      
-      </decanat>
+      <PhisicsDecanat id="6">      
+      </PhisicsDecanat>
     </Phisics>
 	<Economics id="7">
 	</Economics>

@@ -11,9 +11,11 @@ import java.util.*;
  */
 public class ConnectionQueue {
     LinkedList <User> queue;
+    dbConnection connection;
 
     public ConnectionQueue() {
         queue = new LinkedList<User>();
+        connection = new dbConnection();
     }
     public void PushUser(User user) throws Exception
     {
@@ -75,12 +77,46 @@ public class ConnectionQueue {
        do {
            try {
                 usr = it.next();
-                usr.SendMessage(txtMessage, srcUser.ip);
+                usr.SendMessageTo(txtMessage, srcUser);
            }catch(Exception e)
            {
                Log.WriteException(e);
            }
 
        }while(it.hasNext());
+    }
+    public void SendMessageToUser(String txtMessage, Set <Integer> dstUsers, User srcUser)  
+    {
+       if(queue.isEmpty()) return;
+       ListIterator <User> it = queue.listIterator();
+       User usr;
+       do {
+           try {
+                usr = it.next();
+                if(dstUsers.contains(usr.getTreeID()))
+                {
+                    usr.SendMessageTo(txtMessage, srcUser);
+                    dstUsers.remove(usr.getTreeID());
+                }
+           }catch(Exception e)
+           {
+               Log.WriteException(e);
+           }
+
+       }while(it.hasNext());
+       try {
+          if(!dstUsers.isEmpty())
+          {
+              Object [] ids = dstUsers.toArray();
+              for(int i = 0; i < ids.length; i++)
+              {
+                  dbFunc.sendOfflineMessageToUser(connection, txtMessage, (Integer)ids[i], srcUser.getTreeID());
+              }
+          }
+       }catch(Exception e)
+       {
+           Log.WriteException(e);
+       }
+       
     }
 }

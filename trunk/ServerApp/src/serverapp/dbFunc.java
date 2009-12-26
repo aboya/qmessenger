@@ -5,6 +5,10 @@
 
 package serverapp;
 
+import java.sql.ResultSet;
+import java.util.Map;
+import java.util.Vector;
+
 /**
  *
  * @author Администратор
@@ -38,5 +42,51 @@ public class dbFunc {
         }
         connection.Close();
         return true;
+    }
+    public static ResultSet getUserTreeName(dbConnection connection, String ip, String treeName, Integer TreeID) throws Exception
+    {
+        
+        connection.Connect();
+        ResultSet res = connection.ExecuteQuery(
+                                   String.format("call getUserTreeName('%s')", ip)
+                                   );
+
+        if(res.next())
+        {
+            return res;
+        }
+        res.close();
+        connection.Close();
+        return null;
+    }
+    public static void sendOfflineMessageToUser(dbConnection connection, String message, int TreeID, int FromTreeID) throws Exception
+    {
+        
+        connection.Connect();
+        connection.ExecuteNonQuery(
+                String.format("call SendMessageToUser(%d,'%s', %d)", TreeID, message, FromTreeID)
+                );
+        connection.Close();
+    }
+    public static Vector <Pair> getMessagesForUser(dbConnection connection, Integer TreeID, String ip)
+    {
+        Vector <Pair> results = new Vector<Pair>();   
+        try {
+            connection.Connect();
+            ResultSet res = connection.ExecuteQuery(
+                       String.format("call GetMessagesForUser('%s', %d) ",ip, TreeID)
+                    );
+            while(res.next())
+            {
+                Pair p = new Pair(res.getString("message"), res.getString("TreeName"));
+                results.add(p);
+            }
+
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        connection.Close();
+        return results;
     }
 }
