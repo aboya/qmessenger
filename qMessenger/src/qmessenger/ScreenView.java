@@ -10,6 +10,7 @@ package qmessenger;
  * @author Администратор
  */
 import clientapp.Global;
+import clientapp.Log;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
@@ -45,6 +46,14 @@ public class ScreenView {
         shell.setSize(500, 400);
         shell.open();
         shell.setActive();
+        try
+        {
+            Global.getUser().getOfflineMessages();
+
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
          while (!shell.isDisposed()) {
            if (!display.readAndDispatch()) {
              display.sleep();

@@ -84,5 +84,9 @@ public class FormatedMessages extends Messages{
         return false;
         
     }
+    public void getOfflineMessages() throws Exception
+    {
+        this.SendMessage(FormatCharacters.getOfflineMessages);
+    }
 
 }
