@@ -6,6 +6,8 @@
 package serverapp;
 
 import java.net.Socket;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 /**
@@ -29,13 +31,29 @@ public class FormatedMessages extends Messages{
             else if(metaData.equals(FormatCharacters.Auth)) this.AuthenticateUser();
             else if(metaData.equals(FormatCharacters.RequestStructureTree)) this.ResponseStructureTree();
             else if(metaData.equals(FormatCharacters.RequestRegistration)) this.RegisterUser();
+            else if(metaData.equals(FormatCharacters.getOfflineMessages)) this.SendOfflineMessages();
         }
+    }
+    public void SendOfflineMessages() throws Exception
+    {
+        Vector <Pair> Offmess = dbFunc.getMessagesForUser(this.getUser().connection, null, this.getUser().ip);
+        for(int i = 0; i < Offmess.size(); i++)
+             this.SendTextMessage((String)Offmess.get(i).getSecond() + ":" + (String)Offmess.get(i).getFirst());
     }
     public void ReceiveTextMessage() throws Exception
     {
         // получаем от юзера мессагу и шлем(временно) всем юзерам через очередь юзеров
+        String ids = ReceiveMessage();
+        String [] SplitIds = ids.split(",");
+        Set <Integer> allIds = new TreeSet<Integer>();
+        for(int i = 0; i < SplitIds.length; i++)
+        {
+            allIds.add(Integer.parseInt(SplitIds[i].trim()));
+        }
+        allIds.add(this.getUser().getTreeID());
         String txtMessage = this.ReceiveMessage();
-        this.user.queue.SendMessageToUser(txtMessage, this.user);
+        //this.user.queue.SendMessageToUser(txtMessage, this.user);
+        this.getUser().getQueue().SendMessageToUser(txtMessage, allIds,getUser());
     }
     public void SendTextMessage(String txtMessage) throws Exception
     {
@@ -48,7 +66,7 @@ public class FormatedMessages extends Messages{
         // receiving ip but not using
         // this is neccessarry !
         String ip = this.ReceiveMessage();
-        this.user.AuthenticateUser();
+        this.getUser().AuthenticateUser();
     }
     public void AuthenticateUserPostBack(Boolean Auth)
     {
@@ -66,9 +84,7 @@ public class FormatedMessages extends Messages{
     public void RegisterUser() throws Exception
     {
         String structureId = this.ReceiveMessage();
-        String result = this.user.RegisterUser(structureId).toString();
+        String result = this.getUser().RegisterUser(structureId).toString();
         this.SendMessageSync(result);   
     }
-
-
 }

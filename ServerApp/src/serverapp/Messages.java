@@ -20,7 +20,7 @@ import java.net.Socket;
 public class Messages {
     private Socket SocketIn;
     private Socket SocketOut;
-    protected User user;
+    private User user;
     BufferedReader bufferedReader = null;
     BufferedReader bufferedReaderSync = null;
     BufferedWriter bufferedWriter = null;
@@ -105,5 +105,19 @@ public class Messages {
         bufferedReaderSync.close();
         bufferedWriter.close();
         bufferedWriterSync.close();
+    }
+
+    /**
+     * @return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
     }
 }
