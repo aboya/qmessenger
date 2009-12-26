@@ -22,4 +22,5 @@ public class FormatCharacters {
         public static String Auth = "authUser";
         public static String RequestStructureTree = "reqStructTree";
         public static String RequestRegistration = "reqReg";
+        public static String getOfflineMessages = "getOffline";
 }

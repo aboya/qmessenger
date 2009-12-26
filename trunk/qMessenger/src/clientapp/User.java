@@ -108,5 +108,9 @@ public class User extends Thread {
     {
         message.SendTextMessage(txtMessage, ids);
     }
+    public void getOfflineMessages() throws Exception
+    {
+        message.getOfflineMessages();
+    }
 
 }
