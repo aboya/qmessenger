@@ -20,7 +20,8 @@ public class User extends Thread {
     //Socket SocketOut;
     FormatedMessages message;
     public String structTreeXml;
-    ScreenView screenView;
+    private ScreenView screenView;
+     ServerSocket inp;
     public User()
     {
 
@@ -28,7 +29,6 @@ public class User extends Thread {
     public void Connect() throws Exception
     {
         Socket SocketOut,SocketIn;
-        
         try {
             
             SocketOut = new Socket(Global.ServAddr, Global.ServerPort);
@@ -41,20 +41,26 @@ public class User extends Thread {
             return;
         }
         try {
-            ServerSocket inp = new ServerSocket(Global.IncomingPort, 0);
+            inp = new ServerSocket(Global.IncomingPort, 0);
             SocketIn = inp.accept();
             message = new FormatedMessages(SocketIn, SocketOut, this);
             message.Initialize();
             this.start();
-            this.screenView = new ScreenView();
             this.RequestStructureTree();
+            this.screenView = new ScreenView();
             if(!this.AuthenticateUser()) {
                 int RetCode = new RegistrationForm(this.structTreeXml).run();
                 if(RetCode == SWT.CLOSE ) this.Disconnect();
-                if(RetCode == 0) this.screenView.run();
+                if(RetCode == 0) {
+                    this.getScreenView().setStatusText("Connected");
+                    this.getScreenView().run();
+
+                }
             }
             else {
-                this.screenView.run();
+                this.getScreenView().setStatusText("Connected");
+                this.getScreenView().run();
+
             }
             
         }catch(Exception e)
@@ -67,13 +73,48 @@ public class User extends Thread {
     @Override
     public void run()
     {
-        try {
-            message.ListenForMessages();
-        }catch(Exception e)
+        while(true)
         {
-            Log.WriteException(e);
-            this.Disconnect();
+            try {
+
+                message.ListenForMessages();
+
+            }catch(Exception e)
+            {
+                this.getScreenView().setStatusText("Connection Lost...");
+                Log.WriteException(e);
+                try {
+                    message.CloseConnection();
+                    inp.close();
+                }catch(Exception ee){}
+               // this.getScreenView().Close();
+            }
+            while(true)
+            {
+                try {
+                    sleep(Global.ReconnectInterval);
+                    this.getScreenView().setStatusText("Reconecting...");
+                    Socket SocketOut = new Socket(Global.ServAddr, Global.ServerPort);
+                    inp = new ServerSocket(Global.IncomingPort, 0);
+                    Socket SocketIn = inp.accept();
+                    message.ReConnect(SocketIn, SocketOut);
+                    this.AuthenticateUser();
+                    this.getScreenView().setStatusText("Connected");
+                    break;
+                }catch(Exception ee)
+                {
+                    try {
+                       inp.close();
+                    }catch(Exception eee){}
+                    Log.WriteException(ee);
+                    this.getScreenView().setStatusText("Reconect failed...");
+                }
+            }
         }
+    }
+    public void ReConnect()
+    {
+        
     }
 
     public boolean AuthenticateUser() throws Exception
@@ -93,7 +134,6 @@ public class User extends Thread {
     {
         try {
             message.CloseConnection();
-            this.screenView.Close();
             this.interrupt();
         }catch(Exception e)
         {
@@ -112,5 +152,16 @@ public class User extends Thread {
     {
         message.getOfflineMessages();
     }
+
+    /**
+     * @return the screenView
+     */
+    public ScreenView getScreenView() {
+        return screenView;
+    }
+
+    /**
+     * @param screenView the screenView to set
+     */
 
 }

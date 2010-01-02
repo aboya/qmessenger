@@ -14,7 +14,7 @@ public class Global {
         public static int IncomingPort = 4899;
         public static int ServerPort = 4898;
         public static String ServAddr = "192.168.2.2";
-
+        public static int ReconnectInterval = 10000;
         private static User user = null;
 
     /**

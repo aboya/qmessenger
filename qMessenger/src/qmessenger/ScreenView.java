@@ -21,15 +21,12 @@ import org.eclipse.swt.widgets.Shell;
 
 public class ScreenView {
     UserControls userControls;
-    Shell shell;  
+    Shell shell;
+    Display display;
     public ScreenView() {
-    }
-     public void run() 
-     {
-        Display display = new Display();
+        display = new Display();
         shell = new Shell(display);
         shell.setText("qMessenger");
-         //createContents(shell);
         Listener resizeListner = new Listener() {
                public void handleEvent(Event e)  {
                    Rectangle rect = shell.getBounds();
@@ -46,6 +43,9 @@ public class ScreenView {
         shell.setSize(500, 400);
         shell.open();
         shell.setActive();
+    }
+     public void run() 
+     {
         try
         {
             Global.getUser().getOfflineMessages();
@@ -71,7 +71,25 @@ public class ScreenView {
    }
    public void Close()
    {
-       userControls.Close();
+        display.syncExec(
+            new Runnable() {
+                public void run(){
+                     userControls.Close();
+                     display.dispose();
+                }
+            }
+        );
+      
+   }
+   public void setStatusText(final String txt)
+   {
+       display.syncExec(
+            new Runnable() {
+                public void run(){
+                    userControls.SetStatusText(txt);
+                }
+            }
+        );
    }
 
 }

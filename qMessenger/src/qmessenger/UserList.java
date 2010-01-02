@@ -97,7 +97,7 @@ public class UserList extends  BaseControl {
     @Override
     public  void Resize(Rectangle rect)
     {
-        tree.setBounds(shell.getBounds().width-160, 10, 140, shell.getBounds().height-60);
+        tree.setBounds(shell.getBounds().width-160, 10, 140, shell.getBounds().height-67);
     }
     public  void fillTree(String xml)
     {
