@@ -98,7 +98,7 @@ public class Messages {
         }
         return res;
     }
-    public void CloseConnection() throws Exception
+    protected void CloseConnection() throws Exception
     {
         SocketIn.close();
         SocketOut.close();
@@ -106,5 +106,11 @@ public class Messages {
         bufferedReaderSync.close();
         bufferedWriter.close();
         bufferedWriterSync.close();
+    }
+    public void ReConnect(Socket in, Socket out) throws Exception
+    {
+        this.SocketIn = in;
+        this.SocketOut = out;
+        InitializeMessages();
     }
 }

@@ -10,12 +10,14 @@ import clientapp.Global;
 import clientapp.Log;
 import java.util.Set;
 import java.util.Vector;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -29,6 +31,7 @@ public class UserControls {
     ButtonSendMessage buttonSendMessage;
     TrayMenu trayMenu;
     Display display;
+    StatusBar statusBar;
 
     Vector<BaseControl> controlsList;
 
@@ -45,7 +48,8 @@ public class UserControls {
         controlsList.add(buttonSendMessage);
         trayMenu = new TrayMenu((Shell)composite, display);
         controlsList.add(trayMenu);
-
+        statusBar = new StatusBar((Shell)composite);
+        controlsList.add(statusBar);
 
         SelectionListener sListner = new SelectionAdapter() {
 
@@ -105,6 +109,10 @@ public class UserControls {
     public UserList getUserList()
     {
         return userList;
+    }
+    public void SetStatusText(final String txt)
+    {
+       statusBar.SetText(txt);
     }
 
 

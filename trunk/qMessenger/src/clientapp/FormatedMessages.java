@@ -24,6 +24,10 @@ public class FormatedMessages extends Messages{
     {
         super.InitializeMessages();
     }
+    public void ReConnect(Socket in, Socket out) throws Exception
+    {
+        super.ReConnect(in, out);
+    }
     public void ListenForMessages() throws Exception
     {
         while(true) {
@@ -37,7 +41,7 @@ public class FormatedMessages extends Messages{
     {
         // получили мессагу и выводим отправляем на экран
         String txtMessage = this.ReceiveMessage();
-        this.user.screenView.AddMessageToScreen(txtMessage);
+        this.user.getScreenView().AddMessageToScreen(txtMessage);
 
     }
     public void SendTextMessage(String txtMessage, Set<Integer> ids) throws Exception
