@@ -19,17 +19,14 @@ CREATE DATABASE `qmessenger`
 USE `qmessenger`;
 
 /* Tables */
-CREATE TABLE `table1` (
-  `col1`  text
-) ENGINE = InnoDB
-  CHARACTER SET `ucs2` COLLATE `ucs2_general_ci`;
+
 
 CREATE TABLE `tnu_tree` (
   ID      int NOT NULL,
   `Name`  varchar(30) NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE = InnoDB
-  CHARACTER SET `latin1` COLLATE `latin1_swedish_ci`;
+  CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE `user` (
   `UserID`    bigint(50) AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -38,7 +35,7 @@ CREATE TABLE `user` (
   `UserName`  varchar(50),
   PRIMARY KEY (`UserID`)
 ) ENGINE = InnoDB
-  CHARACTER SET `latin1` COLLATE `latin1_swedish_ci`;
+  CHARACTER SET `utf8` COLLATE `utf8_general_ci`;
 
 CREATE TABLE `usermessages` (
   ID                bigint(50) AUTO_INCREMENT NOT NULL,
