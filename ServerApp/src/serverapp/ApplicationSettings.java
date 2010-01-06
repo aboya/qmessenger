@@ -45,6 +45,7 @@ public class ApplicationSettings {
 
             if( (property = vProp.getProperty("MAXLEN")) != null
                     && checkMAXLEN(value = Integer.parseInt(property)))  Global.MAXLEN = value;
+            if( (property = vProp.getProperty("dbUrl")) != null) Global.dbUrl = property;
 
             iFile.close();
         }catch(Exception e)
@@ -81,6 +82,7 @@ public class ApplicationSettings {
             vProp.setProperty("IncomingPort", String.valueOf(Global.IncomingPort));
             vProp.setProperty("max_users", String.valueOf(Global.max_users));
             vProp.setProperty("MAXLEN", String.valueOf(Global.MAXLEN));
+            vProp.setProperty("dbUrl", Global.dbUrl);
             vProp.storeToXML(oFile = new FileOutputStream(fileName), "qMessengerProperties");
             if(oFile != null) oFile.close();
         }catch(Exception e)
