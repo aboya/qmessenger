@@ -6,6 +6,7 @@
 package qmessenger;
 
 
+import UserGUIControls.uMessageBox;
 import clientapp.Global;
 import clientapp.Log;
 import java.util.Set;
@@ -58,21 +59,23 @@ public class UserControls {
                 try {
                     String message = inputTextField.getTextControl().getText();
                     Set <Integer> ids = userList.getSelectedId();
+                    if( ids == null || ids.size() == 0)
+                    {
+                        uMessageBox msg = new uMessageBox("You must select users", SWT.OK);
+                        msg.open();
+                        return;
+                    }
                     Global.getUser().SendTextMessage(message, ids);
                     inputTextField.getTextControl().setText("");
                 }catch(Exception e)
                 {
                     Log.WriteException(e);
-                }
-                
+                }   
             }
-
             @Override
             public void widgetDefaultSelected(SelectionEvent arg0) {
 
             }
-
-
         };
         buttonSendMessage.getButton().addSelectionListener(sListner);
     }
