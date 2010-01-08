@@ -5,6 +5,11 @@
 
 package serverapp;
 
+
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.io.OutputStreamWriter;
+
 /**
  *
  * @author Серёжа
@@ -19,10 +24,12 @@ public class Log {
     }
     public static void Write(String s)
     {
+        
         System.out.println(">>>>>>---------------------------------");
         System.out.println(java.util.Calendar.getInstance().getTime());
         System.out.println(s);
         System.out.println("---------------------------------<<<<<<");
+        
     }
 
 }

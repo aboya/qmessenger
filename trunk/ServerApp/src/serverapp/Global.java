@@ -16,6 +16,7 @@ public class Global {
         public static int max_users = 10000;
         public static int MAXLEN = 18;
         public static String dbUrl = "jdbc:mysql://127.0.0.1:3306/qMessenger";
+        public static String codePage = "UTF8";
 
 
         public static String XmlTree;

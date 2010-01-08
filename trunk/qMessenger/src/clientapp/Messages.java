@@ -33,10 +33,10 @@ public class Messages {
     }
     protected void InitializeMessages() throws Exception
     {
-        this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(SocketOut.getOutputStream()));
-        bufferedWriterSync = new BufferedWriter(new OutputStreamWriter(SocketIn.getOutputStream()));
-        this.bufferedReader = new BufferedReader(new InputStreamReader(SocketIn.getInputStream()));
-        bufferedReaderSync = new BufferedReader(new InputStreamReader(SocketOut.getInputStream()));
+        this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(SocketOut.getOutputStream(),Global.codePage));
+        bufferedWriterSync = new BufferedWriter(new OutputStreamWriter(SocketIn.getOutputStream(),Global.codePage));
+        this.bufferedReader = new BufferedReader(new InputStreamReader(SocketIn.getInputStream(),Global.codePage));
+        bufferedReaderSync = new BufferedReader(new InputStreamReader(SocketOut.getInputStream(),Global.codePage));
     }
     protected void SendMessage(String message) throws Exception
     {
@@ -63,6 +63,7 @@ public class Messages {
         while(true)
         {
              bufferedReader.read(c, 0, 1);
+             if(c[0] == 0) throw new Exception("Connection Close by server");
              if(c[0] == FormatCharacters.marker) break;
              len += c[0] - '0';
         }
@@ -85,6 +86,7 @@ public class Messages {
         while(true)
         {
              bufferedReaderSync.read(c, 0, 1);
+             if(c[0] == 0) throw new Exception("Connection Close by server");
              if(c[0] == FormatCharacters.marker) break;
              len += c[0] - '0';
         }
@@ -112,5 +114,9 @@ public class Messages {
         this.SocketIn = in;
         this.SocketOut = out;
         InitializeMessages();
+    }
+    public static String ConvertCodePage(String inp) throws Exception
+    {
+        return new String(inp.getBytes("UTF-8"));
     }
 }

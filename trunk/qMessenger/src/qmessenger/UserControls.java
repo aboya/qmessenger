@@ -33,6 +33,7 @@ public class UserControls {
     TrayMenu trayMenu;
     Display display;
     StatusBar statusBar;
+    SendFileButton sendFileButton;
 
     Vector<BaseControl> controlsList;
 
@@ -51,6 +52,8 @@ public class UserControls {
         controlsList.add(trayMenu);
         statusBar = new StatusBar((Shell)composite);
         controlsList.add(statusBar);
+        sendFileButton = new SendFileButton((Shell)composite);
+        controlsList.add(sendFileButton);
 
         SelectionListener sListner = new SelectionAdapter() {
 

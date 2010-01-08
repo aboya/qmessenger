@@ -52,7 +52,6 @@ public class FormatedMessages extends Messages{
         }
         allIds.add(this.getUser().getTreeID());
         String txtMessage = this.ReceiveMessage();
-        //this.user.queue.SendMessageToUser(txtMessage, this.user);
         this.getUser().getQueue().SendMessageToUser(txtMessage, allIds,getUser());
     }
     public void SendTextMessage(String txtMessage) throws Exception
