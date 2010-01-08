@@ -16,6 +16,10 @@ public class Global {
         public static String ServAddr = "192.168.2.2";
         public static int ReconnectInterval = 10000;
         private static User user = null;
+        public static String lastOpenPath = "C:\\";
+        public static String lastSavePath = "C:\\";
+        public static String defaultSavePath = "C:\\";
+        public static String codePage = "UTF-8";
 
     /**
      * @return the user
