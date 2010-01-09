@@ -9,6 +9,7 @@ package qmessenger;
  *
  * @author Администратор
  */
+import SendFileDialog.SendFileDialogView;
 import clientapp.Global;
 import clientapp.Log;
 import org.eclipse.swt.SWT;
@@ -24,7 +25,7 @@ public class ScreenView {
     Shell shell;
     Display display;
     public ScreenView() {
-        display = new Display();
+        display = Global.getDisplay();
         shell = new Shell(display);
         shell.setText("qMessenger");
         Listener resizeListner = new Listener() {

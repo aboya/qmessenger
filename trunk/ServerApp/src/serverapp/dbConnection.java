@@ -38,13 +38,13 @@ public class dbConnection {
     }
     public static String ConvertString(String cmd) throws Exception
     {
-        return new String(cmd.getBytes("UTF-8"));
+        return cmd;
     }
     public void Connect() throws Exception
     {
         Properties properties=new Properties();
         properties.setProperty("useUnicode","true");
-        properties.setProperty("characterEncoding","utf8");
+        properties.setProperty("characterEncoding",Global.codePage);
         properties.setProperty("user",userName);
         properties.setProperty("password",password);
         conn = DriverManager.getConnection (url, properties);

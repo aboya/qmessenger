@@ -18,7 +18,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -32,12 +32,14 @@ public class UserControls {
     ButtonSendMessage buttonSendMessage;
     TrayMenu trayMenu;
     Display display;
+    final Composite composite;
     StatusBar statusBar;
     SendFileButton sendFileButton;
 
     Vector<BaseControl> controlsList;
 
-    public UserControls(Composite composite, Display _display) {
+    public UserControls(Composite _composite, Display _display) {
+        this.composite = _composite;
         this.display = _display;
         controlsList = new Vector<BaseControl>();
         userList = new UserList(composite, display);
@@ -81,6 +83,38 @@ public class UserControls {
             }
         };
         buttonSendMessage.getButton().addSelectionListener(sListner);
+
+        sListner = new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                Set <Integer> ids = userList.getSelectedId();
+                if( ids == null || ids.size() == 0)
+                {
+                    uMessageBox msg = new uMessageBox("You must select users", SWT.OK);
+                    msg.open();
+                    return;
+                }
+                FileDialog fd = new FileDialog((Shell)composite, SWT.MULTI);
+                fd.setText("Open");
+                fd.setFilterPath(Global.lastOpenPath);
+                String[] filterExt = { "*.*" };
+                fd.setFilterExtensions(filterExt);
+                fd.open();
+                try {
+                    Global.getUser().SendFiles(fd.getFileNames(),ids);
+                }catch(Exception ee)
+                {
+                    Log.WriteException(ee);
+                }
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent arg0) {
+
+            }
+        };
+        sendFileButton.getButton().addSelectionListener(sListner);
+
+
     }
     public void Resize(Rectangle rect)  
     {

@@ -8,6 +8,9 @@ package clientapp;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -33,10 +36,12 @@ public class Messages {
     }
     protected void InitializeMessages() throws Exception
     {
+        InputStreamReader r;
         this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(SocketOut.getOutputStream(),Global.codePage));
         bufferedWriterSync = new BufferedWriter(new OutputStreamWriter(SocketIn.getOutputStream(),Global.codePage));
-        this.bufferedReader = new BufferedReader(new InputStreamReader(SocketIn.getInputStream(),Global.codePage));
+        this.bufferedReader = new BufferedReader(r = new InputStreamReader(SocketIn.getInputStream(),Global.codePage));
         bufferedReaderSync = new BufferedReader(new InputStreamReader(SocketOut.getInputStream(),Global.codePage));
+        System.out.println(r.getEncoding());
     }
     protected void SendMessage(String message) throws Exception
     {
@@ -57,7 +62,6 @@ public class Messages {
     {
         String len, res;
         int Length, readed;
-        //byte []b = new byte[Global.PACKET_SIZE];
         char []c = new char[Global.PACKET_SIZE];
         len = "";     
         while(true)
@@ -118,5 +122,43 @@ public class Messages {
     public static String ConvertCodePage(String inp) throws Exception
     {
         return new String(inp.getBytes("UTF-8"));
+    }
+    public void SendFile(File file) throws Exception
+    {
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufFileReader = new BufferedReader(fileReader);
+        long len = file.length();
+        int readed;
+        char [] packet = new char[Global.PACKET_SIZE];
+        while(len > 0)
+        {
+            if(len < Global.PACKET_SIZE) readed = bufFileReader.read(packet, 0, (int)len);
+            else readed = bufFileReader.read(packet, 0, Global.PACKET_SIZE);
+            len -= readed;
+            bufferedWriter.write(packet, 0, readed);
+            bufferedWriter.flush();
+        }
+        fileReader.close();
+        bufFileReader.close();
+    }
+    public void ReceiveFile(String path, long fileSize) throws Exception
+    {
+        FileWriter fileWriter = new FileWriter(path);
+        BufferedWriter bufFileWriter = new BufferedWriter(fileWriter);
+        int readed;
+        char [] packet = new char[Global.PACKET_SIZE];
+        while(fileSize > 0)
+        {
+            if( fileSize < Global.PACKET_SIZE )
+                 readed = bufferedReader.read(packet, 0, (int)fileSize);
+            else readed = bufferedReader.read(packet, 0, Global.PACKET_SIZE);
+
+            bufFileWriter.write(packet, 0, readed);
+            bufFileWriter.flush();
+            fileSize -= readed;
+        }
+        fileWriter.close();
+        bufFileWriter.close();
+
     }
 }

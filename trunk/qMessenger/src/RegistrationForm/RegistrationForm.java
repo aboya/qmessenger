@@ -40,7 +40,6 @@ public class RegistrationForm {
                    rect.width = Math.max(rect.width, 300);
                    rect.height = Math.max(rect.height, 500);
                    shell.setBounds(rect);
-                   System.out.println(rect.toString());
                    userControls.Resize(rect);
                 }
          };

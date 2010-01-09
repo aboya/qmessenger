@@ -6,6 +6,7 @@
 package qmessenger;
  
 import RegistrationForm.RegistrationForm;
+import SendFileDialog.SendFileDialogView;
 import clientapp.ApplicationSettings;
 import clientapp.Global;
 import clientapp.User;
@@ -22,14 +23,13 @@ public class Main {
      */
 
 public static void main(String args[]) throws Exception {
+        //new SendFileDialogView("SEND").run();
+        
         ApplicationSettings.Initialize();
         ApplicationSettings.saveProperties();
         User u = new User();
         Global.setUser(u);
         u.Connect();
- 
-        //new ScreenView().run();
-        /// new RegistrationForm().run();
 
   }
 }

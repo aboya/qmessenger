@@ -5,6 +5,7 @@
 
 package clientapp;
 
+import java.io.File;
 import java.net.Socket;
 import java.util.Set;
 
@@ -91,6 +92,18 @@ public class FormatedMessages extends Messages{
     public void getOfflineMessages() throws Exception
     {
         this.SendMessage(FormatCharacters.getOfflineMessages);
+    }
+    public void SendFiles(File [] files, Set<Integer> ids) throws Exception
+    {
+        long totalSize = 0;
+        for(int i = 0; i < files.length; i++)
+            totalSize += files[i].length();
+
+        this.SendMessage(FormatCharacters.SendFile);
+        this.SendMessage(String.valueOf(totalSize));
+        this.SendMessage(String.valueOf(files.length));
+
+
     }
 
 }

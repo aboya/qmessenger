@@ -5,12 +5,14 @@
 
 package clientapp;
 import RegistrationForm.RegistrationForm;
+import SendFileDialog.SendFileDialogView;
 import UserGUIControls.uMessageBox;
 import java.net.*;
 import java.util.Set;
 import org.eclipse.swt.SWT;
 import qmessenger.ScreenView;
-
+import java.io.File;
+import java.util.Vector;
 /**
  *
  * @author Серёжа
@@ -18,13 +20,15 @@ import qmessenger.ScreenView;
 public class User extends Thread {
     //Socket SocketIn;
     //Socket SocketOut;
+
     FormatedMessages message;
     public String structTreeXml;
     private ScreenView screenView;
-     ServerSocket inp;
+    SendFileDialogView sendFiles = null;
+    ServerSocket inp;
     public User()
     {
-
+        //sendFiles = new SendFileDialogView("Send");
     }
     public void Connect() throws Exception
     {
@@ -151,6 +155,26 @@ public class User extends Thread {
     public void getOfflineMessages() throws Exception
     {
         message.getOfflineMessages();
+    }
+    public void SendFiles(String [] fileList, Set <Integer> ids) throws Exception
+    {
+        /*
+        File [] files = new File[fileList.length];
+        for(int i = 0; i < fileList.length; i++)
+        {
+            files[i] = new File(fileList[i]);
+        }
+        message.SendFiles(files, ids);
+         *
+         */
+        if(sendFiles == null || !sendFiles.isAlive())  {
+            sendFiles = new SendFileDialogView("Send");
+            sendFiles.SendFiles(fileList, ids);
+        }else {
+            sendFiles.AddFileToQuene(fileList, ids);
+
+        }
+        
     }
 
     /**
