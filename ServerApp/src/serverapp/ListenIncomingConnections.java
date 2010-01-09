@@ -24,8 +24,10 @@ public class ListenIncomingConnections {
     }
     public void Listen()
     {
-       WaitForConnections a =   new WaitForConnections();
-       a.start();     
+       WaitForConnections a = new WaitForConnections();
+       WaitForReceiveFiles b = new WaitForReceiveFiles();
+       a.start();
+       b.start();
     }
 
     public class WaitForConnections extends  Thread {
@@ -57,4 +59,37 @@ public class ListenIncomingConnections {
            }
         }
     }
+
+    public class WaitForReceiveFiles extends Thread
+    {
+        
+
+        @Override
+        public void run() {
+            
+            while(true)
+            {
+                ServerSocket listenSocket = null;
+                Socket acceptSocket = null;
+                ReceiveFile receiveFile = null;
+                try {
+
+                   listenSocket = new ServerSocket(Global.IncomingFilePort);
+                   acceptSocket = listenSocket.accept();
+                   receiveFile = new ReceiveFile(acceptSocket);
+                   receiveFile.start();
+
+                }catch(Exception e)
+                {
+                    Log.WriteException(e);
+                }
+                try {
+                   if(listenSocket != null ) listenSocket.close();
+                }catch(Exception ee) {}
+            }
+            
+        }
+
+    }
+
 }
