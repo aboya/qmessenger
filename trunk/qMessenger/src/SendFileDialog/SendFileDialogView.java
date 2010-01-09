@@ -5,7 +5,6 @@
 
 package SendFileDialog;
 
-import UserGUIControls.uMessageBox;
 import clientapp.FormatCharacters;
 import clientapp.Global;
 import clientapp.Log;
@@ -13,6 +12,7 @@ import clientapp.Pair;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -58,7 +58,7 @@ public class SendFileDialogView extends Thread {
             fileQuene.addLast(new Pair<String, Set<Integer>>(filePaths[i], ids));
         }
     }
-    public void SendFiles(String [] filePaths, Set <Integer> ids)
+    public void SendFiles(String path, String [] filePaths, Set <Integer> ids)
     {
         Table table = userControls.getTable();
         table.removeAll();
@@ -67,7 +67,7 @@ public class SendFileDialogView extends Thread {
         {
             TableItem item = new TableItem(table, i);
             item.setText(filePaths[i]);
-            fileQuene.addLast(new Pair<String, Set<Integer>>(filePaths[i], ids));
+            fileQuene.addLast(new Pair<String, Set<Integer>>(path + filePaths[i], ids));
         }
         this.start();
     }
@@ -110,45 +110,36 @@ public class SendFileDialogView extends Thread {
     {
         File f = new File(path);
         Socket socket = null ;
-        BufferedWriter bufferedWriter = null;
-        FileReader fileReader = null;
-        BufferedReader bufFileReader = null;
+        FileInputStream fileInputStream = null;
+        OutputStreamWriter outputStreamReader = null;
         try {
             String metadata;
             socket = new Socket(Global.ServAddr, Global.ServerFileUploadPort);
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),Global.codePage));
+            outputStreamReader = new OutputStreamWriter(socket.getOutputStream(),Global.codePage);
             metadata = FormatCharacters.marker + 
                        String.valueOf(f.length()) +
                        FormatCharacters.marker +
                        f.getName() +
                        FormatCharacters.marker;
-            bufferedWriter.write(String.valueOf(metadata.length()) + metadata);
-            bufferedWriter.flush();
-
-            fileReader = new FileReader(f);
-            bufFileReader = new BufferedReader(fileReader);
+            socket.getOutputStream().write((String.valueOf(metadata.length()) + metadata).getBytes());
+            fileInputStream = new FileInputStream(path);
             long len = f.length();
             int readed;
-            char [] packet = new char[Global.PACKET_SIZE];
+            byte [] packet = new byte[Global.PACKET_SIZE];
             while(len > 0)
             {
-                if(len < Global.PACKET_SIZE) readed = bufFileReader.read(packet, 0, (int)len);
-                else readed = bufFileReader.read(packet, 0, Global.PACKET_SIZE);
+                readed = fileInputStream.read(packet, 0, (int)Math.min(Global.PACKET_SIZE, len));
                 len -= readed;
-                bufferedWriter.write(packet, 0, readed);
-                bufferedWriter.flush();
+                if(socket.isClosed() ||  !socket.isConnected()) break;
+                socket.getOutputStream().write(packet, 0, readed);
             }
 
         }catch(Exception ee)
         {
-            uMessageBox msg = new uMessageBox("Can not send file" + path,  SWT.OK);
             Log.WriteException(ee);
         }
         try {
-
-           if(bufferedWriter != null) bufferedWriter.close();
-           if(fileReader != null) fileReader.close();
-           if(bufFileReader != null) bufFileReader.close();
+           if(fileInputStream != null) fileInputStream.close();
            if( socket != null ) socket.close();
         }catch(Exception ee) {}
 
