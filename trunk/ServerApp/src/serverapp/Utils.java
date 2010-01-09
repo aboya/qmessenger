@@ -5,21 +5,20 @@
 
 package serverapp;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author Администратор
  */
 public class Utils {
-    public static String GetIpFromMessage(String message)
-    {
-        // assume message in form xxx.xxx.xxx.xxx: message
-        int i, n = message.length();
-        for(i = 0; i < n; i++)
-        {
-            if(message.charAt(i) == ':') break;
-        }
-        String ip = message.substring(0, i);
-        return ip;
-    }
+
+    public static String GetDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss");
+        Date date = new Date();
+        return dateFormat.format(date);
+   }
 
 }

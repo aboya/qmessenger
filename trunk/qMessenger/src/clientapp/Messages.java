@@ -123,6 +123,7 @@ public class Messages {
     {
         return new String(inp.getBytes("UTF-8"));
     }
+    /*
     public void SendFile(File file) throws Exception
     {
         FileReader fileReader = new FileReader(file);
@@ -161,4 +162,6 @@ public class Messages {
         bufFileWriter.close();
 
     }
+     * 
+     */
 }
