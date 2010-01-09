@@ -156,7 +156,7 @@ public class User extends Thread {
     {
         message.getOfflineMessages();
     }
-    public void SendFiles(String [] fileList, Set <Integer> ids) throws Exception
+    public void SendFiles(String path, String [] fileList, Set <Integer> ids) throws Exception
     {
         /*
         File [] files = new File[fileList.length];
@@ -169,7 +169,7 @@ public class User extends Thread {
          */
         if(sendFiles == null || !sendFiles.isAlive())  {
             sendFiles = new SendFileDialogView("Send");
-            sendFiles.SendFiles(fileList, ids);
+            sendFiles.SendFiles(path, fileList, ids);
         }else {
             sendFiles.AddFileToQuene(fileList, ids);
 
