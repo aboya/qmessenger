@@ -26,10 +26,8 @@ public class StartPauseButton extends BaseControl {
 
     @Override
     public void Resize(Rectangle rect) {
-        btn.setBounds(rect.width - 75, 10, 60, 40);
-
+        btn.setBounds(rect.width - 85, 10, 60, 40);
     }
-
     @Override
     public String getControlName() {
         return super.getControlName();

@@ -80,9 +80,7 @@ public class User extends Thread {
         while(true)
         {
             try {
-
                 message.ListenForMessages();
-
             }catch(Exception e)
             {
                 this.getScreenView().setStatusText("Connection Lost...");
@@ -116,11 +114,6 @@ public class User extends Thread {
             }
         }
     }
-    public void ReConnect()
-    {
-        
-    }
-
     public boolean AuthenticateUser() throws Exception
     {
         InetAddress thisIp =InetAddress.getLocalHost();
@@ -158,34 +151,20 @@ public class User extends Thread {
     }
     public void SendFiles(String path, String [] fileList, Set <Integer> ids) throws Exception
     {
-        /*
-        File [] files = new File[fileList.length];
-        for(int i = 0; i < fileList.length; i++)
-        {
-            files[i] = new File(fileList[i]);
-        }
-        message.SendFiles(files, ids);
-         *
-         */
         if(sendFiles == null || !sendFiles.isAlive())  {
+            if (sendFiles != null && !sendFiles.isClosed()) sendFiles.Close();
             sendFiles = new SendFileDialogView("Send");
             sendFiles.SendFiles(path, fileList, ids);
         }else {
-            sendFiles.AddFileToQuene(fileList, ids);
-
+            sendFiles.AddFileToQuene(path, fileList, ids);
         }
-        
+    }
+    public SendFileDialogView getSendFileDialogView()
+    {
+        return sendFiles;
     }
 
-    /**
-     * @return the screenView
-     */
     public ScreenView getScreenView() {
         return screenView;
     }
-
-    /**
-     * @param screenView the screenView to set
-     */
-
 }

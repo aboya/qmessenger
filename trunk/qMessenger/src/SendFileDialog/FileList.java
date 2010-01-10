@@ -21,9 +21,11 @@ import qmessenger.BaseControl;
 public class FileList extends BaseControl{
     final Table table ;
     public FileList(Shell _composite) {
-         table = new Table(_composite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
-         TableColumn col1  = new TableColumn(table,SWT.LEFT);
+         table = new Table(_composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+         TableColumn col1  = new TableColumn(table, SWT.LEFT);
          col1.setText("Files");
+         TableColumn col2 = new TableColumn(table, SWT.LEFT);
+         col2.setText("Progress");
          this.ControlName = "FileList";
          TableItem item1 = new TableItem(table, 0);
          item1.setText(new String[]{"a","b"});
@@ -37,7 +39,9 @@ public class FileList extends BaseControl{
     @Override
     public void Resize(Rectangle rect) {
         table.setBounds(10, 10, rect.width - 100, rect.height - 50);
-        table.getColumn(0).setWidth(rect.width - 104);
+      //  table.getColumn(0).setWidth(rect.width - 50);
+        table.getColumn(0).setWidth(rect.width - 164);
+        table.getColumn(1).setWidth(59);
     }
 
     @Override
@@ -53,15 +57,4 @@ public class FileList extends BaseControl{
         TableItem item = new TableItem(table, table.getItemCount());
         item.setText(fileName);
     }
-    public void setProgress(double percent)
-    {
-        
-    }
-    public void removeFile(int index)
-    {
-        
-    }
-
-
-
 }

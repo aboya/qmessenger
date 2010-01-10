@@ -5,8 +5,11 @@
 
 package SendFileDialog;
 
+import UserGUIControls.uMessageBox;
+import clientapp.Global;
 import clientapp.Log;
 import java.util.Vector;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -32,31 +35,72 @@ public class SendFileDialogControls {
         composite = _composite;
         display = _display;
         controlsList = new Vector<BaseControl>();
-        fileList = new FileList(composite);
-        controlsList.add(fileList);
+        display.syncExec( new Runnable() {
 
-        startPauseButton = new StartPauseButton(composite);
-        controlsList.add(startPauseButton);
+            public void run() {
+                 fileList = new FileList(composite);
+                 controlsList.add(fileList);
 
-        removeSelectedButton = new RemoveSelectedButton(composite);
-        controlsList.add(removeSelectedButton);
+                 startPauseButton = new StartPauseButton(composite);
+                 startPauseButton.getButton().setText("Pause");
+                 controlsList.add(startPauseButton);
 
-        SelectionListener sListner = new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent arg0) {
-                display.syncExec(new Runnable() {
-                    public void run() {
-                        fileList.getTable().remove(fileList.getTable().getSelectionIndices());
+                 removeSelectedButton = new RemoveSelectedButton(composite);
+                 controlsList.add(removeSelectedButton);
+
+                 SelectionListener sListner = new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent arg0) {
+
+                        if(fileList.getTable().getSelectionIndices().length == 0) return;
+                        fileList.getTable().setRedraw(false);
+                        try {
+                            // делаем паузу для синхронизации
+                           Global.getUser().getSendFileDialogView().Pause();
+                        }catch(Exception e) 
+                        {
+                            Log.WriteException(e);
+                        }
+                        Global.getUser().getSendFileDialogView().RemoveFilesFromQuene(fileList.getTable().getSelectionIndices());
+                        display.syncExec(new Runnable() {
+                            public void run() {
+                                 fileList.getTable().remove(fileList.getTable().getSelectionIndices());
+                            }
+                        });
+                        fileList.getTable().setRedraw(true);
+                        fileList.getTable().redraw();
+                        Global.getUser().getSendFileDialogView().Resume();
                     }
-                });
-
+                };
+                 removeSelectedButton.getButton().addSelectionListener(sListner);
+                 sListner = new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent arg0) {
+                        display.asyncExec(new Runnable() {
+                            public void run()  {
+                                try {
+                                    if(startPauseButton.getButton().getText().equals("Pause"))
+                                    {
+                                        startPauseButton.getButton().setText("Start");
+                                        Global.getUser().getSendFileDialogView().Pause();
+                                    }
+                                    else {
+                                        Global.getUser().getSendFileDialogView().Resume();
+                                        startPauseButton.getButton().setText("Pause");
+                                    }
+                                }catch(Exception e)
+                                {
+                                    Log.WriteException(e);
+                                    //uMessageBox msg = new uMessageBox(e.getMessage(), SWT.ABORT);
+                                    //msg.open();
+                                }
+                            }
+                        });
+                    }
+                };
+                 startPauseButton.getButton().addSelectionListener(sListner);
             }
-            @Override
-            public void widgetDefaultSelected(SelectionEvent arg0) {
-
-            }
-        };
-        removeSelectedButton.getButton().addSelectionListener(sListner);
+        });
     }
     public void Resize(Rectangle rect)
     {

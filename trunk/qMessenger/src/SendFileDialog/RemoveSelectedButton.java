@@ -25,7 +25,7 @@ public class RemoveSelectedButton extends BaseControl {
 
     @Override
     public void Resize(Rectangle rect) {
-        btn.setBounds(rect.width - 75, 65, 60, 40);
+        btn.setBounds(rect.width - 85, 65, 60, 40);
     }
 
     @Override
