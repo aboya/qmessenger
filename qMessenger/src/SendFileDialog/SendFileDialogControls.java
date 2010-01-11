@@ -30,14 +30,16 @@ public class SendFileDialogControls {
     FileList fileList;
     StartPauseButton startPauseButton;
     RemoveSelectedButton removeSelectedButton;
+    RemoveTask removeTask;
 
     public SendFileDialogControls(Shell _composite, Display _display) {
         composite = _composite;
         display = _display;
         controlsList = new Vector<BaseControl>();
+        
         display.syncExec( new Runnable() {
 
-            public void run() {
+        public void run() {
                  fileList = new FileList(composite);
                  controlsList.add(fileList);
 
@@ -51,6 +53,8 @@ public class SendFileDialogControls {
                  SelectionListener sListner = new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent arg0) {
+                        /*
+
 
                         if(fileList.getTable().getSelectionIndices().length == 0) return;
                         fileList.getTable().setRedraw(false);
@@ -69,7 +73,10 @@ public class SendFileDialogControls {
                         });
                         fileList.getTable().setRedraw(true);
                         fileList.getTable().redraw();
-                        Global.getUser().getSendFileDialogView().Resume();
+                         * */
+                        if(removeTask != null && removeTask.isAlive()) return;
+                        removeTask = new RemoveTask(Global.getUser().getSendFileDialogView(), fileList.getTable().getSelectionIndices(), fileList.getTable());
+                        removeTask.start();
                     }
                 };
                  removeSelectedButton.getButton().addSelectionListener(sListner);
