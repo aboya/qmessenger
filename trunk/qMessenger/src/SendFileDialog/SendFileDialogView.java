@@ -10,14 +10,14 @@ import clientapp.Global;
 import clientapp.Log;
 import clientapp.Pair;
 import clientapp.Utils;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Set;
-import javax.swing.text.AbstractDocument.LeafElement;
+import java.util.concurrent.Semaphore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
@@ -37,6 +37,7 @@ public class SendFileDialogView extends Thread {
      boolean isClosed = false; // нужна для корректного выхода
      boolean pleaseWait = false;
      Integer index;
+     Semaphore semaphore = null;
      /*
       * abortSetFileList нужна для синхронизации
       * когда юзверь удаляет текущий аплоад, мы закрываем сокет
@@ -138,11 +139,15 @@ public class SendFileDialogView extends Thread {
         this.socket = null ;
         fileInputStream = null;
         OutputStreamWriter outputStreamReader = null;
+        BufferedWriter bufferedWriter = null;
+
         long lasttime = 0, currenttime = 0;
         boolean status = true;
         try {
-            String metadata;
             socket = new Socket(Global.ServAddr, Global.ServerFileUploadPort);
+            outputStreamReader = new OutputStreamWriter(socket.getOutputStream(),Global.codePage);
+            bufferedWriter = new BufferedWriter(outputStreamReader);
+            String metadata;
             outputStreamReader = new OutputStreamWriter(socket.getOutputStream(),Global.codePage);
             metadata = FormatCharacters.marker + 
                        String.valueOf(f.length()) +
@@ -153,7 +158,10 @@ public class SendFileDialogView extends Thread {
                        FormatCharacters.marker +
                        String.valueOf(Utils.Checksum(path)) +
                        FormatCharacters.marker;
-            socket.getOutputStream().write((String.valueOf(metadata.length()) + metadata).getBytes());
+            //socket.getOutputStream().write((String.valueOf(metadata.length()) + metadata).getBytes());
+            //socket.getOutputStream().flush();
+            bufferedWriter.write((String.valueOf(metadata.length()) + metadata));
+            bufferedWriter.flush();
             fileInputStream = new FileInputStream(path);
             long len = f.length();
             long Len = len;
@@ -172,7 +180,7 @@ public class SendFileDialogView extends Thread {
                 if(currenttime - lasttime > 1000)
                 {
                     lasttime = currenttime;
-                    this.SetStatus(String.format("%.2f%%", 100.0 - 100.0 * len / Len),this.getIndexByPath(path));
+                    this.SetStatus(String.format("%.2f%%", 100.0 - 100.0 * len / Len));
                     this.CheckWait();
                 }
             }
@@ -186,15 +194,30 @@ public class SendFileDialogView extends Thread {
 
            if(fileInputStream != null) fileInputStream.close();
            if( socket != null ) socket.close();
+           if(bufferedWriter != null) bufferedWriter.close();
 
         }catch(Exception ee) {}
         if(!this.isClosed())
         {
-            if(status) this.SetStatus(String.format("%.2f%%", 100.0), this.getIndexByPath(path));
-            else this.SetStatus("Failed", this.getIndexByPath(path));
+            if(status) this.SetStatus(String.format("%.2f%%", 100.0));
+            else this.SetStatus("Failed");
+        }
+        try {
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+        if(semaphore != null)
+        {
+            // отпускаем поток ждущий завершения этого цикла
+            semaphore.release();
+            // теперь сами ждем его завершения
+            try {
+             this.Pause();
+            }catch(Exception ee) {}
         }
     }
-    private void SetStatus(final String s, final int lineNumber)
+    private void SetStatus(final String s)
     {  
           display.syncExec(
            new Runnable() {
@@ -202,11 +225,6 @@ public class SendFileDialogView extends Thread {
                     if(isClosed()) return;
                     if(index < 0) return;
                     Table table = userControls.getTable();
-                    /*поскольку юзер может удалить закачку то индексы изменятся,
-                     * и поскольку мы в конце вызываем SetStatus - он может ссылатся на недопустимую строку
-                     * этот костыль убирает проблему.  
-                     *
-                     * */
                     table.getItem(index).setText(1, s);
                 }
             }
@@ -248,7 +266,6 @@ public class SendFileDialogView extends Thread {
     }
     private void CheckWait()
     {
-        synchronized (this) {
             while (pleaseWait) {
                 try {
                     if(this.isClosed()) this.Resume();
@@ -256,34 +273,73 @@ public class SendFileDialogView extends Thread {
                 }
                 catch (Exception e) { }
             }
-        }
     }
     public void RemoveFilesFromQuene(int [] lineNumbers)
     {
+
+        for(int i = 0; i < lineNumbers.length; i++)
+        {
+            if(lineNumbers[i] == index) {
+                this.RemoveCurrentSendFileFromQuene();
+                break;
+            }
+        }
         for(int i = 0; i < lineNumbers.length; i++)
         {
             fileQuene.remove(lineNumbers[i]);
-            if(lineNumbers[i] == index) this.RemoveCurrentSendFileFromQuene();
             if(lineNumbers[i] <= index) index --;
 
         }
+
     }
     public void RemoveCurrentSendFileFromQuene()
     {
         // жестко вырубаем загрузку файла
         try {
+            semaphore = new Semaphore(0);
+            
             if(this.socket != null) this.socket.close();
+            this.Resume();
+            // ждем пока завершится цикл передающий файл
+            // если этого не сделать то установится статус Failed не на той строчке
+            // поскольку мы закрыли сокет то поток то цикл завершится быстро
+            
+            semaphore.acquire();
+            semaphore = null;
+            
+
         }catch(Exception e) {}
     }
 
-    private int getIndexByPath(String path)
-    {
-        int i = 0;
-        for(Pair p : fileQuene)
-        {
-            if(p.getFirst().equals(path)) return i;
-            i++;
-        }
-        return -1;
+}
+ class RemoveTask extends Thread
+ {
+     SendFileDialogView sendFile;
+     int []selectedIndexes;
+     Table table;
+
+     public RemoveTask(SendFileDialogView view, int [] indexes, Table _table) {
+         this.sendFile = view;
+         this.selectedIndexes = indexes;
+         this.table = _table;
+     }
+
+     @Override
+     public void run() {
+           if(selectedIndexes.length == 0) return;
+           try {
+                  // делаем паузу для синхронизации
+                 Global.getUser().getSendFileDialogView().Pause();
+           }catch(Exception e)
+           {
+               Log.WriteException(e);
+           }
+           sendFile.RemoveFilesFromQuene(selectedIndexes);
+           Global.getDisplay().syncExec(new Runnable() {
+                  public void run() {
+                       table.remove(selectedIndexes);
+                  }
+                });
+           Global.getUser().getSendFileDialogView().Resume();
     }
 }
