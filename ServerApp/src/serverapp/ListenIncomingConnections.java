@@ -77,7 +77,9 @@ public class ListenIncomingConnections {
                    listenSocket = new ServerSocket(Global.IncomingFilePort);
                    acceptSocket = listenSocket.accept();
                    receiveFile = new ReceiveFile(acceptSocket);
+                   listenSocket.close();
                    receiveFile.start();
+
 
                 }catch(Exception e)
                 {
