@@ -8,6 +8,7 @@ package clientapp;
 import java.io.File;
 import java.net.Socket;
 import java.util.Set;
+import java.util.Vector;
 
 /**
  *
@@ -104,6 +105,12 @@ public class FormatedMessages extends Messages{
         this.SendMessage(String.valueOf(files.length));
 
 
+    }
+    public String getFilesMetadata() throws Exception
+    {
+        this.SendMessage(FormatCharacters.getFiles);
+        String metadata = this.ReceiveMessageSync() ;
+        return metadata;
     }
 
 }
