@@ -37,11 +37,12 @@ public class SendFile extends Thread {
         FileInputStream fileInputStream = null;
         File file;
         String metadata;
+        int readed;
         try {
             while(true)
             {
-                socket.getInputStream().read(packet, 0, 1);
-                if(packet[0] == 0) throw  new Exception("Connection closed by user");
+                readed = socket.getInputStream().read(packet, 0, 1);
+                if(readed <= 0) throw  new Exception("Connection closed by user");
                 if(packet[0] == FormatCharacters.marker) break;
                 _len += packet[0] - '0';
             }
@@ -49,11 +50,17 @@ public class SendFile extends Thread {
             socket.getInputStream().read(packet, 0, len);
             int fileid = 0;
             for(int i = 0, k = 1; i < len; i++ , k *= 10)
-                fileid += packet[len - i - 1] * k;
+                fileid += (packet[len - i - 1] - '0') * k;
             
             rs = dbFunc.getFilePathByID(connection, fileid);
+            if( !rs.next() ) throw new Exception("Ids not found");
             path = rs.getString("Path");
             fileName = rs.getString("FileName");
+
+            try{
+                connection.Close();
+            }catch(Exception asd){}
+            
             file = new File(path);
             fileSize = file.length();
             fileInputStream = new FileInputStream(file);
@@ -63,8 +70,11 @@ public class SendFile extends Thread {
                     fileName +
                     FormatCharacters.marker +
                     String.valueOf(checkSum);
-            socket.getOutputStream().write((Integer.valueOf(metadata.length()) + FormatCharacters.marker +  metadata).getBytes());
-            int readed;
+            metadata = String.valueOf(metadata.length()) +
+                    String.valueOf(FormatCharacters.marker)+
+                    metadata;
+            socket.getOutputStream().write(metadata.getBytes());
+            
             while(fileSize > 0)
             {
                 readed = fileInputStream.read(packet, 0, Global.PACKET_SIZE);

@@ -103,21 +103,27 @@ public class FormatedMessages extends Messages{
            File f;
            totalSize = 0;
            count = 0;
+           String filePath;
            while(rs.next())
            {
                fnames += rs.getString("FileName") + "|" + rs.getString("ID") + "|";
-               f = new File(rs.getString("Path"));
+               filePath = rs.getString("Path");
+               f = new File(filePath);
                totalSize += f.length();
                count ++;
            }
+           connection.Close();
 
-           String metadata;
-           metadata = fnames.substring(0, fnames.length() - 1)+  // remove last "|"
-                      FormatCharacters.marker +
-                      String.valueOf(totalSize) +
-                      FormatCharacters.marker +
-                      String.valueOf(count) +
-                      FormatCharacters.marker;
+           String metadata = "";
+           if(fnames.length() > 0)
+           {
+               metadata = fnames.substring(0, fnames.length() - 1)+  // remove last "|"
+                          FormatCharacters.marker +
+                          String.valueOf(totalSize) +
+                          FormatCharacters.marker +
+                          String.valueOf(count) +
+                          FormatCharacters.marker;
+           }
            
            this.SendMessageSync(metadata);
 

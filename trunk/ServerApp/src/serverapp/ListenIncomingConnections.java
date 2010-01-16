@@ -26,8 +26,10 @@ public class ListenIncomingConnections {
     {
        WaitForConnections a = new WaitForConnections();
        WaitForReceiveFiles b = new WaitForReceiveFiles();
+       WaitForSendFiles c = new WaitForSendFiles();
        a.start();
        b.start();
+       c.start();
     }
 
     public class WaitForConnections extends  Thread {

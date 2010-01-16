@@ -103,7 +103,7 @@ public class dbFunc {
             for(int i = 0; i < whereIds.length; i++)
             {
                 connection.ExecuteNonQuery(
-                    String.format("call SendFile('%s', '%s', %d, %d, '%s')",fileName, filePath, fromTreeId, whereIds[i], checkSum.toString())
+                    String.format("call SendFile('%s', '%s', %d, %d, '%s')",filePath, fileName, fromTreeId, whereIds[i], checkSum.toString())
                         );
             }
 
@@ -144,7 +144,7 @@ public class dbFunc {
         {
             Log.WriteException(ee);
         }
-        connection.Close();
+        //connection.Close();
         return rs;
     }
     public static ResultSet getFilePathByID(dbConnection connection, int id)
@@ -159,9 +159,6 @@ public class dbFunc {
         {
             Log.WriteException(ee);
         }
-        try {
-            connection.Close();
-        }catch(Exception ee) {}
         return rs;
     }
     public static int RemoveFileByID(dbConnection connection, int id)
