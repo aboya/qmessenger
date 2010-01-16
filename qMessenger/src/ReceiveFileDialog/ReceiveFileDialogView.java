@@ -25,9 +25,11 @@ import clientapp.Global;
 import clientapp.Log;
 import clientapp.Pair;
 import clientapp.Utils;
+import com.sun.xml.internal.ws.message.stream.StreamAttachment;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -65,7 +67,7 @@ public class ReceiveFileDialogView extends Thread {
      Socket socket;
      ReceiveFileDialogControls userControls;
      LinkedList<Pair<String, Integer > > fileQuene = new LinkedList<Pair<String, Integer >>();
-     FileInputStream fileInputStream = null;
+     FileOutputStream fileOutputStream = null;
 
 
     public ReceiveFileDialogView(final String WindowName) {
@@ -148,57 +150,49 @@ public class ReceiveFileDialogView extends Thread {
     }
     private void ReceiveFile(String path, Integer ids, int lineNumber)
     {
-        File f = new File(path);
-        String allids = ids.toString();
-        allids = allids.substring(1, allids.length() - 1);
         this.socket = null ;
-        fileInputStream = null;
-        OutputStreamWriter outputStreamReader = null;
-        BufferedWriter bufferedWriter = null;
-
+        fileOutputStream = null;
+        byte [] packet = new byte[Global.PACKET_SIZE];
         long lasttime = 0, currenttime = 0;
         boolean status = true;
+        String metadata;
+        long fileSize, checkSum;
+        String fileName = "";
         try {
-            socket = new Socket(Global.ServAddr, Global.ServerFileUploadPort);
-            outputStreamReader = new OutputStreamWriter(socket.getOutputStream(),Global.codePage);
-            bufferedWriter = new BufferedWriter(outputStreamReader);
-            String metadata;
-            outputStreamReader = new OutputStreamWriter(socket.getOutputStream(),Global.codePage);
-            metadata = FormatCharacters.marker +
-                       String.valueOf(f.length()) +
-                       FormatCharacters.marker +
-                       f.getName() +
-                       FormatCharacters.marker +
-                       allids +
-                       FormatCharacters.marker +
-                       String.valueOf(Utils.Checksum(path)) +
-                       FormatCharacters.marker;
-            
-            bufferedWriter.write((String.valueOf(metadata.length()) + metadata));
-            bufferedWriter.flush();
-            fileInputStream = new FileInputStream(path);
-            long len = f.length();
-            long Len = len;
+            socket = new Socket(Global.ServAddr, Global.ServerFileDownloadPort);
+            metadata = ids.toString();
+            socket.getOutputStream().write((Integer.valueOf(metadata.length()) + FormatCharacters.marker + metadata).getBytes());
+            String _len = "";
+            int len;
             int readed;
-            byte [] packet = new byte[Global.PACKET_SIZE];
-            currenttime = lasttime = Utils.GetDate();
-            while(len > 0)
+            while(true)
             {
-
-                readed = fileInputStream.read(packet, 0,  Global.PACKET_SIZE);
-                len -= readed;
-                if(socket.isClosed() ||  !socket.isConnected()) break;
-                socket.getOutputStream().write(packet, 0, readed);
-                if(isClosed) break;
-                currenttime = Utils.GetDate();
-                if(currenttime - lasttime > 1000)
-                {
-                    lasttime = currenttime;
-                    this.SetStatus(String.format("%.2f%%", 100.0 - 100.0 * len / Len));
-                    this.CheckWait();
-                }
+                readed = socket.getInputStream().read(packet, 0, 1);
+                if(readed <= 0) throw new Exception("Connection closed ..");
+                if(packet[0] == FormatCharacters.marker) break;
+                _len += packet[0] - '0';
             }
-            status = socket.getInputStream().read() == 1;
+            len = Integer.valueOf(_len);
+            socket.getInputStream().read(packet, 0, len);
+            metadata = new String(packet, 0, len);
+            String []arr = metadata.split(FormatCharacters.marker + "");
+            fileSize = Long.valueOf(arr[0]);
+            fileName = arr[1];
+            checkSum = Long.valueOf(arr[2]);
+            fileOutputStream = new FileOutputStream(Global.lastSavePath + fileName);
+            while(fileSize > 0)
+            {
+                readed =  socket.getInputStream().read(packet, 0, Global.PACKET_SIZE);
+                if(readed <= 0) throw new Exception("Connection closed ..");
+                fileOutputStream.write(packet, 0, readed);
+            }
+            fileOutputStream.close();
+            if( Utils.Checksum(Global.lastSavePath + fileName) != checkSum )
+            {
+                status = false;
+            }else {
+                status = true;
+            }
         }catch(Exception ee)
         {
             status = false;
@@ -206,15 +200,20 @@ public class ReceiveFileDialogView extends Thread {
         }
         try {
 
-           if(fileInputStream != null) fileInputStream.close();
-           if( socket != null ) socket.close();
-           if(bufferedWriter != null) bufferedWriter.close();
-
+           if(this.fileOutputStream != null) this.fileOutputStream.close();
+           if(socket != null) socket.close();
+           if(fileOutputStream != null) fileOutputStream.close();
         }catch(Exception ee) {}
         if(!this.isClosed())
         {
-            if(status) this.SetStatus(String.format("%.2f%%", 100.0));
-            else this.SetStatus("Failed");
+            if(status) {
+                this.SetStatus(String.format("%.2f%%", 100.0));
+                
+            }
+            else {
+                this.SetStatus("Failed");
+                new File(Global.lastSavePath + fileName).delete();
+            }
         }
         try {
         }catch(Exception ee)
@@ -257,7 +256,7 @@ public class ReceiveFileDialogView extends Thread {
         try {
             // жестко вырубаем текущий аплоад
             this.socket.close();
-            if(fileInputStream != null) fileInputStream.close();
+            if(fileOutputStream != null) fileOutputStream.close();
             this.interrupt();
         }catch(Exception e) {}
     }
