@@ -21,9 +21,9 @@ public class Global {
         public static int ReconnectInterval = 10000;
         private static User user = null;
         private static Display display = new Display();
-        public static String lastOpenPath = "C:\\";
-        public static String lastSavePath = "C:\\";
-        public static String defaultSavePath = "C:\\";
+        public static String lastOpenPath = "C:\\2\\";
+        public static String lastSavePath = "C:\\2\\";
+        public static String defaultSavePath = "C:\\2\\";
         public static String codePage = "UTF-8";
 
     /**

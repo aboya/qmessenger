@@ -10,10 +10,10 @@ import SendFileDialog.SendFileDialogView;
 import UserGUIControls.uMessageBox;
 import java.net.*;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import org.eclipse.swt.SWT;
 import qmessenger.ScreenView;
-import java.io.File;
-import java.util.Vector;
 /**
  *
  * @author Серёжа
@@ -28,9 +28,22 @@ public class User extends Thread {
     SendFileDialogView sendFiles = null;
     ReceiveFileDialogView receiveFiles = null;
     ServerSocket inp;
+    public TimerTask taskCheckFiles;
+    int result;
+    Timer timer = null;
+    public void SheduleNewTimerForCheckFiles()
+    {
+        if(timer != null ) timer.purge();
+        timer = new Timer();
+        taskCheckFiles = new TimerTask_CheckFiles();
+        timer.schedule(taskCheckFiles, 10000);
+    }
     public User()
     {
         //sendFiles = new SendFileDialogView("Send");
+        this.SheduleNewTimerForCheckFiles();
+
+
     }
     public void Connect() throws Exception
     {
@@ -175,14 +188,16 @@ public class User extends Thread {
     }
     public void CheckReceiveFiles() throws Exception
     {
-        String [] metadata = message.getFilesMetadata().split(FormatCharacters.marker + "");
+        String input =  message.getFilesMetadata();
+        if(input.length() == 0) return;
+        String [] metadata = input.split(FormatCharacters.marker + "");
         String fnames = metadata[0];
         final long totalSize = Integer.valueOf(metadata[1]);
         final int count = Integer.valueOf(metadata[2]);
         if(count == 0) return;
         String []fileNames = new String[count];
         int [] fileIds = new int[count];
-        String [] tmp = fnames.split("|");
+        String [] tmp = fnames.split("\\|");
         if(count != tmp.length / 2 || tmp.length % 2 != 0) throw new Exception("Incorect file names & ids");
         for(int i = 0; i < count; i++)
         {
@@ -195,18 +210,38 @@ public class User extends Thread {
                  int res;
                  uMessageBox msg = new uMessageBox(String.format("вы хотите принять %d файла(ов) с общим размером %d ?",
                          count, totalSize), SWT.OK|SWT.CANCEL);
-                 res = msg.open();
-                 if(res == SWT.OK)
-                 {
-                    if(receiveFiles == null || !receiveFiles.isAlive())  {
-                        if (receiveFiles != null && !receiveFiles.isClosed()) receiveFiles.Close();
-                        receiveFiles = new ReceiveFileDialogView("Receive");
-                        //receiveFiles.ReceiveFiles(fileIds, fileNames);
-                    }else {
-                       // receiveFiles.AddFileToQuene(fileIds, fileNames);
-                    }
-                 }
+                 // ниче умней я не придумал
+                 result = msg.open();
             }
-        });
+       });
+      if(result == SWT.OK)
+      {
+          if(receiveFiles == null || !receiveFiles.isAlive())  {
+               if (receiveFiles != null && !receiveFiles.isClosed()) receiveFiles.Close();
+                   receiveFiles = new ReceiveFileDialogView("Receive");
+                   receiveFiles.ReceiveFiles(fileIds, fileNames);
+               }else {
+                   receiveFiles.AddFileToQuene(fileIds, fileNames);
+               }
+       }
     }
+}
+class TimerTask_CheckFiles extends TimerTask
+{
+
+
+    @Override
+    public void run() {
+       
+        try {
+
+          Global.getUser().CheckReceiveFiles();
+          Global.getUser().SheduleNewTimerForCheckFiles();
+
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+    }
+
 }
