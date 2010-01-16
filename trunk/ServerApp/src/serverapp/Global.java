@@ -20,6 +20,8 @@ public class Global {
         public static String dbUrl = "jdbc:mysql://127.0.0.1:3306/qMessenger";
         public static String codePage = "UTF8";
         public static String saveFilePath = "c:\\2\\";
+        public static String DataBaseLogin = "root";
+        public static String DataBasePassword = "admin";
 
 
         public static String XmlTree;

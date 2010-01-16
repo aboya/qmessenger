@@ -45,8 +45,8 @@ public class dbConnection {
         Properties properties = new Properties();
         properties.setProperty("useUnicode","true");
         properties.setProperty("characterEncoding",Global.codePage);
-        properties.setProperty("user",userName);
-        properties.setProperty("password",password);
+        properties.setProperty("user",Global.DataBaseLogin);
+        properties.setProperty("password",Global.DataBasePassword);
         conn = DriverManager.getConnection (url, properties);
         cStmt = conn.createStatement();
     }
@@ -78,6 +78,4 @@ public class dbConnection {
             Log.WriteException(e);
         }
     }
-
-
 }
