@@ -12,6 +12,7 @@ import java.io.*;
  */
 public class Main {
     public static void main(String[] args) {
+        String path = System.getProperty("user.dir");
         ApplicationSettings.Initialize();
         ApplicationSettings.saveProperties();
         FacutlyTree tr = new FacutlyTree("Tree.xml");

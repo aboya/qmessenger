@@ -42,7 +42,7 @@ public class dbConnection {
     }
     public void Connect() throws Exception
     {
-        Properties properties=new Properties();
+        Properties properties = new Properties();
         properties.setProperty("useUnicode","true");
         properties.setProperty("characterEncoding",Global.codePage);
         properties.setProperty("user",userName);

@@ -6,7 +6,8 @@
 package serverapp;
 
 import java.sql.ResultSet;
-import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 /**
@@ -43,7 +44,7 @@ public class dbFunc {
         connection.Close();
         return true;
     }
-    public static ResultSet getUserTreeName(dbConnection connection, String ip, String treeName, Integer TreeID) throws Exception
+    public static ResultSet getUserTreeName(dbConnection connection, String ip) throws Exception
     {
         
         connection.Connect();
@@ -88,5 +89,79 @@ public class dbFunc {
         }
         connection.Close();
         return results;
+    }
+    public static void SendFileToUser(dbConnection connection, String fromIp, Integer [] whereIds, String fileName, String filePath, Long checkSum)
+    {
+        int fromTreeId;
+        ResultSet rs = null;
+        try {
+            rs = getUserTreeName(connection, fromIp.substring(1));
+            fromTreeId = rs.getInt("TreeID");
+            connection.Connect();
+            fileName = EscapeCharecters(fileName);
+            filePath = EscapeCharecters(filePath);
+            for(int i = 0; i < whereIds.length; i++)
+            {
+                connection.ExecuteNonQuery(
+                    String.format("call SendFile('%s', '%s', %d, %d, '%s')",fileName, filePath, fromTreeId, whereIds[i], checkSum.toString())
+                        );
+            }
+
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+        try {
+           if(rs != null) rs.close();
+        }catch(Exception ee) {}
+    }
+    public static String EscapeCharecters(String s)
+    {
+
+        String res = "";
+        Set <Character> chars = new TreeSet<Character>();
+        chars.add('\\');
+        chars.add('\'');
+        for(int i = 0; i < s.length(); i++ )
+        {
+            if(chars.contains(s.charAt(i)))
+                res += '\\';
+            res += s.charAt(i);
+        }
+        return res;
+
+    }
+    public static ResultSet getFilesForUser(dbConnection connection, String userIp)
+    {
+        ResultSet rs = null;
+        int TreeID;
+        try {
+            rs = getUserTreeName(connection, userIp);
+            connection.Connect();
+            TreeID = rs.getInt("TreeID");
+            rs =  connection.ExecuteQuery(String.format("call GetFilesFor(%d)", TreeID));
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+        connection.Close();
+        return rs;
+    }
+    public static ResultSet getFilePathByID(dbConnection connection, int id)
+    {
+        String path = null;
+        ResultSet rs = null;
+        try {
+            connection.Connect();
+            rs = connection.ExecuteQuery(String.format("call getFilePathByID(%d)", id));
+            
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+        try {
+            connection.Close();
+        }catch(Exception ee) {}
+        return rs;
     }
 }

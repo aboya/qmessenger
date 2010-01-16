@@ -20,7 +20,7 @@ import java.util.zip.CheckedInputStream;
 public class Utils {
 
     public static String GetDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss.SSSS");
         Date date = new Date();
         return dateFormat.format(date);
    }

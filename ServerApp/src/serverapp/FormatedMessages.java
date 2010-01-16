@@ -5,7 +5,10 @@
 
 package serverapp;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.net.Socket;
+import java.sql.ResultSet;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -32,6 +35,7 @@ public class FormatedMessages extends Messages{
             else if(metaData.equals(FormatCharacters.RequestStructureTree)) this.ResponseStructureTree();
             else if(metaData.equals(FormatCharacters.RequestRegistration)) this.RegisterUser();
             else if(metaData.equals(FormatCharacters.getOfflineMessages)) this.SendOfflineMessages();
+            else if(metaData.equals(FormatCharacters.getFiles)) this.getListFiles();
         }
     }
     public void SendOfflineMessages() throws Exception
@@ -85,5 +89,44 @@ public class FormatedMessages extends Messages{
         String structureId = this.ReceiveMessage();
         String result = this.getUser().RegisterUser(structureId).toString();
         this.SendMessageSync(result);   
+    }
+    public void getListFiles()
+    {
+        ResultSet rs = null;
+        long totalSize;
+        int count;
+        dbConnection connection = this.getUser().connection;
+        try {
+           rs = dbFunc.getFilesForUser(connection, this.getUser().ip);
+           String fnames = "";
+           
+           File f;
+           totalSize = 0;
+           count = 0;
+           while(rs.next())
+           {
+               fnames += rs.getString("FileName") + "|" + rs.getString("ID") + "|";
+               f = new File(rs.getString("Path"));
+               totalSize += f.length();
+               count ++;
+           }
+
+           String metadata;
+           metadata = fnames.substring(0, fnames.length() - 1)+  // remove last "|"
+                      FormatCharacters.marker +
+                      String.valueOf(totalSize) +
+                      FormatCharacters.marker +
+                      String.valueOf(count) +
+                      FormatCharacters.marker;
+           
+           this.SendMessageSync(metadata);
+
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+        try {
+            if(rs != null) rs.close();
+        }catch(Exception ee){}
     }
 }

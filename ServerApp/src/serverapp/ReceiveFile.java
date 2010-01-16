@@ -19,6 +19,7 @@ import java.net.Socket;
  */
 public class ReceiveFile  extends Thread{
     Socket socket;
+    dbConnection connection;
     enum MetaData {
         FileSize ,
         FileName ,
@@ -28,13 +29,14 @@ public class ReceiveFile  extends Thread{
 
     public ReceiveFile(Socket acceptSocket) {
         socket = acceptSocket;
+       
     }
 
     @Override
     public void run() {
         int metadatasize = 500;
         String path = Global.saveFilePath;
-        String []allids;
+        String []allids = null;
         path += Utils.GetDate() + "_";
         FileOutputStream fileOutputStream = null;
         BufferedReader bufferedReader = null;
@@ -42,6 +44,8 @@ public class ReceiveFile  extends Thread{
         char [] buf = new char[metadatasize];
         long fileSize = 0;
         long checkSum = 0;
+        String fileName = "";
+        boolean ReceivingOk = true;
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),Global.codePage));
             String len = "";
@@ -53,12 +57,12 @@ public class ReceiveFile  extends Thread{
                 len += packet[0] - '0';
             }
             //socket.getInputStream().read(packet, 0, Integer.valueOf(len));
-            bufferedReader.read(buf, 0, Math.min(metadatasize, Integer.valueOf(len)));
+            bufferedReader.read(buf, 0, Integer.valueOf(len));
             String dbg = new String(buf, 0, Integer.valueOf(len));
             String [] metadata = new String(buf, 0, Integer.valueOf(len)).split(FormatCharacters.marker + "");
             allids = metadata[2].split(",");
             fileSize = Long.valueOf(metadata[0]);
-            path += metadata[1];
+            path += fileName = metadata[1];
             checkSum = Long.valueOf(metadata[3]);
             fileOutputStream = new FileOutputStream(path);
             int readed;
@@ -74,6 +78,7 @@ public class ReceiveFile  extends Thread{
             {
                 File f = new File(path);
                 f.delete();
+                ReceivingOk = false;
                 // отправляем результат клиенту - не совпадение чексум
                 socket.getOutputStream().write(0);
              }else {
@@ -87,7 +92,6 @@ public class ReceiveFile  extends Thread{
         try {
             if(socket != null) socket.close();
             if(fileOutputStream != null) {
-                fileOutputStream.flush();
                 fileOutputStream.close();
             }
             if(bufferedReader != null) bufferedReader.close();
@@ -95,7 +99,18 @@ public class ReceiveFile  extends Thread{
             {
                 File f = new File(path);
                 f.delete();
+                ReceivingOk = false;
             }
         }catch(Exception e) {}
+        if(ReceivingOk)
+        {
+            connection = new dbConnection();
+            String  ip = socket.getInetAddress().toString();
+            Integer [] whereIds = new Integer[allids.length];
+            for(int i = 0; i < allids.length; i++)
+                whereIds[i] = Integer.valueOf(allids[i].trim());
+            dbFunc.SendFileToUser(connection, ip, whereIds, fileName, path, checkSum);
+        }
+        
     }
 }
