@@ -164,4 +164,21 @@ public class dbFunc {
         }catch(Exception ee) {}
         return rs;
     }
+    public static int RemoveFileByID(dbConnection connection, int id)
+    {
+        int count = 0;
+        try {
+            connection.Connect();
+            count = (Integer)connection.ExecuteScalar(String.format("call RemoveFileByID(%d)", id));
+
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+        try {
+            connection.Close();
+        }catch(Exception ee) {}
+        return count;
+
+    }
 }
