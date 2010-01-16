@@ -66,6 +66,7 @@ public class ReceiveFile  extends Thread{
             checkSum = Long.valueOf(metadata[3]);
             fileOutputStream = new FileOutputStream(path);
             int readed;
+            Log.Write("ReceiveFileSize:" + String.valueOf(fileSize));
             while(fileSize > 0)
             {
                 readed = socket.getInputStream().read(packet, 0, Global.PACKET_SIZE);

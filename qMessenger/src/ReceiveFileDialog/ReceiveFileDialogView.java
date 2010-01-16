@@ -25,7 +25,6 @@ import clientapp.Global;
 import clientapp.Log;
 import clientapp.Pair;
 import clientapp.Utils;
-import com.sun.xml.internal.ws.message.stream.StreamAttachment;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;

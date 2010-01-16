@@ -170,7 +170,6 @@ public class SendFileDialogView extends Thread {
             currenttime = lasttime = Utils.GetDate();
             while(len > 0)
             {
-                 
                 readed = fileInputStream.read(packet, 0,  Global.PACKET_SIZE);
                 len -= readed;
                 if(socket.isClosed() ||  !socket.isConnected()) break;
@@ -184,6 +183,7 @@ public class SendFileDialogView extends Thread {
                     this.CheckWait();
                 }
             }
+            socket.getOutputStream().flush();
             status = socket.getInputStream().read() == 1;
         }catch(Exception ee)
         {
