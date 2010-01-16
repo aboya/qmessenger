@@ -4,6 +4,7 @@
  */
 
 package clientapp;
+import ReceiveFileDialog.ReceiveFileDialogView;
 import RegistrationForm.RegistrationForm;
 import SendFileDialog.SendFileDialogView;
 import UserGUIControls.uMessageBox;
@@ -25,6 +26,7 @@ public class User extends Thread {
     public String structTreeXml;
     private ScreenView screenView;
     SendFileDialogView sendFiles = null;
+    ReceiveFileDialogView receiveFiles = null;
     ServerSocket inp;
     public User()
     {
@@ -166,5 +168,45 @@ public class User extends Thread {
 
     public ScreenView getScreenView() {
         return screenView;
+    }
+    public ReceiveFileDialogView getReceiveFileDialogView()
+    {
+        return receiveFiles;
+    }
+    public void CheckReceiveFiles() throws Exception
+    {
+        String [] metadata = message.getFilesMetadata().split(FormatCharacters.marker + "");
+        String fnames = metadata[0];
+        final long totalSize = Integer.valueOf(metadata[1]);
+        final int count = Integer.valueOf(metadata[2]);
+        if(count == 0) return;
+        String []fileNames = new String[count];
+        int [] fileIds = new int[count];
+        String [] tmp = fnames.split("|");
+        if(count != tmp.length / 2 || tmp.length % 2 != 0) throw new Exception("Incorect file names & ids");
+        for(int i = 0; i < count; i++)
+        {
+            fileNames[i] = tmp[2 * i];
+            fileIds[i] = Integer.valueOf(tmp[2 * i + 1]);
+        }
+        Global.getDisplay().syncExec(new Runnable() {
+
+            public void run() {
+                 int res;
+                 uMessageBox msg = new uMessageBox(String.format("вы хотите принять %d файла(ов) с общим размером %d ?",
+                         count, totalSize), SWT.OK|SWT.CANCEL);
+                 res = msg.open();
+                 if(res == SWT.OK)
+                 {
+                    if(receiveFiles == null || !receiveFiles.isAlive())  {
+                        if (receiveFiles != null && !receiveFiles.isClosed()) receiveFiles.Close();
+                        receiveFiles = new ReceiveFileDialogView("Receive");
+                        //receiveFiles.ReceiveFiles(fileIds, fileNames);
+                    }else {
+                       // receiveFiles.AddFileToQuene(fileIds, fileNames);
+                    }
+                 }
+            }
+        });
     }
 }

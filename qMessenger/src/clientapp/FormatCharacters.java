@@ -24,4 +24,5 @@ public class FormatCharacters {
         public static String RequestRegistration = "reqReg";
         public static String getOfflineMessages = "getOffline";
         public static String SendFile = "sndFiles";
+        public static String getFiles = "getFiles";
 }
