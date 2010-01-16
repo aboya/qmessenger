@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @author Администратор
  */
 public class ReceiveFileDialogView extends Thread {
-     final Shell shell;
+     Shell shell;
      final Display display;
      boolean isClosed = false; // нужна для корректного выхода
      boolean pleaseWait = false;
@@ -70,8 +70,13 @@ public class ReceiveFileDialogView extends Thread {
 
 
     public ReceiveFileDialogView(final String WindowName) {
-        display = Display.getCurrent();
-        shell = new Shell(display);
+        display = Global.getDisplay();
+        display.syncExec(new Runnable() {
+            public void run() {
+                shell = new Shell(display);
+            }
+        });
+        
         userControls = new ReceiveFileDialogControls(shell, display);
 
         final Listener resizeListner = new Listener() {
@@ -116,18 +121,22 @@ public class ReceiveFileDialogView extends Thread {
         }
         this.start();
     }
-    public void ReceiveFiles(int [] fileIds, String [] fileNames)
+    public void ReceiveFiles(final int [] fileIds, final String [] fileNames)
     {
-        Table table = userControls.getTable();
-        table.removeAll();
-        fileQuene.clear();
-        for(int i = 0; i < fileNames.length; i++)
-        {
-            TableItem item = new TableItem(table, i);
-            item.setText(0, fileNames[i]);
-            item.setText(1, "0%");
-            fileQuene.addLast(new Pair<String, Integer >(fileNames[i], fileIds[i]));
-        }
+        Global.getDisplay().syncExec(new Runnable() {
+            public void run() {
+                Table table = userControls.getTable();
+                table.removeAll();
+                fileQuene.clear();
+                for(int i = 0; i < fileNames.length; i++)
+                {
+                    TableItem item = new TableItem(table, i);
+                    item.setText(0, fileNames[i]);
+                    item.setText(1, "0%");
+                    fileQuene.addLast(new Pair<String, Integer >(fileNames[i], fileIds[i]));
+                }
+            }
+        });
         this.start();
     }
     @Override
@@ -155,12 +164,13 @@ public class ReceiveFileDialogView extends Thread {
         long lasttime = 0, currenttime = 0;
         boolean status = true;
         String metadata;
-        long fileSize, checkSum;
+        long fileSize, checkSum, Len;
         String fileName = "";
         try {
             socket = new Socket(Global.ServAddr, Global.ServerFileDownloadPort);
             metadata = ids.toString();
-            socket.getOutputStream().write((Integer.valueOf(metadata.length()) + FormatCharacters.marker + metadata).getBytes());
+            metadata = Integer.valueOf(metadata.length()) + String.valueOf(FormatCharacters.marker) + metadata;
+            socket.getOutputStream().write( metadata.getBytes());
             String _len = "";
             int len;
             int readed;
@@ -179,11 +189,20 @@ public class ReceiveFileDialogView extends Thread {
             fileName = arr[1];
             checkSum = Long.valueOf(arr[2]);
             fileOutputStream = new FileOutputStream(Global.lastSavePath + fileName);
+            Len = fileSize;
             while(fileSize > 0)
             {
                 readed =  socket.getInputStream().read(packet, 0, Global.PACKET_SIZE);
                 if(readed <= 0) throw new Exception("Connection closed ..");
                 fileOutputStream.write(packet, 0, readed);
+                fileSize -= readed;
+                currenttime = Utils.GetDate();
+                if(currenttime - lasttime > 1000)
+                {
+                    lasttime = currenttime;
+                    this.SetStatus(String.format("%.2f%%", 100.0 - 100.0 * fileSize / Len));
+                    this.CheckWait();
+                }
             }
             fileOutputStream.close();
             if( Utils.Checksum(Global.lastSavePath + fileName) != checkSum )
@@ -207,7 +226,6 @@ public class ReceiveFileDialogView extends Thread {
         {
             if(status) {
                 this.SetStatus(String.format("%.2f%%", 100.0));
-                
             }
             else {
                 this.SetStatus("Failed");
@@ -255,7 +273,6 @@ public class ReceiveFileDialogView extends Thread {
         try {
             // жестко вырубаем текущий аплоад
             this.socket.close();
-            if(fileOutputStream != null) fileOutputStream.close();
             this.interrupt();
         }catch(Exception e) {}
     }

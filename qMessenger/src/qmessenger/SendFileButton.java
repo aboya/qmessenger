@@ -33,7 +33,7 @@ public class SendFileButton extends BaseControl {
     }
     @Override
     public void Resize(Rectangle rect) {
-       btn.setBounds(10, rect.width - 200, 50, 20);
+       btn.setBounds(10, rect.height - 200, 50, 20);
     }
 
     @Override
