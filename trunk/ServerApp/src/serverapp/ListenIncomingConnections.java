@@ -45,8 +45,6 @@ public class ListenIncomingConnections {
            while(true)
            {
               try {
-
-                   
                    Socket inputSocket,outputSocket = null;
                    inputSocket = s.accept();
                    outputSocket = new Socket(inputSocket.getInetAddress(), Global.ClientPort);
@@ -62,7 +60,6 @@ public class ListenIncomingConnections {
 
     public class WaitForReceiveFiles extends Thread
     {
-        
 
         @Override
         public void run() {
@@ -79,8 +76,6 @@ public class ListenIncomingConnections {
                    receiveFile = new ReceiveFile(acceptSocket);
                    listenSocket.close();
                    receiveFile.start();
-
-
                 }catch(Exception e)
                 {
                     Log.WriteException(e);
@@ -90,6 +85,36 @@ public class ListenIncomingConnections {
                 }catch(Exception ee) {}
             }
             
+        }
+
+    }
+    public class WaitForSendFiles extends Thread
+    {
+
+        @Override
+        public void run() {
+
+            while(true)
+            {
+                ServerSocket listenSocket = null;
+                Socket acceptSocket = null;
+                SendFile sendFile = null;
+                try {
+
+                   listenSocket = new ServerSocket(Global.OutcomingFilePort);
+                   acceptSocket = listenSocket.accept();
+                   sendFile = new SendFile(acceptSocket);
+                   listenSocket.close();
+                   sendFile.start();
+                }catch(Exception e)
+                {
+                    Log.WriteException(e);
+                }
+                try {
+                   if(listenSocket != null ) listenSocket.close();
+                }catch(Exception ee) {}
+            }
+
         }
 
     }

@@ -108,7 +108,7 @@ public class User extends Thread{
     }
     private void getUserTreeName() throws Exception
     {
-         ResultSet r = dbFunc.getUserTreeName(connection, ip, this.TreeName, this.TreeId);
+         ResultSet r = dbFunc.getUserTreeName(connection, ip);
          this.TreeName = r.getString("TreeName");
          this.TreeId = r.getInt("TreeID");
          r.close();
