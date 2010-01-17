@@ -61,12 +61,10 @@ public class ScreenView {
          }
          display.dispose();
          Global.getUser().Disconnect();
-         //display.addListener(SWT.CLOSE, resizeListner);
          
    }
    public void AddMessageToScreen(String message)
    {
-       
       userControls.AddMessageToScreen(message);
    }
    public void Close()
@@ -92,5 +90,4 @@ public class ScreenView {
             }
         );
    }
-
 }
