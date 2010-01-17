@@ -153,8 +153,9 @@ public class UserList extends  BaseControl {
         while(!Q.isEmpty())
         {
             treeItem = Q.getFirst();
+
             Q.removeFirst();
-            if(treeItem.getChecked()) 
+            if(treeItem.getChecked() && treeItem.getItemCount() == 0) // select only last node
                 selectedIds.add(this.findIdByName(treeItem.getText()));
             
             for(i = 0; i < treeItem.getItemCount(); i++)

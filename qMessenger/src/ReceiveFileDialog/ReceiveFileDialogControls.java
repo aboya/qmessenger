@@ -77,10 +77,10 @@ public class ReceiveFileDialogControls {
                                     if(startPauseButton.getButton().getText().equals("Pause"))
                                     {
                                         startPauseButton.getButton().setText("Start");
-                                        Global.getUser().getSendFileDialogView().Pause();
+                                        Global.getUser().getReceiveFileDialogView().Pause();
                                     }
                                     else {
-                                        Global.getUser().getSendFileDialogView().Resume();
+                                        Global.getUser().getReceiveFileDialogView().Resume();
                                         startPauseButton.getButton().setText("Pause");
                                     }
                                 }catch(Exception e)

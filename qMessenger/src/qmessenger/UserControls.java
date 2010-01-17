@@ -99,8 +99,9 @@ public class UserControls {
                 fd.setFilterPath(Global.lastOpenPath);
                 String[] filterExt = { "*.*" };
                 fd.setFilterExtensions(filterExt);
-                fd.open();
                 String path = fd.getFilterPath() + "\\";
+                fd.open();
+                if(fd.getFileNames().length == 0) return;
                 try {
                     Global.getUser().SendFiles(path, fd.getFileNames(),ids);
                 }catch(Exception ee)

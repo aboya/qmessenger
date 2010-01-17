@@ -33,7 +33,10 @@ public class User extends Thread {
     Timer timer = null;
     public void SheduleNewTimerForCheckFiles()
     {
-        if(timer != null ) timer.purge();
+        if(timer != null ) {
+           // timer.purge();
+            timer.cancel(); // this call garbage collector
+        }
         timer = new Timer();
         taskCheckFiles = new TimerTask_CheckFiles();
         timer.schedule(taskCheckFiles, 10000);
@@ -237,7 +240,7 @@ class TimerTask_CheckFiles extends TimerTask
 
           Global.getUser().CheckReceiveFiles();
           Global.getUser().SheduleNewTimerForCheckFiles();
-
+          this.cancel();
         }catch(Exception ee)
         {
             Log.WriteException(ee);

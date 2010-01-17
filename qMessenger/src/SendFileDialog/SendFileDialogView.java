@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @author Администратор
  */
 public class SendFileDialogView extends Thread {
-     final Shell shell;
+     Shell shell;
      final Display display;
      boolean isClosed = false; // нужна для корректного выхода
      boolean pleaseWait = false;
@@ -55,9 +55,13 @@ public class SendFileDialogView extends Thread {
 
     public SendFileDialogView(final String WindowName) {
         display = Display.getCurrent();
-        shell = new Shell(display);
+        display.syncExec(new Runnable() {
+            public void run() {
+                shell = new Shell(display);
+            }
+        });
+        
         userControls = new SendFileDialogControls(shell, display);
-       
         final Listener resizeListner = new Listener() {
                public void handleEvent(Event e)  {
                    shell.setRedraw(false);
@@ -238,7 +242,11 @@ public class SendFileDialogView extends Thread {
         {
             // если вызовим close - сработает перехватчик событий и вызовит эту функцию опять, и получится
             // бесконечная рекурсия
-            this.shell.dispose();
+            Global.getDisplay().syncExec(new Runnable() {
+                public void run() {
+                     shell.dispose();
+                }
+            });
         }
         try {
             // жестко вырубаем текущий аплоад

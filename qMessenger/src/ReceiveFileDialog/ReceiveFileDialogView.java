@@ -92,7 +92,7 @@ public class ReceiveFileDialogView extends Thread {
          };
         final Listener closeListner = new Listener() {
                public void handleEvent(Event e)  {
-                   Global.getUser().getSendFileDialogView().Close();
+                   Global.getUser().getReceiveFileDialogView().Close();
                 }
          };
          display.syncExec(
@@ -137,7 +137,7 @@ public class ReceiveFileDialogView extends Thread {
                 }
             }
         });
-        this.start();
+        this.run();
     }
     @Override
     public void run()
@@ -268,7 +268,11 @@ public class ReceiveFileDialogView extends Thread {
         {
             // если вызовим close - сработает перехватчик событий и вызовит эту функцию опять, и получится
             // бесконечная рекурсия
-            this.shell.dispose();
+            Global.getDisplay().syncExec(new Runnable() {
+                public void run() {
+                    shell.dispose();
+                }
+            });
         }
         try {
             // жестко вырубаем текущий аплоад
@@ -309,7 +313,7 @@ public class ReceiveFileDialogView extends Thread {
         for(int i = 0; i < lineNumbers.length; i++)
         {
             if(lineNumbers[i] == index) {
-                this.RemoveCurrentSendFileFromQuene();
+                this.RemoveCurrentReceiveFileFromQuene();
                 break;
             }
         }
@@ -321,7 +325,7 @@ public class ReceiveFileDialogView extends Thread {
         }
 
     }
-    public void RemoveCurrentSendFileFromQuene()
+    public void RemoveCurrentReceiveFileFromQuene()
     {
         // жестко вырубаем загрузку файла
         try {
@@ -343,12 +347,12 @@ public class ReceiveFileDialogView extends Thread {
 }
  class RemoveTask extends Thread
  {
-     ReceiveFileDialogView sendFile;
+     ReceiveFileDialogView receiveFile;
      int []selectedIndexes;
      Table table;
 
      public RemoveTask(ReceiveFileDialogView view, int [] indexes, Table _table) {
-         this.sendFile = view;
+         this.receiveFile = view;
          this.selectedIndexes = indexes;
          this.table = _table;
      }
@@ -358,18 +362,18 @@ public class ReceiveFileDialogView extends Thread {
            if(selectedIndexes.length == 0) return;
            try {
                   // делаем паузу для синхронизации
-                 Global.getUser().getSendFileDialogView().Pause();
+                 Global.getUser().getReceiveFileDialogView().Pause();
            }catch(Exception e)
            {
                Log.WriteException(e);
            }
-           sendFile.RemoveFilesFromQuene(selectedIndexes);
+           receiveFile.RemoveFilesFromQuene(selectedIndexes);
            Global.getDisplay().syncExec(new Runnable() {
                   public void run() {
                        table.remove(selectedIndexes);
                   }
                 });
-           Global.getUser().getSendFileDialogView().Resume();
+           Global.getUser().getReceiveFileDialogView().Resume();
     }
 }
 
