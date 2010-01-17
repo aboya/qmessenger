@@ -25,17 +25,14 @@ import clientapp.Global;
 import clientapp.Log;
 import clientapp.Pair;
 import clientapp.Utils;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.concurrent.Semaphore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -74,6 +71,9 @@ public class ReceiveFileDialogView extends Thread {
         display.syncExec(new Runnable() {
             public void run() {
                 shell = new Shell(display);
+                DirectoryDialog dlg = new DirectoryDialog(shell);
+                dlg.setFilterPath(Global.lastSavePath);
+                Global.lastSavePath = dlg.open() + "\\";
             }
         });
         
