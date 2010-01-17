@@ -26,15 +26,17 @@ public class ScreenView {
     Display display;
     public ScreenView() {
         display = Global.getDisplay();
-        shell = new Shell(display);
+        shell = new Shell(display, SWT.CLOSE | SWT.RESIZE);
         shell.setText("qMessenger");
         Listener resizeListner = new Listener() {
                public void handleEvent(Event e)  {
+                   shell.setRedraw(false);
                    Rectangle rect = shell.getBounds();
-                   rect.width = Math.max(rect.width, 300);
+                   rect.width = Math.max(rect.width, 500);
                    rect.height = Math.max(rect.height, 500);
                    shell.setBounds(rect);
                    userControls.Resize(rect);
+                   shell.setRedraw(true);
                 }
          };
         shell.addListener(SWT.Resize, resizeListner);
