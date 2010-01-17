@@ -19,7 +19,7 @@ public class Global {
         public static int MAXLEN = 18;
         public static String dbUrl = "jdbc:mysql://127.0.0.1:3306/qMessenger";
         public static String codePage = "UTF8";
-        public static String saveFilePath = "c:\\2\\";
+        public static String saveFilePath = System.getProperty("java.io.tmpdir") + "qServer\\";
         public static String DataBaseLogin = "root";
         public static String DataBasePassword = "admin";
 
