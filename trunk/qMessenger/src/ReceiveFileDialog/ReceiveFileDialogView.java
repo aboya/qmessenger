@@ -219,10 +219,6 @@ public class ReceiveFileDialogView extends Thread {
         try {
            if(this.fileOutputStream != null) this.fileOutputStream.close();
        } catch(Exception ee) {}
-
-        try {
-           if(fileOutputStream != null) fileOutputStream.close();
-       }catch(Exception ee) {}
         try{
            if(socket != null) socket.close();
         }catch(Exception ee) {}
