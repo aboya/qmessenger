@@ -205,7 +205,7 @@ public class ReceiveFileDialogView extends Thread {
                 }
             }
             fileOutputStream.close();
-            if( Utils.Checksum(Global.lastSavePath + fileName) != checkSum )
+            if(Utils.Checksum(Global.lastSavePath + fileName) != checkSum)
             {
                 status = false;
             }else {
@@ -217,10 +217,14 @@ public class ReceiveFileDialogView extends Thread {
             Log.WriteException(ee);
         }
         try {
-
            if(this.fileOutputStream != null) this.fileOutputStream.close();
-           if(socket != null) socket.close();
+       } catch(Exception ee) {}
+
+        try {
            if(fileOutputStream != null) fileOutputStream.close();
+       }catch(Exception ee) {}
+        try{
+           if(socket != null) socket.close();
         }catch(Exception ee) {}
         if(!this.isClosed())
         {

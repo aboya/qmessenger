@@ -79,10 +79,10 @@ public class ScreenView {
                 }
             }
         );
-      
    }
    public void setStatusText(final String txt)
    {
+       if(shell.isDisposed()) return;
        display.syncExec(
             new Runnable() {
                 public void run(){

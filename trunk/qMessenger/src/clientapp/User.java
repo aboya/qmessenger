@@ -105,10 +105,13 @@ public class User extends Thread {
                 Log.WriteException(e);
                 try {
                     message.CloseConnection();
-                    inp.close();
                 }catch(Exception ee){}
-               // this.getScreenView().Close();
+                try{
+                   inp.close();
+                }catch(Exception ee) {}
+                
             }
+            // trying reconnect
             while(true)
             {
                 try {
@@ -120,6 +123,7 @@ public class User extends Thread {
                     message.ReConnect(SocketIn, SocketOut);
                     this.AuthenticateUser();
                     this.getScreenView().setStatusText("Connected");
+                    this.SheduleNewTimerForCheckFiles();
                     break;
                 }catch(Exception ee)
                 {
