@@ -30,6 +30,7 @@ public class FormatedMessages extends Messages{
     {
         while(true) {
             String metaData = this.ReceiveMessage();
+            Log.Write(metaData);
             if(metaData.equals(FormatCharacters.TextMessege)) this.ReceiveTextMessage();
             else if(metaData.equals(FormatCharacters.Auth)) this.AuthenticateUser();
             else if(metaData.equals(FormatCharacters.RequestStructureTree)) this.ResponseStructureTree();
