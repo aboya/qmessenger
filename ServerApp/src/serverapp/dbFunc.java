@@ -163,11 +163,11 @@ public class dbFunc {
     }
     public static int RemoveFileByID(dbConnection connection, int id)
     {
-        int count = 0;
+        Long count = 0L;
         try {
             connection.Connect();
-            count = (Integer)connection.ExecuteScalar(String.format("call RemoveFileByID(%d)", id));
-
+            count = (Long) connection.ExecuteScalar(String.format("call RemoveFileByID(%d)", id));
+            if(count == null) count = 0L;
         }catch(Exception ee)
         {
             Log.WriteException(ee);
@@ -175,7 +175,6 @@ public class dbFunc {
         try {
             connection.Close();
         }catch(Exception ee) {}
-        return count;
-
+        return count == 0 ? 0 : 1;
     }
 }

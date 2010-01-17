@@ -91,18 +91,25 @@ public class ReceiveFile  extends Thread{
             Log.WriteException(e);
         }
         try {
-            if(socket != null) socket.close();
-            if(fileOutputStream != null) {
-                fileOutputStream.close();
-            }
-            if(bufferedReader != null) bufferedReader.close();
+          if(fileOutputStream != null) fileOutputStream.close();
+        }catch(Exception e) {}
+        try {
+         if(socket != null) socket.close();
+        }catch(Exception ee){}
+        try {
+         if(bufferedReader != null) bufferedReader.close();
+        }catch(Exception ee){}
+        try {
             if(fileSize > 0)
             {
                 File f = new File(path);
                 f.delete();
                 ReceivingOk = false;
             }
-        }catch(Exception e) {}
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
         if(ReceivingOk)
         {
             connection = new dbConnection();

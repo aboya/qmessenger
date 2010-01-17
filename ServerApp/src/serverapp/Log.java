@@ -23,7 +23,7 @@ public class Log {
         System.out.println("Stack Trace:");
         StackTraceElement elems[] = e.getStackTrace();
         for(int i = 0; i < elems.length; i++)
-            System.out.print(elems[i].toString());
+            System.out.println(elems[i].toString());
         System.out.println("---------------------------------------");
     }
     public static void Write(String s)
