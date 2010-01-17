@@ -74,7 +74,6 @@ public class Messages {
              res += new String(c, 0, readed);
              Length -= readed;
         }
-        Log.Write(res + "\n");
         return res;
     }
     protected  String ReceiveMessageSync() throws Exception
@@ -98,7 +97,6 @@ public class Messages {
              res += new String(c, 0, readed);
              Length -= readed;
         }
-        Log.Write(res + ":Sync\n");
         return res;
     }
     public void CloseConnection() throws Exception

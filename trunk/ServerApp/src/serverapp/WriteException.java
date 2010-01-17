@@ -15,6 +15,10 @@ public class WriteException {
         System.out.println("---------------------------------------");
         System.out.println(java.util.Calendar.getInstance().getTime());
         System.out.println(e.toString());
+        System.out.println("Stack Trace:");
+        StackTraceElement elems[] = e.getStackTrace();
+        for(int i = 0; i < elems.length; i++)
+            System.out.print(elems[i].toString());
         System.out.println("---------------------------------------");
     }
 

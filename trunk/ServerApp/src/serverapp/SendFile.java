@@ -74,7 +74,7 @@ public class SendFile extends Thread {
                     String.valueOf(FormatCharacters.marker)+
                     metadata;
             socket.getOutputStream().write(metadata.getBytes());
-            
+            Log.Write(String.valueOf(fileSize));
             while(fileSize > 0)
             {
                 readed = fileInputStream.read(packet, 0, Global.PACKET_SIZE);

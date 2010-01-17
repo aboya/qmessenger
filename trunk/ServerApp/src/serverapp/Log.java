@@ -17,10 +17,14 @@ import java.io.OutputStreamWriter;
 public class Log {
     public static void WriteException(Exception e)
     {
-        System.out.println("Exception:>>>>>>-----------------------");
+        System.out.println("---------------------------------------");
         System.out.println(java.util.Calendar.getInstance().getTime());
         System.out.println(e.toString());
-        System.out.println("---------------------------------<<<<<<");
+        System.out.println("Stack Trace:");
+        StackTraceElement elems[] = e.getStackTrace();
+        for(int i = 0; i < elems.length; i++)
+            System.out.print(elems[i].toString());
+        System.out.println("---------------------------------------");
     }
     public static void Write(String s)
     {
