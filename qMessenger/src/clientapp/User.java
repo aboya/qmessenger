@@ -60,6 +60,7 @@ public class User extends Thread {
             Log.WriteException(e);
             uMessageBox messageBox = new uMessageBox("Cannot Connect to server",  SWT.ICON_ERROR);
             messageBox.open();
+            if(timer != null) timer.cancel();
             return;
         }
         try {
@@ -151,13 +152,16 @@ public class User extends Thread {
     }
     public void Disconnect()
     {
+        if(timer != null) timer.cancel();
         try {
             message.CloseConnection();
-            this.interrupt();
         }catch(Exception e)
         {
             Log.WriteException(e);
         }
+        try {
+             this.interrupt();
+        }catch(Exception ee) {  }
     }
     public boolean RegisterUser(int structureId) throws Exception
     {
