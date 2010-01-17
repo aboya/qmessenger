@@ -51,7 +51,6 @@ public class dbFunc {
         ResultSet res = connection.ExecuteQuery(
                                    String.format("call getUserTreeName('%s')", ip)
                                    );
-
         if(res.next())
         {
             return res;
@@ -106,7 +105,6 @@ public class dbFunc {
                     String.format("call SendFile('%s', '%s', %d, %d, '%s')",filePath, fileName, fromTreeId, whereIds[i], checkSum.toString())
                         );
             }
-
         }catch(Exception ee)
         {
             Log.WriteException(ee);
@@ -117,7 +115,6 @@ public class dbFunc {
     }
     public static String EscapeCharecters(String s)
     {
-
         String res = "";
         Set <Character> chars = new TreeSet<Character>();
         chars.add('\\');
@@ -129,7 +126,6 @@ public class dbFunc {
             res += s.charAt(i);
         }
         return res;
-
     }
     public static ResultSet getFilesForUser(dbConnection connection, String userIp)
     {
