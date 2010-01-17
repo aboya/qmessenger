@@ -35,9 +35,11 @@ public class SendFile extends Thread {
         String path, fileName;
         byte []packet = new byte[Global.PACKET_SIZE];
         FileInputStream fileInputStream = null;
-        File file;
+        File file = null;
         String metadata;
+        boolean ReceiveOk = true;
         int readed;
+        int fileid = 0;
         try {
             while(true)
             {
@@ -48,7 +50,7 @@ public class SendFile extends Thread {
             }
             len = Integer.valueOf(_len);
             socket.getInputStream().read(packet, 0, len);
-            int fileid = 0;
+            
             for(int i = 0, k = 1; i < len; i++ , k *= 10)
                 fileid += (packet[len - i - 1] - '0') * k;
             
@@ -56,10 +58,6 @@ public class SendFile extends Thread {
             if( !rs.next() ) throw new Exception("Ids not found");
             path = rs.getString("Path");
             fileName = rs.getString("FileName");
-
-            try{
-                connection.Close();
-            }catch(Exception asd){}
             
             file = new File(path);
             fileSize = file.length();
@@ -82,20 +80,33 @@ public class SendFile extends Thread {
                 socket.getOutputStream().write(packet, 0, readed);
                 fileSize -= readed;
             }
-            if( dbFunc.RemoveFileByID(connection, fileid) == 0 )
-            {
-                file.delete();
-            }
+
         }catch(Exception ee)
         {
+            ReceiveOk = false;
             Log.WriteException(ee);
         }
         try {
           if(socket != null) socket.close();
+          }catch(Exception ee) {}
+         try {
           if(rs != null) rs.close();
+          }catch(Exception ee) {}
+         try {
           if(fileInputStream != null) fileInputStream.close();
-        }catch(Exception ee)
-        {}
+         }catch(Exception ee) {}
+         try{
+            connection.Close();
+         }catch(Exception asd){}
+        if(ReceiveOk)
+        {
+            try {
+             if( file != null && dbFunc.RemoveFileByID(connection, fileid) == 0 ) file.delete();
+            }catch(Exception ee) {
+                Log.WriteException(ee);
+            }
+        }
+         
     }
 
 
