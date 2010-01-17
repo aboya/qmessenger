@@ -86,6 +86,7 @@ public class ScreenView {
        display.syncExec(
             new Runnable() {
                 public void run(){
+                    if(shell.isDisposed()) return;
                     userControls.SetStatusText(txt);
                 }
             }
