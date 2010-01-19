@@ -16,7 +16,7 @@ public class Global {
         public static int IncomingFilePort = 4900;
         public static int OutcomingFilePort = 4901;
         public static int max_users = 10000;
-        public static int MAXLEN = 18;
+        public static int MAXLEN = 15; // max len of metadata
         public static String dbUrl = "jdbc:mysql://127.0.0.1:3306/qMessenger";
         public static String codePage = "UTF8";
         public static String saveFilePath = System.getProperty("java.io.tmpdir") + "qServer\\";
