@@ -20,15 +20,14 @@ import java.util.Properties;
  * @author Администратор
  */
 public class dbConnection {
-   // Connection conn = null;
-   // CallableStatement cStmt;
      Statement  cStmt;
      Connection conn = null;
-     String url = Global.dbUrl;
-     String userName = "root";
-     String password = "admin";
-
+     Properties properties = new Properties();
     public dbConnection() {
+        properties.setProperty("useUnicode","true");
+        properties.setProperty("characterEncoding",Global.codePage);
+        properties.setProperty("user",Global.DataBaseLogin);
+        properties.setProperty("password",Global.DataBasePassword);
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
          }
@@ -42,12 +41,7 @@ public class dbConnection {
     }
     public void Connect() throws Exception
     {
-        Properties properties = new Properties();
-        properties.setProperty("useUnicode","true");
-        properties.setProperty("characterEncoding",Global.codePage);
-        properties.setProperty("user",Global.DataBaseLogin);
-        properties.setProperty("password",Global.DataBasePassword);
-        conn = DriverManager.getConnection (url, properties);
+        conn = DriverManager.getConnection (Global.dbUrl, properties);
         cStmt = conn.createStatement();
     }
     public ResultSet ExecuteQuery(String cmd) throws Exception
@@ -73,9 +67,7 @@ public class dbConnection {
     {
         try {
             conn.close();
-            conn = null;
-        }catch(Exception e) {
-            Log.WriteException(e);
-        }
+        }catch(Exception e) {}
+        conn = null;
     }
 }
