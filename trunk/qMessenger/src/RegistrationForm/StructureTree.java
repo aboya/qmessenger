@@ -13,6 +13,9 @@ import java.util.TreeMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -41,6 +44,38 @@ public class StructureTree extends BaseControl {
 	tree.setLayoutData(data);
         this.ControlName = "StructureTree";
         treeIds = new TreeMap<String, Integer>();
+        SelectionAdapter sAdapter = new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent se) {
+                TreeItem item = (TreeItem) se.item;
+                if(item.getItemCount() != 0) {
+                    item.setChecked(false);
+                    return ;
+                }
+                LinkedList<TreeItem> Q = new LinkedList<TreeItem>();
+                TreeItem []items = tree.getItems();
+                // uncheck all tree items
+                // because i have small time to research i implement native way to uncheck item
+                // this may be replaced by some function in jdk if its exists
+                for(int i = 0; i < items.length; i++)
+                    Q.add(items[i]);
+                while(!Q.isEmpty())
+                {
+                    TreeItem it = Q.getFirst();
+                    Q.removeFirst();
+                    it.setChecked(false);
+                    items = it.getItems();
+                    for(int i = 0; i < items.length; i++)
+                        Q.addLast(items[i]);
+                }
+                item.setChecked(true);
+            }
+
+        };
+
+
+        tree.addSelectionListener(sAdapter);
     }
     public  void fillTree(String _xml)
     {
