@@ -49,12 +49,15 @@ public class ReceiveFile  extends Thread{
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),Global.codePage));
             String len = "";
+            int metadataLen = 0;
             while(true)
             {
                 socket.getInputStream().read(packet, 0, 1);
                 if(packet[0] == 0) throw  new Exception("Connection closed by user");
                 if(packet[0] == FormatCharacters.marker) break;
                 len += packet[0] - '0';
+                metadataLen++;
+                if(metadataLen > Global.MAXLEN) throw new Exception("Too long metadata length");
             }
             //socket.getInputStream().read(packet, 0, Integer.valueOf(len));
             bufferedReader.read(buf, 0, Integer.valueOf(len));
@@ -118,6 +121,7 @@ public class ReceiveFile  extends Thread{
             for(int i = 0; i < allids.length; i++)
                 whereIds[i] = Integer.valueOf(allids[i].trim());
             dbFunc.SendFileToUser(connection, ip, whereIds, fileName, path, checkSum);
+            connection.Close();
         }
         
     }

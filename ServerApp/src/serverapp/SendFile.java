@@ -41,12 +41,15 @@ public class SendFile extends Thread {
         int readed;
         int fileid = 0;
         try {
+            int metadataLen = 0;
             while(true)
             {
                 readed = socket.getInputStream().read(packet, 0, 1);
                 if(readed <= 0) throw  new Exception("Connection closed by user");
                 if(packet[0] == FormatCharacters.marker) break;
                 _len += packet[0] - '0';
+                metadataLen ++;
+                if(metadataLen > Global.MAXLEN) throw new Exception("To long metadata lenght");
             }
             len = Integer.valueOf(_len);
             socket.getInputStream().read(packet, 0, len);
@@ -95,9 +98,6 @@ public class SendFile extends Thread {
          try {
           if(fileInputStream != null) fileInputStream.close();
          }catch(Exception ee) {}
-         try{
-            connection.Close();
-         }catch(Exception asd){}
         if(ReceiveOk)
         {
             try {
@@ -106,8 +106,6 @@ public class SendFile extends Thread {
                 Log.WriteException(ee);
             }
         }
-         
+        connection.Close();
     }
-
-
 }

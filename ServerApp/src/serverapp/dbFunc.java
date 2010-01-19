@@ -168,9 +168,7 @@ public class dbFunc {
         {
             Log.WriteException(ee);
         }
-        try {
-            connection.Close();
-        }catch(Exception ee) {}
+        connection.Close();
         return count == 0 ? 0 : 1;
     }
 }

@@ -24,6 +24,12 @@ public class Utils {
         Date date = new Date();
         return dateFormat.format(date);
    }
+    public static String GetShortDate()
+    {
+        DateFormat dateFormat = new SimpleDateFormat("dd.HH.mm");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
    public static long Checksum(String fileName) {
         CheckedInputStream cis = null;
         try {
@@ -39,6 +45,4 @@ public class Utils {
           }
         return cis.getChecksum().getValue();
     }
-
-
 }

@@ -60,11 +60,6 @@ public class User extends Thread{
         this.isRun = false;
     }
     //Send message to client
-    public void SendMessage(String message, String srcIp) throws Exception
-    {
-        //messages.SendTextMessage(srcIp + ":" + message);
-        messages.SendTextMessage(this.ip +"asd" + ":" + message);
-    }
     public void SendMessageTo(String message, User srcUser)throws Exception
     {
         messages.SendTextMessage(srcUser.getTreeName() + ":" + message);
