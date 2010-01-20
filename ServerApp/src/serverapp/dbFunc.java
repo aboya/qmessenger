@@ -89,7 +89,7 @@ public class dbFunc {
         connection.Close();
         return results;
     }
-    public static void SendFileToUser(dbConnection connection, String fromIp, Integer [] whereIds, String fileName, String filePath, Long checkSum)
+    public static void SendFileToUser(dbConnection connection, String fromIp, Integer [] whereIds, String fileName, String filePath, Long checkSum) 
     {
         int fromTreeId;
         ResultSet rs = null;
