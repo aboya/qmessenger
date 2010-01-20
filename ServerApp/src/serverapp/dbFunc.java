@@ -150,7 +150,6 @@ public class dbFunc {
         try {
             connection.Connect();
             rs = connection.ExecuteQuery(String.format("call getFilePathByID(%d)", id));
-            
         }catch(Exception ee)
         {
             Log.WriteException(ee);

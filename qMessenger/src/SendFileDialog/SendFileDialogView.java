@@ -174,7 +174,7 @@ public class SendFileDialogView extends Thread {
             currenttime = lasttime = Utils.GetDate();
             while(len > 0)
             {
-                readed = fileInputStream.read(packet, 0,  Global.PACKET_SIZE);
+                readed = fileInputStream.read(packet, 0, (int)Math.min(len,  Global.PACKET_SIZE));
                 len -= readed;
                 if(socket.isClosed() ||  !socket.isConnected()) break;
                 socket.getOutputStream().write(packet, 0, readed);
