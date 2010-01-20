@@ -8,6 +8,7 @@ package serverapp;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.sql.ResultSet;
@@ -64,7 +65,7 @@ public class SendFile extends Thread {
             
             file = new File(path);
             fileSize = file.length();
-            fileInputStream = new FileInputStream(file);
+            fileInputStream = new FileInputStream(path);
             long checkSum = Utils.Checksum(path);
             metadata = String.valueOf(fileSize) + 
                     FormatCharacters.marker +
@@ -83,7 +84,6 @@ public class SendFile extends Thread {
                 socket.getOutputStream().write(packet, 0, readed);
                 fileSize -= readed;
             }
-
         }catch(Exception ee)
         {
             ReceiveOk = false;
@@ -96,12 +96,17 @@ public class SendFile extends Thread {
           if(rs != null) rs.close();
           }catch(Exception ee) {}
          try {
-          if(fileInputStream != null) fileInputStream.close();
+          if(fileInputStream != null)
+              fileInputStream.close();
          }catch(Exception ee) {}
         if(ReceiveOk)
         {
             try {
-             if( file != null && dbFunc.RemoveFileByID(connection, fileid) == 0 ) file.delete();
+             if( file != null && dbFunc.RemoveFileByID(connection, fileid) == 0 ) {
+                 //force call to gc, if we don't call this file not deleted !
+                 System.gc();
+                 file.delete();
+             }
             }catch(Exception ee) {
                 Log.WriteException(ee);
             }

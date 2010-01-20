@@ -5,13 +5,9 @@
 
 package qmessenger;
  
-import RegistrationForm.RegistrationForm;
-import SendFileDialog.SendFileDialogView;
 import clientapp.ApplicationSettings;
 import clientapp.Global;
 import clientapp.User;
-import java.io.FileOutputStream;
-import java.util.Properties;
 /**
  *
  * @author Администратор
