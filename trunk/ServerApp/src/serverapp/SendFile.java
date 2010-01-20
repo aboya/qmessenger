@@ -79,7 +79,7 @@ public class SendFile extends Thread {
             Log.Write(String.valueOf(fileSize));
             while(fileSize > 0)
             {
-                readed = fileInputStream.read(packet, 0, Global.PACKET_SIZE);
+                readed = fileInputStream.read(packet, 0, (int)Math.min(fileSize, Global.PACKET_SIZE));
                 if(readed <= 0) throw new Exception("Somthing failed when read file");
                 socket.getOutputStream().write(packet, 0, readed);
                 fileSize -= readed;

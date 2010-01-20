@@ -53,6 +53,7 @@ public class ReceiveFile  extends Thread{
             while(true)
             {
                 socket.getInputStream().read(packet, 0, 1);
+                Log.Write(packet[0] + "");
                 if(packet[0] == 0) throw  new Exception("Connection closed by user");
                 if(packet[0] == FormatCharacters.marker) break;
                 len += packet[0] - '0';
@@ -72,10 +73,12 @@ public class ReceiveFile  extends Thread{
             Log.Write("ReceiveFileSize:" + String.valueOf(fileSize));
             while(fileSize > 0)
             {
-                readed = socket.getInputStream().read(packet, 0, Global.PACKET_SIZE);
+                readed = socket.getInputStream().read(packet, 0, (int)Math.min(fileSize, Global.PACKET_SIZE));
                 if(readed <= 0) throw new Exception ("Reading closed by user or somthing else");
                 fileOutputStream.write(packet, 0, readed);
+                Log.Write(String.valueOf(fileSize) + ":" + String.valueOf(readed));
                 fileSize -= readed;
+                Log.Write(String.valueOf(fileSize) + ":" + String.valueOf(readed));
             }
             long downloadedFileCheckSum = Utils.Checksum(path);
             if(downloadedFileCheckSum != checkSum)

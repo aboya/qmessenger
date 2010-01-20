@@ -192,7 +192,7 @@ public class ReceiveFileDialogView extends Thread {
             Len = fileSize;
             while(fileSize > 0)
             {
-                readed =  socket.getInputStream().read(packet, 0, Global.PACKET_SIZE);
+                readed =  socket.getInputStream().read(packet, 0, (int)Math.min(fileSize,Global.PACKET_SIZE));
                 if(readed <= 0) throw new Exception("Connection closed ..");
                 fileOutputStream.write(packet, 0, readed);
                 fileSize -= readed;
