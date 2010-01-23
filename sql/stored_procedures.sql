@@ -25,17 +25,17 @@ DROP TABLE IF EXISTS `tnu_tree`;
 
 CREATE TABLE `tnu_tree` (
   ID      int NOT NULL,
-  `Name`  varchar(30) CHARACTER SET `latin1` COLLATE `latin1_swedish_ci` NOT NULL,
+  `Name`  varchar(30) CHARACTER SET `utf8` COLLATE `utf8_general_ci` NOT NULL,
   PRIMARY KEY (ID)
 ) ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
-  `UserID`    bigint(50) AUTO_INCREMENT NOT NULL PRIMARY KEY,
-  `UserIP`    varchar(50) CHARACTER SET `latin1` COLLATE `latin1_swedish_ci` NOT NULL,
+  `UserID`    bigint(50) AUTO_INCREMENT NOT NULL,
+  `UserIP`    varchar(50) CHARACTER SET `utf8` COLLATE `utf8_general_ci` NOT NULL,
   `TreeID`    int NOT NULL,
-  `UserName`  varchar(50) CHARACTER SET `latin1` COLLATE `latin1_swedish_ci`,
+  `UserName`  varchar(50) CHARACTER SET `utf8` COLLATE `utf8_general_ci`,
   PRIMARY KEY (`UserID`)
 ) ENGINE = InnoDB;
 
@@ -45,7 +45,7 @@ CREATE TABLE `userfiles` (
   ID            bigint AUTO_INCREMENT NOT NULL,
   `Path`        text NOT NULL,
   `dateAdded`   datetime,
-  `isDeliver`   bit NOT NULL DEFAULT 'b''0''',
+  `isDeliver`   bit NOT NULL DEFAULT 0,
   `fromTreeID`  int NOT NULL,
   `toTreeID`    int NOT NULL,
   `FileName`    text NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE `usermessages` (
   ID                bigint(50) AUTO_INCREMENT NOT NULL,
   `UserID`          bigint(50) NOT NULL,
   `message`         text NOT NULL,
-  `isDeliver`       bit DEFAULT 'b''0''',
+  `isDeliver`       bit DEFAULT 0,
   `FromUserTreeID`  int NOT NULL,
   `dateAdded`       datetime,
   PRIMARY KEY (ID)
@@ -263,7 +263,7 @@ DELIMITER |
 CREATE DEFINER = 'root'@'localhost' PROCEDURE `SendMessageToUser` 
 (
   IN  `TreeID`   integer,
-  IN  `txtMess`  
+  IN  `txtMess`  text
 )
 BEGIN
 
