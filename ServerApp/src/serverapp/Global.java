@@ -22,6 +22,8 @@ public class Global {
         public static String saveFilePath = System.getProperty("java.io.tmpdir") + "qServer\\";
         public static String DataBaseLogin = "root";
         public static String DataBasePassword = "admin";
+        public static int DontUploadThisFile = 23;
+        public static int UploadOk = 12;
 
 
         public static String XmlTree;

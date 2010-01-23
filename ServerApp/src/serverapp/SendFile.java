@@ -9,6 +9,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.sql.ResultSet;
@@ -41,11 +43,14 @@ public class SendFile extends Thread {
         boolean ReceiveOk = true;
         int readed;
         int fileid = 0;
+
         try {
+            InputStream socketInputStream = socket.getInputStream();
+            OutputStream socketOutputStrean = socket.getOutputStream();
             int metadataLen = 0;
             while(true)
             {
-                readed = socket.getInputStream().read(packet, 0, 1);
+                readed = socketInputStream.read(packet, 0, 1);
                 if(readed <= 0) throw  new Exception("Connection closed by user");
                 if(packet[0] == FormatCharacters.marker) break;
                 _len += packet[0] - '0';
@@ -53,7 +58,7 @@ public class SendFile extends Thread {
                 if(metadataLen > Global.MAXLEN) throw new Exception("To long metadata lenght");
             }
             len = Integer.valueOf(_len);
-            socket.getInputStream().read(packet, 0, len);
+            socketInputStream.read(packet, 0, len);
             
             for(int i = 0, k = 1; i < len; i++ , k *= 10)
                 fileid += (packet[len - i - 1] - '0') * k;
@@ -81,8 +86,12 @@ public class SendFile extends Thread {
             {
                 readed = fileInputStream.read(packet, 0, (int)Math.min(fileSize, Global.PACKET_SIZE));
                 if(readed <= 0) throw new Exception("Somthing failed when read file");
-                socket.getOutputStream().write(packet, 0, readed);
+                socketOutputStrean.write(packet, 0, readed);
                 fileSize -= readed;
+                if(socketInputStream.read() == Global.DontUploadThisFile)
+                {
+                    break;
+                }
             }
         }catch(Exception ee)
         {
@@ -98,10 +107,12 @@ public class SendFile extends Thread {
          try {
           if(fileInputStream != null)
               fileInputStream.close();
+              fileInputStream = null;
          }catch(Exception ee) {}
         if(ReceiveOk)
         {
             try {
+                //RemoveFileByID удаляет фалй из базы и возвращает количество юзеров ожидающих этот файл
              if( file != null && dbFunc.RemoveFileByID(connection, fileid) == 0 ) {
                  //force call to gc, if we don't call this file not deleted !
                  System.gc();
