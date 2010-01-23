@@ -77,14 +77,12 @@ public class User extends Thread {
                     this.screenView = new ScreenView();
                     this.getScreenView().setStatusText("Connected");
                     this.getScreenView().run();
-                    this.SheduleNewTimerForCheckFiles();
                 }
             }
             else {
                 this.screenView = new ScreenView();
                 this.getScreenView().setStatusText("Connected");
-                this.getScreenView().run();
-                this.SheduleNewTimerForCheckFiles();
+                this.getScreenView().run();        
             }
             
         }catch(Exception e)
@@ -97,6 +95,7 @@ public class User extends Thread {
     @Override
     public void run()
     {
+        this.SheduleNewTimerForCheckFiles();
         while(true)
         {
             try {

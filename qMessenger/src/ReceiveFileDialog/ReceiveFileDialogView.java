@@ -27,6 +27,8 @@ import clientapp.Pair;
 import clientapp.Utils;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.concurrent.Semaphore;
@@ -51,6 +53,7 @@ public class ReceiveFileDialogView extends Thread {
      boolean pleaseWait = false;
      Integer index;
      Semaphore semaphore = null;
+     Boolean isRemoveFileFromServer; //этот бит говорит серверу удалить файл и больше не присылать запрос на его скачивание
      /*
       * abortSetFileList нужна для синхронизации
       * когда юзверь удаляет текущий аплоад, мы закрываем сокет
@@ -158,6 +161,7 @@ public class ReceiveFileDialogView extends Thread {
     }
     private void ReceiveFile(String path, Integer ids, int lineNumber)
     {
+        this.isRemoveFileFromServer = false;
         this.socket = null ;
         fileOutputStream = null;
         byte [] packet = new byte[Global.PACKET_SIZE];
@@ -166,6 +170,8 @@ public class ReceiveFileDialogView extends Thread {
         String metadata;
         long fileSize, checkSum, Len;
         String fileName = "";
+        InputStream socketInputStream;
+        OutputStream socketOutputStream;
         try {
             socket = new Socket(Global.ServAddr, Global.ServerFileDownloadPort);
             metadata = ids.toString();
@@ -174,9 +180,11 @@ public class ReceiveFileDialogView extends Thread {
             String _len = "";
             int len;
             int readed;
+            socketInputStream = socket.getInputStream();
+            socketOutputStream = socket.getOutputStream();
             while(true)
             {
-                readed = socket.getInputStream().read(packet, 0, 1);
+                readed = socketInputStream.read(packet, 0, 1);
                 if(readed <= 0) throw new Exception("Connection closed ..");
                 if(packet[0] == FormatCharacters.marker) break;
                 _len += packet[0] - '0';
@@ -192,7 +200,7 @@ public class ReceiveFileDialogView extends Thread {
             Len = fileSize;
             while(fileSize > 0)
             {
-                readed =  socket.getInputStream().read(packet, 0, (int)Math.min(fileSize,Global.PACKET_SIZE));
+                readed =  socketInputStream.read(packet, 0, (int)Math.min(fileSize,Global.PACKET_SIZE));
                 if(readed <= 0) throw new Exception("Connection closed ..");
                 fileOutputStream.write(packet, 0, readed);
                 fileSize -= readed;
@@ -202,6 +210,13 @@ public class ReceiveFileDialogView extends Thread {
                     lasttime = currenttime;
                     this.SetStatus(String.format("%.2f%%", 100.0 - 100.0 * fileSize / Len));
                     this.CheckWait();
+                }
+                if(this.isRemoveFileFromServer)
+                {
+                    socketOutputStream.write(Global.DontDownloadThisFile);
+                    break;
+                }else {
+                    socketOutputStream.write(Global.DownloadingOk);
                 }
             }
             fileOutputStream.close();
@@ -260,9 +275,9 @@ public class ReceiveFileDialogView extends Thread {
             }
          );
     }
+    // вызывается когда клиент закрывает окно
     public void Close()
     {
-
         isClosed = true;
         if(this.shell != null && !this.shell.isDisposed())
         {
@@ -323,7 +338,10 @@ public class ReceiveFileDialogView extends Thread {
             if(lineNumbers[i] <= index) index --;
 
         }
-
+    }
+    public void RemoveCurrentDownload()
+    {
+        this.isRemoveFileFromServer = true;
     }
     public void RemoveCurrentReceiveFileFromQuene()
     {
@@ -331,7 +349,7 @@ public class ReceiveFileDialogView extends Thread {
         try {
             semaphore = new Semaphore(0);
 
-            if(this.socket != null) this.socket.close();
+            this.RemoveCurrentDownload();
             this.Resume();
             // ждем пока завершится цикл передающий файл
             // если этого не сделать то установится статус Failed не на той строчке

@@ -25,6 +25,8 @@ public class Global {
         public static String lastSavePath = "C:\\2\\";
         public static String defaultSavePath = "C:\\2\\";
         public static String codePage = "UTF-8";
+        public static int DontDownloadThisFile = 23;
+        public static int DownloadingOk = 12;
 
     /**
      * @return the user
