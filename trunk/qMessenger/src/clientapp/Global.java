@@ -34,6 +34,8 @@ public class Global {
     }
     public static Display getDisplay()
     {
+        if(display.isDisposed())
+            display = new Display();
         return display;
     }
 

@@ -31,7 +31,7 @@ public class RegistrationForm {
      public int run()
      {
 
-        final Display display = new Display();
+        final Display display = Global.getDisplay();
         shell = new Shell(display);
         shell.setText("Sign Up");
         Listener resizeListner = new Listener() {

@@ -70,22 +70,21 @@ public class User extends Thread {
             message.Initialize();
             this.start();
             this.RequestStructureTree();
-            this.screenView = new ScreenView();
             if(!this.AuthenticateUser()) {
                 int RetCode = new RegistrationForm(this.structTreeXml).run();
                 if(RetCode == SWT.CLOSE ) this.Disconnect();
                 if(RetCode == 0) {
+                    this.screenView = new ScreenView();
                     this.getScreenView().setStatusText("Connected");
                     this.getScreenView().run();
                     this.SheduleNewTimerForCheckFiles();
-
                 }
             }
             else {
+                this.screenView = new ScreenView();
                 this.getScreenView().setStatusText("Connected");
                 this.getScreenView().run();
                 this.SheduleNewTimerForCheckFiles();
-
             }
             
         }catch(Exception e)
