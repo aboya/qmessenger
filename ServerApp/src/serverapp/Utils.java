@@ -26,7 +26,7 @@ public class Utils {
    }
     public static String GetShortDate()
     {
-        DateFormat dateFormat = new SimpleDateFormat("dd.HH.mm");
+        DateFormat dateFormat = new SimpleDateFormat("HH.mm");
         Date date = new Date();
         return dateFormat.format(date);
     }
