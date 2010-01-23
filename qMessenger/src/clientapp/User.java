@@ -44,7 +44,7 @@ public class User extends Thread {
     public User()
     {
         //sendFiles = new SendFileDialogView("Send");
-        this.SheduleNewTimerForCheckFiles();
+        
 
 
     }
@@ -77,12 +77,14 @@ public class User extends Thread {
                 if(RetCode == 0) {
                     this.getScreenView().setStatusText("Connected");
                     this.getScreenView().run();
+                    this.SheduleNewTimerForCheckFiles();
 
                 }
             }
             else {
                 this.getScreenView().setStatusText("Connected");
                 this.getScreenView().run();
+                this.SheduleNewTimerForCheckFiles();
 
             }
             
