@@ -156,6 +156,7 @@ public class dbFunc {
         }
         return rs;
     }
+      //RemoveFileByID удаляет фалй из базы и возвращает количество юзеров ожидающих этот файл
     public static int RemoveFileByID(dbConnection connection, int id)
     {
         Long count = 0L;
