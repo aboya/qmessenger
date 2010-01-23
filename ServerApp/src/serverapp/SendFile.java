@@ -114,9 +114,7 @@ public class SendFile extends Thread {
             try {
                 //RemoveFileByID удаляет фалй из базы и возвращает количество юзеров ожидающих этот файл
              if( file != null && dbFunc.RemoveFileByID(connection, fileid) == 0 ) {
-                 //force call to gc, if we don't call this file not deleted !
-                 System.gc();
-                 file.delete();
+                 new DeleteFile(file).run();
              }
             }catch(Exception ee) {
                 Log.WriteException(ee);
