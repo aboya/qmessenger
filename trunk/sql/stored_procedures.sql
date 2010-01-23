@@ -12,13 +12,13 @@
 -- Collation: utf8_general_ci
 
 
-DROP DATABASE IF EXISTS `qmessenger`;
+DROP DATABASE IF EXISTS `qMessenger`;
 
-CREATE DATABASE `qmessenger`
+CREATE DATABASE `qMessenger`
   CHARACTER SET `utf8`
   COLLATE `utf8_general_ci`;
 
-USE `qmessenger`;
+USE `qMessenger`;
 
 /* Tables */
 DROP TABLE IF EXISTS `tnu_tree`;
@@ -82,7 +82,7 @@ then
 
   SET autocommit=0;
   start TRANSACTION;
-  insert into user (User.UserIP, user.TreeID ) 
+  insert into user (user.UserIP, user.TreeID ) 
   				   values(UserIp, treeid);
   commit;
   end if;
