@@ -39,4 +39,36 @@ public class Utils {
           }
         return cis.getChecksum().getValue();
     }
+   // проверяет существует ли файл
+   // если да тогда добавляет к имени файла(1) (2) ... и тд
+    public static String GenerateName(String path) {
+        File file = new File(path);
+//        if(!file.exists()) return path;
+        String fname = file.getName();
+        path = path.substring(0, path.length() - fname.length());
+        
+        int n = fname.length(), ind;
+        ind = fname.lastIndexOf("(");
+        
+         if(fname.charAt(n-1) != ')' || ind == -1)
+         {
+             fname += "(1)";
+         }else {
+             boolean ok = true;
+             int d = 0;
+             try {
+                d = Integer.parseInt(fname.substring(ind + 1, n - 2));
+             }catch(NumberFormatException ee)
+             {
+                 ok = false;
+             }
+             if(!ok || d < 1) fname += "(1)";
+             else {
+                 d++;
+                 fname = String.format("%s(%d)",fname.substring(0, ind), d );
+             }
+          }
+
+        return null;
+    }
 }
