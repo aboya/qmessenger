@@ -21,7 +21,7 @@ public class Global {
         public static int MAXLEN = 15; // max len of metadata
         public static String dbUrl = "jdbc:mysql://127.0.0.1:3306/qMessenger";
         public static String codePage = "UTF8";
-        public static String saveFilePath = System.getProperty("java.io.tmpdir") + "qServer" + File.separator;
+        public static String saveFilePath = System.getProperty("java.io.tmpdir") + File.separator + "qServer" + File.separator;
         public static String DataBaseLogin = "root";
         public static String DataBasePassword = "admin";
         public static int DontUploadThisFile = 23;
