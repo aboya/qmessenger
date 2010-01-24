@@ -43,21 +43,28 @@ public class Utils {
    // если да тогда добавляет к имени файла(1) (2) ... и тд
     public static String GenerateName(String path) {
         File file = new File(path);
-//        if(!file.exists()) return path;
+        if(!file.exists()) return path;
         String fname = file.getName();
+        String end = "";
+        int ipoint;
         path = path.substring(0, path.length() - fname.length());
-        
-        int n = fname.length(), ind;
-        ind = fname.lastIndexOf("(");
-        
-         if(fname.charAt(n-1) != ')' || ind == -1)
-         {
-             fname += "(1)";
-         }else {
+        ipoint = fname.lastIndexOf('.');
+        if(ipoint != -1)
+        {
+            end = fname.substring(ipoint, fname.length());
+            fname = fname.substring(0, ipoint);
+        }
+        int n = fname.length(), Lind, Rind;
+        Lind = fname.lastIndexOf("(");
+        Rind = fname.lastIndexOf(")");
+        if(Rind != n-1 || Rind == -1 || Lind == -1)
+        {
+            fname += "(1)";
+        }else {
              boolean ok = true;
              int d = 0;
              try {
-                d = Integer.parseInt(fname.substring(ind + 1, n - 2));
+                d = Integer.parseInt(fname.substring(Lind + 1, Rind));
              }catch(NumberFormatException ee)
              {
                  ok = false;
@@ -65,10 +72,11 @@ public class Utils {
              if(!ok || d < 1) fname += "(1)";
              else {
                  d++;
-                 fname = String.format("%s(%d)",fname.substring(0, ind), d );
+                 fname = String.format("%s(%d)",fname.substring(0, Lind), d );
              }
           }
-
-        return null;
+        fname += end;
+        path += fname;
+        return path;
     }
 }

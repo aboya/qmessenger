@@ -196,7 +196,7 @@ public class ReceiveFileDialogView extends Thread {
             fileSize = Long.valueOf(arr[0]);
             fileName = arr[1];
             checkSum = Long.valueOf(arr[2]);
-            fileOutputStream = new FileOutputStream(Global.lastSavePath + fileName);
+            fileOutputStream = new FileOutputStream(Utils.GenerateName(Global.lastSavePath + fileName));
             Len = fileSize;
             while(fileSize > 0)
             {
@@ -234,6 +234,7 @@ public class ReceiveFileDialogView extends Thread {
         try {
            if(this.fileOutputStream != null) this.fileOutputStream.close();
        } catch(Exception ee) {}
+        fileOutputStream = null;
         try{
            if(socket != null) socket.close();
         }catch(Exception ee) {}
@@ -243,8 +244,9 @@ public class ReceiveFileDialogView extends Thread {
                 this.SetStatus(String.format("%.2f%%", 100.0));
             }
             else {
+                System.gc();
                 this.SetStatus("Failed");
-                new File(Global.lastSavePath + fileName).delete();
+                new File(Utils.GenerateName(Global.lastSavePath + fileName)).delete();
             }
         }
         try {
