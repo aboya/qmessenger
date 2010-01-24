@@ -52,7 +52,7 @@ public class User extends Thread {
     {
         Socket SocketOut,SocketIn;
         try {
-            
+            inp = new ServerSocket(Global.IncomingPort, 0);
             SocketOut = new Socket(Global.ServAddr, Global.ServerPort);
 
         }catch(Exception e)
@@ -64,11 +64,11 @@ public class User extends Thread {
             return;
         }
         try {
-            inp = new ServerSocket(Global.IncomingPort, 0);
+            
             SocketIn = inp.accept();
             message = new FormatedMessages(SocketIn, SocketOut, this);
             message.Initialize();
-            this.start();
+            
             this.RequestStructureTree();
             if(!this.AuthenticateUser()) {
                 int RetCode = new RegistrationForm(this.structTreeXml).run();
@@ -76,13 +76,15 @@ public class User extends Thread {
                 if(RetCode == 0) {
                     this.screenView = new ScreenView();
                     this.getScreenView().setStatusText("Connected");
+                    this.start();
                     this.getScreenView().run();
                 }
             }
             else {
                 this.screenView = new ScreenView();
                 this.getScreenView().setStatusText("Connected");
-                this.getScreenView().run();        
+                this.start();
+                this.getScreenView().run();
             }
             
         }catch(Exception e)
@@ -118,8 +120,8 @@ public class User extends Thread {
                 try {
                     sleep(Global.ReconnectInterval);
                     this.getScreenView().setStatusText("Reconecting...");
-                    Socket SocketOut = new Socket(Global.ServAddr, Global.ServerPort);
                     inp = new ServerSocket(Global.IncomingPort, 0);
+                    Socket SocketOut = new Socket(Global.ServAddr, Global.ServerPort);
                     Socket SocketIn = inp.accept();
                     message.ReConnect(SocketIn, SocketOut);
                     this.AuthenticateUser();
