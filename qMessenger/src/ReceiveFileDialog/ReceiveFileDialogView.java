@@ -76,7 +76,7 @@ public class ReceiveFileDialogView extends Thread {
                 shell = new Shell(display);
                 DirectoryDialog dlg = new DirectoryDialog(shell);
                 dlg.setFilterPath(Global.lastSavePath);
-                Global.lastSavePath = dlg.open() + "\\";
+                Global.lastSavePath = dlg.open() + File.pathSeparator;
             }
         });
         

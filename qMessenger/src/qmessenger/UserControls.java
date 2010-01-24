@@ -9,6 +9,7 @@ package qmessenger;
 import UserGUIControls.uMessageBox;
 import clientapp.Global;
 import clientapp.Log;
+import java.io.File;
 import java.util.Set;
 import java.util.Vector;
 import org.eclipse.swt.SWT;
@@ -101,7 +102,8 @@ public class UserControls {
                 fd.setFilterExtensions(filterExt);
                 
                 fd.open();
-                String path = fd.getFilterPath() + "\\";
+
+                String path = fd.getFilterPath() + File.pathSeparator;
                 if(fd.getFileNames().length == 0) return;
                 try {
                     Global.getUser().SendFiles(path, fd.getFileNames(),ids);
