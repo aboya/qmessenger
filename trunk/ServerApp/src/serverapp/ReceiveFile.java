@@ -62,6 +62,7 @@ public class ReceiveFile  extends Thread{
             }
             //socket.getInputStream().read(packet, 0, Integer.valueOf(len));
             bufferedReader.read(buf, 0, Integer.valueOf(len));
+            bufferedReader = null;
             String dbg = new String(buf, 0, Integer.valueOf(len));
             String [] metadata = new String(buf, 0, Integer.valueOf(len)).split(FormatCharacters.marker + "");
             allids = metadata[2].split(",");
@@ -71,6 +72,8 @@ public class ReceiveFile  extends Thread{
             fileOutputStream = new FileOutputStream(path);
             int readed;
             Log.Write("ReceiveFileSize:" + String.valueOf(fileSize));
+            System.gc();
+            this.sleep(500);
             while(fileSize > 0)
             {
                 readed = socket.getInputStream().read(packet, 0, (int)Math.min(fileSize, Global.PACKET_SIZE));

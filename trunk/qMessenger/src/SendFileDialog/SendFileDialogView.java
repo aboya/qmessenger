@@ -102,7 +102,6 @@ public class SendFileDialogView extends Thread {
             item.setText(1, "0%");
             fileQuene.addLast(new Pair<String, Set<Integer>>(path + filePaths[i], ids));
         }
-        this.start();
     }
     public void SendFiles(String path, String [] filePaths, Set <Integer> ids)
     {
@@ -166,12 +165,15 @@ public class SendFileDialogView extends Thread {
             //socket.getOutputStream().flush();
             bufferedWriter.write((String.valueOf(metadata.length()) + metadata));
             bufferedWriter.flush();
+            bufferedWriter = null;
             fileInputStream = new FileInputStream(path);
             long len = f.length();
             long Len = len;
             int readed;
             byte [] packet = new byte[Global.PACKET_SIZE];
             currenttime = lasttime = Utils.GetDate();
+            System.gc();
+            this.sleep(500);
             while(len > 0)
             {
                 readed = fileInputStream.read(packet, 0, (int)Math.min(len,  Global.PACKET_SIZE));

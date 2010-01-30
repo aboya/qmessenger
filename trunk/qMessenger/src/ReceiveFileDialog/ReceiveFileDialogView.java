@@ -176,7 +176,7 @@ public class ReceiveFileDialogView extends Thread {
             socket = new Socket(Global.ServAddr, Global.ServerFileDownloadPort);
             metadata = ids.toString();
             metadata = Integer.valueOf(metadata.length()) + String.valueOf(FormatCharacters.marker) + metadata;
-            socket.getOutputStream().write( metadata.getBytes());
+            socket.getOutputStream().write(metadata.getBytes());
             String _len = "";
             int len;
             int readed;
