@@ -43,6 +43,7 @@ public class SendFile extends Thread {
         boolean ReceiveOk = true;
         int readed;
         int fileid = 0;
+        BufferedWriter socketBufferedWriter = null;
 
         try {
             InputStream socketInputStream = socket.getInputStream();
@@ -80,7 +81,12 @@ public class SendFile extends Thread {
             metadata = String.valueOf(metadata.length()) +
                     String.valueOf(FormatCharacters.marker)+
                     metadata;
-            socket.getOutputStream().write(metadata.getBytes());
+            socketBufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),Global.codePage));
+            socketBufferedWriter.write(metadata, 0, metadata.length());
+            socketBufferedWriter = null;
+            System.gc();
+            this.sleep(500);
+            //socket.getOutputStream().write(metadata.getBytes());
             Log.Write(String.valueOf(fileSize));
             while(fileSize > 0)
             {
@@ -120,6 +126,7 @@ public class SendFile extends Thread {
                 Log.WriteException(ee);
             }
         }
+        socketBufferedWriter = null;
         connection.Close();
     }
 }

@@ -25,9 +25,11 @@ import clientapp.Global;
 import clientapp.Log;
 import clientapp.Pair;
 import clientapp.Utils;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -165,6 +167,7 @@ public class ReceiveFileDialogView extends Thread {
         this.socket = null ;
         fileOutputStream = null;
         byte [] packet = new byte[Global.PACKET_SIZE];
+        char [] buf = new char [Global.PACKET_SIZE];
         long lasttime = 0, currenttime = 0;
         boolean status = true;
         String metadata;
@@ -172,6 +175,7 @@ public class ReceiveFileDialogView extends Thread {
         String fileName = "";
         InputStream socketInputStream;
         OutputStream socketOutputStream;
+        BufferedReader socketBufferedReader = null;
         try {
             socket = new Socket(Global.ServAddr, Global.ServerFileDownloadPort);
             metadata = ids.toString();
@@ -190,14 +194,19 @@ public class ReceiveFileDialogView extends Thread {
                 _len += packet[0] - '0';
             }
             len = Integer.valueOf(_len);
-            socket.getInputStream().read(packet, 0, len);
-            metadata = new String(packet, 0, len);
+            socketBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),Global.codePage));
+            //socket.getInputStream().read(packet, 0, len);
+            socketBufferedReader.read(buf, 0, len);
+            metadata = new String(buf, 0, len);
+            socketBufferedReader = null;
             String []arr = metadata.split(FormatCharacters.marker + "");
             fileSize = Long.valueOf(arr[0]);
             fileName = arr[1];
             checkSum = Long.valueOf(arr[2]);
             fileOutputStream = new FileOutputStream(Utils.GenerateName(Global.lastSavePath + fileName));
             Len = fileSize;
+            System.gc();
+            this.sleep(500);
             while(fileSize > 0)
             {
                 readed =  socketInputStream.read(packet, 0, (int)Math.min(fileSize,Global.PACKET_SIZE));
