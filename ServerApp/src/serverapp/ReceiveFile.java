@@ -79,9 +79,7 @@ public class ReceiveFile  extends Thread{
                 readed = socket.getInputStream().read(packet, 0, (int)Math.min(fileSize, Global.PACKET_SIZE));
                 if(readed <= 0) throw new Exception ("Reading closed by user or somthing else");
                 fileOutputStream.write(packet, 0, readed);
-                Log.Write(String.valueOf(fileSize) + ":" + String.valueOf(readed));
                 fileSize -= readed;
-                Log.Write(String.valueOf(fileSize) + ":" + String.valueOf(readed));
             }
             long downloadedFileCheckSum = Utils.Checksum(path);
             if(downloadedFileCheckSum != checkSum)
