@@ -53,27 +53,7 @@ public class SendFileDialogControls {
                  SelectionListener sListner = new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent arg0) {
-                        /*
 
-
-                        if(fileList.getTable().getSelectionIndices().length == 0) return;
-                        fileList.getTable().setRedraw(false);
-                        try {
-                            // делаем паузу для синхронизации
-                           Global.getUser().getSendFileDialogView().Pause();
-                        }catch(Exception e) 
-                        {
-                            Log.WriteException(e);
-                        }
-                        Global.getUser().getSendFileDialogView().RemoveFilesFromQuene(fileList.getTable().getSelectionIndices());
-                        display.syncExec(new Runnable() {
-                            public void run() {
-                                 fileList.getTable().remove(fileList.getTable().getSelectionIndices());
-                            }
-                        });
-                        fileList.getTable().setRedraw(true);
-                        fileList.getTable().redraw();
-                         * */
                         if(removeTask != null && removeTask.isAlive()) return;
                         removeTask = new RemoveTask(Global.getUser().getSendFileDialogView(), fileList.getTable().getSelectionIndices(), fileList.getTable());
                         removeTask.start();

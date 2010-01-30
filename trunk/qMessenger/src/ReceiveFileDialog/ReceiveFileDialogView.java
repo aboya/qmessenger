@@ -26,11 +26,13 @@ import clientapp.Log;
 import clientapp.Pair;
 import clientapp.Utils;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.concurrent.Semaphore;
@@ -176,11 +178,18 @@ public class ReceiveFileDialogView extends Thread {
         InputStream socketInputStream;
         OutputStream socketOutputStream;
         BufferedReader socketBufferedReader = null;
+        BufferedWriter socketBufferedWriter = null;
         try {
             socket = new Socket(Global.ServAddr, Global.ServerFileDownloadPort);
+            socketBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),Global.codePage));
+            socketBufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),Global.codePage));
+
             metadata = ids.toString();
             metadata = Integer.valueOf(metadata.length()) + String.valueOf(FormatCharacters.marker) + metadata;
-            socket.getOutputStream().write(metadata.getBytes());
+            // запрос на сервер что бы он выдал файл
+            //socket.getOutputStream().write(metadata.getBytes());
+            socketBufferedWriter.write(metadata, 0, metadata.length());
+            socketBufferedWriter.flush();
             String _len = "";
             int len;
             int readed;
@@ -188,17 +197,17 @@ public class ReceiveFileDialogView extends Thread {
             socketOutputStream = socket.getOutputStream();
             while(true)
             {
-                readed = socketInputStream.read(packet, 0, 1);
+                readed = socketBufferedReader.read(buf, 0, 1);
                 if(readed <= 0) throw new Exception("Connection closed ..");
-                if(packet[0] == FormatCharacters.marker) break;
-                _len += packet[0] - '0';
+                if(buf[0] == FormatCharacters.marker) break;
+                _len += buf[0] - '0';
             }
             len = Integer.valueOf(_len);
-            socketBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),Global.codePage));
             //socket.getInputStream().read(packet, 0, len);
             socketBufferedReader.read(buf, 0, len);
             metadata = new String(buf, 0, len);
             socketBufferedReader = null;
+            socketBufferedWriter = null;
             String []arr = metadata.split(FormatCharacters.marker + "");
             fileSize = Long.valueOf(arr[0]);
             fileName = arr[1];
@@ -229,8 +238,10 @@ public class ReceiveFileDialogView extends Thread {
                 }
             }
             fileOutputStream.close();
+            fileOutputStream = null;
             if(Utils.Checksum(Global.lastSavePath + fileName) != checkSum)
             {
+                System.out.println("incorect checksum");
                 status = false;
             }else {
                 status = true;
@@ -328,7 +339,7 @@ public class ReceiveFileDialogView extends Thread {
             while (pleaseWait) {
                 try {
                     if(this.isClosed()) this.Resume();
-                    wait(100);
+                    sleep(100);
                 }
                 catch (Exception e) { }
             }
