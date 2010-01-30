@@ -208,11 +208,6 @@ public class SendFileDialogView extends Thread {
             if(status) this.SetStatus(String.format("%.2f%%", 100.0));
             else this.SetStatus("Failed");
         }
-        try {
-        }catch(Exception ee)
-        {
-            Log.WriteException(ee);
-        }
         if(semaphore != null)
         {
             // отпускаем поток ждущий завершения этого цикла
@@ -276,13 +271,15 @@ public class SendFileDialogView extends Thread {
     }
     private void CheckWait()
     {
+        synchronized(this) {
             while (pleaseWait) {
                 try {
                     if(this.isClosed()) this.Resume();
-                    wait(100);
+                    sleep(100);
                 }
                 catch (Exception e) { }
             }
+        }
     }
     public void RemoveFilesFromQuene(int [] lineNumbers)
     {
