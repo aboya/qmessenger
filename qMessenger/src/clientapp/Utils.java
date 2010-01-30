@@ -42,41 +42,42 @@ public class Utils {
    // проверяет существует ли файл
    // если да тогда добавляет к имени файла(1) (2) ... и тд
     public static String GenerateName(String path) {
-        File file = new File(path);
-        if(!file.exists()) return path;
-        String fname = file.getName();
-        String end = "";
-        int ipoint;
-        path = path.substring(0, path.length() - fname.length());
-        ipoint = fname.lastIndexOf('.');
-        if(ipoint != -1)
-        {
-            end = fname.substring(ipoint, fname.length());
-            fname = fname.substring(0, ipoint);
+        while(true) {
+            File file = new File(path);
+            if(!file.exists()) return path;
+            String fname = file.getName();
+            String end = "";
+            int ipoint;
+            path = path.substring(0, path.length() - fname.length());
+            ipoint = fname.lastIndexOf('.');
+            if(ipoint != -1)
+            {
+                end = fname.substring(ipoint, fname.length());
+                fname = fname.substring(0, ipoint);
+            }
+            int n = fname.length(), Lind, Rind;
+            Lind = fname.lastIndexOf("(");
+            Rind = fname.lastIndexOf(")");
+            if(Rind != n-1 || Rind == -1 || Lind == -1)
+            {
+                fname += "(1)";
+            }else {
+                 boolean ok = true;
+                 int d = 0;
+                 try {
+                    d = Integer.parseInt(fname.substring(Lind + 1, Rind));
+                 }catch(NumberFormatException ee)
+                 {
+                     ok = false;
+                 }
+                 if(!ok || d < 1) fname += "(1)";
+                 else {
+                     d++;
+                     fname = String.format("%s(%d)",fname.substring(0, Lind), d );
+                 }
+              }
+            fname += end;
+            path += fname;   
         }
-        int n = fname.length(), Lind, Rind;
-        Lind = fname.lastIndexOf("(");
-        Rind = fname.lastIndexOf(")");
-        if(Rind != n-1 || Rind == -1 || Lind == -1)
-        {
-            fname += "(1)";
-        }else {
-             boolean ok = true;
-             int d = 0;
-             try {
-                d = Integer.parseInt(fname.substring(Lind + 1, Rind));
-             }catch(NumberFormatException ee)
-             {
-                 ok = false;
-             }
-             if(!ok || d < 1) fname += "(1)";
-             else {
-                 d++;
-                 fname = String.format("%s(%d)",fname.substring(0, Lind), d );
-             }
-          }
-        fname += end;
-        path += fname;
-        return path;
     }
 }
