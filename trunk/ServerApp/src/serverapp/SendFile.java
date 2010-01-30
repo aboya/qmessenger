@@ -5,16 +5,16 @@
 
 package serverapp;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.sql.ResultSet;
-import java.util.Vector;
 
 /**
  *
@@ -37,6 +37,7 @@ public class SendFile extends Thread {
         int len;
         String path, fileName;
         byte []packet = new byte[Global.PACKET_SIZE];
+        char [] buf = new char[Global.PACKET_SIZE];
         FileInputStream fileInputStream = null;
         File file = null;
         String metadata;
@@ -44,25 +45,29 @@ public class SendFile extends Thread {
         int readed;
         int fileid = 0;
         BufferedWriter socketBufferedWriter = null;
+        BufferedReader socketBufferedReader = null;
 
         try {
             InputStream socketInputStream = socket.getInputStream();
             OutputStream socketOutputStrean = socket.getOutputStream();
+            socketBufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),Global.codePage));
+            socketBufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream(),Global.codePage));
             int metadataLen = 0;
             while(true)
             {
-                readed = socketInputStream.read(packet, 0, 1);
+                //readed = socketInputStream.read(packet, 0, 1);
+                readed = socketBufferedReader.read(buf, 0, 1);
                 if(readed <= 0) throw  new Exception("Connection closed by user");
-                if(packet[0] == FormatCharacters.marker) break;
-                _len += packet[0] - '0';
+                if(buf[0] == FormatCharacters.marker) break;
+                _len += buf[0] - '0';
                 metadataLen ++;
                 if(metadataLen > Global.MAXLEN) throw new Exception("To long metadata lenght");
             }
             len = Integer.valueOf(_len);
-            socketInputStream.read(packet, 0, len);
+            socketBufferedReader.read(buf, 0, len);
             
             for(int i = 0, k = 1; i < len; i++ , k *= 10)
-                fileid += (packet[len - i - 1] - '0') * k;
+                fileid += (buf[len - i - 1] - '0') * k;
             
             rs = dbFunc.getFilePathByID(connection, fileid);
             if( !rs.next() ) throw new Exception("Ids not found");
@@ -81,9 +86,10 @@ public class SendFile extends Thread {
             metadata = String.valueOf(metadata.length()) +
                     String.valueOf(FormatCharacters.marker)+
                     metadata;
-            socketBufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),Global.codePage));
             socketBufferedWriter.write(metadata, 0, metadata.length());
+            socketBufferedWriter.flush();
             socketBufferedWriter = null;
+            socketBufferedReader = null;
             System.gc();
             this.sleep(500);
             //socket.getOutputStream().write(metadata.getBytes());
