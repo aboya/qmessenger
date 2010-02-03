@@ -236,9 +236,12 @@ public class ReceiveFileDialogView extends Thread {
                 }else {
                     socketOutputStream.write(Global.DownloadingOk);
                 }
+                socketOutputStream.flush();
             }
+            fileOutputStream.flush();
             fileOutputStream.close();
             fileOutputStream = null;
+            System.gc();
             if(Utils.Checksum(Global.lastSavePath + fileName) != checkSum)
             {
                 System.out.println("incorect checksum");
