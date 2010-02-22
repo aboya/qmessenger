@@ -18,26 +18,53 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.jdesktop.application.SingleFrameApplication;
 
 /**
  *
  * @author Администратор
  */
-public class SendFileDialogView extends Thread {
+public class SendFileDialogView extends SingleFrameApplication {
      Shell shell;
-     final Display display;
+     final Display display = null;
      boolean isClosed = false; // нужна для корректного выхода
      boolean pleaseWait = false;
      Integer index;
      Semaphore semaphore = null;
+     SendFileDialogFrame sendFileDialogFrame = null;
+    @Override protected void startup() {
+        show(sendFileDialogFrame = new SendFileDialogFrame());
+        JTable jt = sendFileDialogFrame.getTable();
+        /*
+        TableColumn tc = new TableColumn();
+        tc.setHeaderValue("Имя файла");
+        jt.addColumn(tc);
+        tc = new TableColumn();
+        tc.setHeaderValue("%");
+
+        jt.addColumn(tc);
+         * 
+         */
+        DefaultTableModel model = (DefaultTableModel)jt.getModel();
+       
+        model.addColumn("Имя файла");
+        model.addColumn("%");
+         
+        model.insertRow(0, new Object[]{"r5","r2"});
+        model.insertRow(0, new Object[]{"r4","r3"});
+        model.insertRow(0, new Object[]{"r3","r4"});
+        model.insertRow(0, new Object[]{"r2","r5"});
+        jt.setModel(model);
+        
+
+    }
      /*
       * abortSetFileList нужна для синхронизации
       * когда юзверь удаляет текущий аплоад, мы закрываем сокет
@@ -53,7 +80,11 @@ public class SendFileDialogView extends Thread {
      FileInputStream fileInputStream = null;
 
 
-    public SendFileDialogView(final String WindowName) {
+    public SendFileDialogView( ) {
+        
+        
+
+       /*
         display = Display.getCurrent();
         display.syncExec(new Runnable() {
             public void run() {
@@ -90,6 +121,9 @@ public class SendFileDialogView extends Thread {
                 }
             }
          );
+        * 
+        */
+      
 
     }
     public void AddFileToQuene(String path, String [] filePaths, Set <Integer> ids)
@@ -115,13 +149,13 @@ public class SendFileDialogView extends Thread {
             item.setText(1, "0%");
             fileQuene.addLast(new Pair<String, Set<Integer>>(path + filePaths[i], ids));
         }
-        this.start();
+        //this.start();
     }
-    @Override
-    public void run()
-    {
-         this.SendFiles();
-   }
+   // @Override
+   // public void run()
+   // {
+   //      this.SendFiles();
+  // }
     private void SendFiles()
     {
         Pair < String , Set<Integer> > p;
@@ -173,7 +207,7 @@ public class SendFileDialogView extends Thread {
             byte [] packet = new byte[Global.PACKET_SIZE];
             currenttime = lasttime = Utils.GetDate();
             System.gc();
-            this.sleep(500);
+            //this.sleep(500);
             while(len > 0)
             {
                 readed = fileInputStream.read(packet, 0, (int)Math.min(len,  Global.PACKET_SIZE));
@@ -249,7 +283,7 @@ public class SendFileDialogView extends Thread {
             // жестко вырубаем текущий аплоад
             this.socket.close();
             if(fileInputStream != null) fileInputStream.close();
-            this.interrupt();
+//            this.interrupt();
         }catch(Exception e) {}
     }
     public boolean isClosed()
@@ -275,7 +309,7 @@ public class SendFileDialogView extends Thread {
             while (pleaseWait) {
                 try {
                     if(this.isClosed()) this.Resume();
-                    sleep(100);
+//                    sleep(100);
                 }
                 catch (Exception e) { }
             }

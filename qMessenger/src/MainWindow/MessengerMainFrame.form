@@ -145,6 +145,13 @@
                           <TreeModel code="&#x422;&#x41d;&#x423;&#xa; &#x424;&#x430;&#x43a;&#x443;&#x43b;&#x44c;&#x442;&#x435;&#x442;&#x44b;&#xa;  blue&#xa;  violet&#xa;  red&#xa;  yellow&#xa; &#x414;&#x435;&#x43a;&#x430;&#x442;&#x430;&#x442;&#x44b;&#xa;  basketball&#xa;  soccer&#xa;  football&#xa;  hockey&#xa; &#x414;&#x435;&#x43a;&#x430;&#x43d;&#x44b;&#xa;  hot dogs&#xa;  pizza&#xa;  ravioli&#xa;  bananas"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTree1MousePressed"/>
+                      </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jTree1.getSelectionModel().setSelectionMode(&#xa;    TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);&#xa;CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();&#xa;jTree1.setCellRenderer(renderer);&#xa;&#xa;jTree1.setCellEditor(new CheckBoxNodeEditor(jTree1));&#xa;    jTree1.setEditable(true);"/>
+                        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="MessengerMainFrame_jTree1"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
