@@ -14,6 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import org.eclipse.swt.SWT;
 import qmessenger.ScreenView;
+import org.jdesktop.application.SingleFrameApplication;
 /**
  *
  * @author Серёжа
@@ -179,6 +180,7 @@ public class User extends Thread {
     }
     public void SendFiles(String path, String [] fileList, Set <Integer> ids) throws Exception
     {
+        /*
         if(sendFiles == null || !sendFiles.isAlive())  {
             if (sendFiles != null && !sendFiles.isClosed()) sendFiles.Close();
             sendFiles = new SendFileDialogView("Send");
@@ -186,6 +188,12 @@ public class User extends Thread {
         }else {
             sendFiles.AddFileToQuene(path, fileList, ids);
         }
+         * 
+         */
+        sendFiles = new SendFileDialogView();
+        sendFiles.launch(SendFileDialogView.class, null);
+        
+
     }
     public SendFileDialogView getSendFileDialogView()
     {

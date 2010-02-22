@@ -18,7 +18,6 @@ public class MessengerMainApplication extends SingleFrameApplication {
      */
     @Override protected void startup() {
         show(new MessengerMainFrame());
-
     }
 
     /**
@@ -42,5 +41,6 @@ public class MessengerMainApplication extends SingleFrameApplication {
      */
     public static void main(String[] args) {
         launch(MessengerMainApplication.class, args);
+
     }
 }
