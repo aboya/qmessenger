@@ -39,29 +39,17 @@ public class SendFileDialogView extends SingleFrameApplication {
      Integer index;
      Semaphore semaphore = null;
      SendFileDialogFrame sendFileDialogFrame = null;
+     DefaultTableModel model = null;
+
+     Socket socket;
+     SendFileDialogControls userControls;
+     LinkedList<Pair<String, Set<Integer> > > fileQuene = new LinkedList<Pair<String, Set<Integer>>>();
+     FileInputStream fileInputStream = null;
     @Override protected void startup() {
         show(sendFileDialogFrame = new SendFileDialogFrame());
-        JTable jt = sendFileDialogFrame.getTable();
-        /*
-        TableColumn tc = new TableColumn();
-        tc.setHeaderValue("Имя файла");
-        jt.addColumn(tc);
-        tc = new TableColumn();
-        tc.setHeaderValue("%");
-
-        jt.addColumn(tc);
-         * 
-         */
-        DefaultTableModel model = (DefaultTableModel)jt.getModel();
-       
-        model.addColumn("Имя файла");
-        model.addColumn("%");
-         
-        model.insertRow(0, new Object[]{"r5","r2"});
-        model.insertRow(0, new Object[]{"r4","r3"});
-        model.insertRow(0, new Object[]{"r3","r4"});
-        model.insertRow(0, new Object[]{"r2","r5"});
-        jt.setModel(model);
+        sendFileDialogFrame.getTable().setModel(model);
+ 
+        this.SendFiles();
         
 
     }
@@ -74,56 +62,12 @@ public class SendFileDialogView extends SingleFrameApplication {
       * на него в ходе выполнения.
       */
 
-     Socket socket;
-     SendFileDialogControls userControls;
-     LinkedList<Pair<String, Set<Integer> > > fileQuene = new LinkedList<Pair<String, Set<Integer>>>();
-     FileInputStream fileInputStream = null;
 
 
-    public SendFileDialogView( ) {
-        
-        
 
-       /*
-        display = Display.getCurrent();
-        display.syncExec(new Runnable() {
-            public void run() {
-                shell = new Shell(display);
-            }
-        });
-        
-        userControls = new SendFileDialogControls(shell, display);
-        final Listener resizeListner = new Listener() {
-               public void handleEvent(Event e)  {
-                   shell.setRedraw(false);
-                   Rectangle rect = shell.getBounds();
-                   rect.width = Math.max(rect.width, 400);
-                   rect.height = Math.max(rect.height, 400);
-                   shell.setBounds(rect);
-                   userControls.Resize(rect);
-                   shell.setRedraw(true);
-                }
-         };
-        final Listener closeListner = new Listener() {
-               public void handleEvent(Event e)  {
-                   Global.getUser().getSendFileDialogView().Close();
-                }
-         };
-         display.syncExec(
-           new Runnable() {
-                public void run(){
-                    shell.setText(WindowName);
-                    shell.addListener(SWT.Resize, resizeListner);
-                    shell.addListener(SWT.Move, resizeListner);
-                    shell.addListener(SWT.Close, closeListner);
-                    shell.setSize(200, 200);
-                    shell.open();
-                }
-            }
-         );
-        * 
-        */
-      
+    public SendFileDialogView(String path, String [] filePaths, Set <Integer> ids) {
+        //this.SendFiles(path, filePaths, ids);
+
 
     }
     public void AddFileToQuene(String path, String [] filePaths, Set <Integer> ids)
@@ -139,17 +83,18 @@ public class SendFileDialogView extends SingleFrameApplication {
     }
     public void SendFiles(String path, String [] filePaths, Set <Integer> ids)
     {
-        Table table = userControls.getTable();
-        table.removeAll();
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Файл");
+        model.addColumn("%");
         fileQuene.clear();
         for(int i = 0; i < filePaths.length; i++)
         {
-            TableItem item = new TableItem(table, i);
-            item.setText(0, filePaths[i]);
-            item.setText(1, "0%");
+            Object [] row = {filePaths[i], "0%"};
+            model.addRow(row);
             fileQuene.addLast(new Pair<String, Set<Integer>>(path + filePaths[i], ids));
         }
-        //this.start();
+        
+        
     }
    // @Override
    // public void run()
@@ -253,38 +198,26 @@ public class SendFileDialogView extends SingleFrameApplication {
         }
     }
     private void SetStatus(final String s)
-    {  
-          display.syncExec(
-           new Runnable() {
-                public void run(){
-                    if(isClosed()) return;
-                    if(index < 0) return;
-                    Table table = userControls.getTable();
-                    table.getItem(index).setText(1, s);
-                }
-            }
-         );
+    {
+        DefaultTableModel model = (DefaultTableModel)sendFileDialogFrame.getTable().getModel();
+        model.setValueAt(s, index, 1);
     }
     public void Close()
     {
 
         isClosed = true;
-        if(this.shell != null && !this.shell.isDisposed())
-        {
-            // если вызовим close - сработает перехватчик событий и вызовит эту функцию опять, и получится
-            // бесконечная рекурсия
-            Global.getDisplay().syncExec(new Runnable() {
-                public void run() {
-                     shell.dispose();
-                }
-            });
-        }
+
         try {
             // жестко вырубаем текущий аплоад
             this.socket.close();
+        }
+        catch(Exception e){}
+        try {
             if(fileInputStream != null) fileInputStream.close();
-//            this.interrupt();
         }catch(Exception e) {}
+
+        sendFileDialogFrame = null;
+        this.exit();
     }
     public boolean isClosed()
     {
