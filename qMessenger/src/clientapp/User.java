@@ -190,8 +190,9 @@ public class User extends Thread {
         }
          * 
          */
-        sendFiles = new SendFileDialogView();
-        sendFiles.launch(SendFileDialogView.class, null);
+        sendFiles = new SendFileDialogView(path, fileList, ids);
+        sendFiles.launch(SendFileDialogView.class, new String[]{""});
+        
         
 
     }
