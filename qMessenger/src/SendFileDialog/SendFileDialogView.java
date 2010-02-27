@@ -47,6 +47,7 @@ public class SendFileDialogView extends SingleFrameApplication {
      FileInputStream fileInputStream = null;
     @Override protected void startup() {
         show(sendFileDialogFrame = new SendFileDialogFrame());
+        //new SendFileDialogFrame().setVisible(true);
         sendFileDialogFrame.getTable().setModel(model);
  
         this.SendFiles();
@@ -63,7 +64,10 @@ public class SendFileDialogView extends SingleFrameApplication {
       */
 
 
-
+public SendFileDialogView()
+{
+    
+}
 
     public SendFileDialogView(String path, String [] filePaths, Set <Integer> ids) {
         //this.SendFiles(path, filePaths, ids);
