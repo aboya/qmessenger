@@ -74,7 +74,7 @@ public SendFileDialogView()
 
 
     }
-    public void AddFileToQuene(String path, String [] filePaths, Set <Integer> ids)
+    public void AddFileToQuene(String [] filePaths, Set <Integer> ids)
     {
         Table table = userControls.getTable();
         for(int i = 0; i < filePaths.length; i++)
@@ -82,10 +82,10 @@ public SendFileDialogView()
             TableItem item = new TableItem(table, i);
             item.setText(0, filePaths[i]);
             item.setText(1, "0%");
-            fileQuene.addLast(new Pair<String, Set<Integer>>(path + filePaths[i], ids));
+            fileQuene.addLast(new Pair<String, Set<Integer>>(filePaths[i], ids));
         }
     }
-    public void SendFiles(String path, String [] filePaths, Set <Integer> ids)
+    public void SendFiles(String [] filePaths, Set <Integer> ids)
     {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Файл");
@@ -95,7 +95,7 @@ public SendFileDialogView()
         {
             Object [] row = {filePaths[i], "0%"};
             model.addRow(row);
-            fileQuene.addLast(new Pair<String, Set<Integer>>(path + filePaths[i], ids));
+            fileQuene.addLast(new Pair<String, Set<Integer>>(filePaths[i], ids));
         }
         
         

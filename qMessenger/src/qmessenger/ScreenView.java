@@ -55,7 +55,8 @@ public class ScreenView extends SingleFrameApplication {
     }
      @Override protected void startup() {
          show(messengerMainFrame = new MessengerMainFrame());
-         fillTree(Global.getUser().structTreeXml);
+         //fillTree(Global.getUser().structTreeXml);
+         messengerMainFrame.fillTree(Global.getUser().structTreeXml);
      }
 
      public void run() 
@@ -137,6 +138,7 @@ public class ScreenView extends SingleFrameApplication {
            //rootItem.setText(s);
           // treeIds.clear();
           // treeIds.put(s, Integer.parseInt(rootElement.getAttribute("id")));
+           //treeNode1.setUserObject(Integer.parseInt(rootElement.getAttribute("id")));
            BuildTNUTree(treeNode1,(Node) rootElement.getChildNodes().item(1));
            facultyTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         }catch(Exception e)
@@ -154,6 +156,7 @@ public class ScreenView extends SingleFrameApplication {
        // treeIds.put(s, Integer.valueOf(id));
 
         DefaultMutableTreeNode newItem = new DefaultMutableTreeNode(element.getNodeName());
+        
 
         //newItem.setText(element.getNodeName());
         NodeList list = element.getChildNodes();
