@@ -31,7 +31,6 @@ import java.util.Vector;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -41,6 +40,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
  import javax.xml.parsers.DocumentBuilder;
@@ -454,7 +454,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 //JOptionPane.showMessageDialog(this, "Message", "Title", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            Global.getUser().SendFiles(filePaths, getSelectedIds());
+            Global.getUser().SendFiles(filePaths, ids);
         }catch(Exception ee)
         {
             Log.WriteException(ee);
@@ -484,13 +484,18 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         
         Q.addLast(rootNode);
         DefaultMutableTreeNode treeItem = null;
+
+        String nodeName;
+        TreeNode []pathsNodes;
         while(!Q.isEmpty())
         {
             treeItem = Q.getFirst();
 
             Q.removeFirst();
             if(treeItem.isLeaf()) // select only last node
+            {   
                 selectedIds.add(this.findIdByName(treeItem.getUserObject().toString()));
+            }
 
 
             for(i = 0; i < treeItem.getChildCount(); i++)
@@ -747,7 +752,7 @@ class CheckBoxNode {
   }
 
   public String toString() {
-    return getClass().getName() + "[" + text + "/" + selected + "]";
+    return text;
   }
 }
 

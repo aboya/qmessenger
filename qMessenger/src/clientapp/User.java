@@ -187,20 +187,14 @@ public class User extends Thread {
     }
     public void SendFiles(String [] fileList, Set <Integer> ids) throws Exception
     {
-        /*
+
         if(sendFiles == null || !sendFiles.isAlive())  {
             if (sendFiles != null && !sendFiles.isClosed()) sendFiles.Close();
-            sendFiles = new SendFileDialogView("Send");
-            sendFiles.SendFiles(path, fileList, ids);
+            sendFiles = new SendFileDialogView();
+            sendFiles.SendFiles(fileList, ids);
         }else {
-            sendFiles.AddFileToQuene(path, fileList, ids);
+            sendFiles.AddFileToQuene(fileList, ids);
         }
-         * 
-         */
-        //sendFiles = new SendFileDialogView(path, fileList, ids);
-        sendFiles.launch(SendFileDialogView.class, new String[]{""});
-        
-        
 
     }
     public SendFileDialogView getSendFileDialogView()

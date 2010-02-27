@@ -18,9 +18,11 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.tree.TreePath;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -31,7 +33,7 @@ import org.jdesktop.application.SingleFrameApplication;
  *
  * @author Администратор
  */
-public class SendFileDialogView extends SingleFrameApplication {
+public class SendFileDialogView extends Thread {
      Shell shell;
      final Display display = null;
      boolean isClosed = false; // нужна для корректного выхода
@@ -39,21 +41,12 @@ public class SendFileDialogView extends SingleFrameApplication {
      Integer index;
      Semaphore semaphore = null;
      SendFileDialogFrame sendFileDialogFrame = null;
-     DefaultTableModel model = null;
 
      Socket socket;
      SendFileDialogControls userControls;
      LinkedList<Pair<String, Set<Integer> > > fileQuene = new LinkedList<Pair<String, Set<Integer>>>();
      FileInputStream fileInputStream = null;
-    @Override protected void startup() {
-        show(sendFileDialogFrame = new SendFileDialogFrame());
-        //new SendFileDialogFrame().setVisible(true);
-        sendFileDialogFrame.getTable().setModel(model);
- 
-        this.SendFiles();
-        
 
-    }
      /*
       * abortSetFileList нужна для синхронизации
       * когда юзверь удаляет текущий аплоад, мы закрываем сокет
@@ -64,13 +57,13 @@ public class SendFileDialogView extends SingleFrameApplication {
       */
 
 
-public SendFileDialogView()
-{
-    
-}
 
-    public SendFileDialogView(String path, String [] filePaths, Set <Integer> ids) {
-        //this.SendFiles(path, filePaths, ids);
+
+    public SendFileDialogView() {
+
+        sendFileDialogFrame = new SendFileDialogFrame();
+        sendFileDialogFrame.setVisible(true);
+        sendFileDialogFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
 
     }
@@ -87,24 +80,28 @@ public SendFileDialogView()
     }
     public void SendFiles(String [] filePaths, Set <Integer> ids)
     {
-        DefaultTableModel model = new DefaultTableModel();
+
+        DefaultTableModel model = (DefaultTableModel)sendFileDialogFrame.getTable().getModel();
         model.addColumn("Файл");
         model.addColumn("%");
         fileQuene.clear();
         for(int i = 0; i < filePaths.length; i++)
         {
+            
             Object [] row = {filePaths[i], "0%"};
             model.addRow(row);
             fileQuene.addLast(new Pair<String, Set<Integer>>(filePaths[i], ids));
         }
-        
+        sendFileDialogFrame.getTable().updateUI();
+
+        this.start();
         
     }
-   // @Override
-   // public void run()
-   // {
-   //      this.SendFiles();
-  // }
+    @Override
+    public void run()
+    {
+         this.SendFiles();
+    }
     private void SendFiles()
     {
         Pair < String , Set<Integer> > p;
@@ -205,6 +202,8 @@ public SendFileDialogView()
     {
         DefaultTableModel model = (DefaultTableModel)sendFileDialogFrame.getTable().getModel();
         model.setValueAt(s, index, 1);
+        sendFileDialogFrame.getTable().updateUI();
+
     }
     public void Close()
     {
@@ -219,9 +218,11 @@ public SendFileDialogView()
         try {
             if(fileInputStream != null) fileInputStream.close();
         }catch(Exception e) {}
-
+        
+        sendFileDialogFrame.setVisible(false);
         sendFileDialogFrame = null;
-        this.exit();
+        this.interrupt();
+
     }
     public boolean isClosed()
     {
@@ -246,7 +247,7 @@ public SendFileDialogView()
             while (pleaseWait) {
                 try {
                     if(this.isClosed()) this.Resume();
-//                    sleep(100);
+                    sleep(100);
                 }
                 catch (Exception e) { }
             }
