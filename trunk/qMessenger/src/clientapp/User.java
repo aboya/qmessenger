@@ -49,6 +49,19 @@ public class User extends Thread {
 
 
     }
+    public void CreateMainWindow()
+    {
+        /*
+         this.screenView = new ScreenView();
+         this.getScreenView().setStatusText("Connected");
+         this.start();
+         this.getScreenView().run();
+         *
+         */
+        ScreenView.launch(ScreenView.class, null);
+        this.screenView = (ScreenView)ScreenView.getInstance();
+        
+    }
     public void Connect() throws Exception
     {
         Socket SocketOut,SocketIn;
@@ -75,17 +88,11 @@ public class User extends Thread {
                 int RetCode = new RegistrationForm(this.structTreeXml).run();
                 if(RetCode == SWT.CLOSE ) this.Disconnect();
                 if(RetCode == 0) {
-                    this.screenView = new ScreenView();
-                    this.getScreenView().setStatusText("Connected");
-                    this.start();
-                    this.getScreenView().run();
+                    CreateMainWindow();
                 }
             }
             else {
-                this.screenView = new ScreenView();
-                this.getScreenView().setStatusText("Connected");
-                this.start();
-                this.getScreenView().run();
+                CreateMainWindow();
             }
             
         }catch(Exception e)

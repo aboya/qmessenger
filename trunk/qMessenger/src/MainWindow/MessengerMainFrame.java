@@ -11,13 +11,17 @@
 
 package MainWindow;
 
+import clientapp.Global;
+import clientapp.Log;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.io.StringReader;
 import java.util.EventObject;
+import java.util.Map;
 import java.util.Vector;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JCheckBox;
@@ -31,11 +35,13 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+
 /**
  *
  * @author oleksandr
  */
 public class MessengerMainFrame extends javax.swing.JFrame {
+    Map <String, Integer> treeIds;
 
     /** Creates new form MessengerMainFrame */
     public MessengerMainFrame() {
@@ -55,7 +61,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        facultyTree = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
@@ -63,6 +69,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnAddFile = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -111,20 +118,20 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("bananas");
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jTree1.getSelectionModel().setSelectionMode(
+        facultyTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        facultyTree.getSelectionModel().setSelectionMode(
             TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
         CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();
-        jTree1.setCellRenderer(renderer);
+        facultyTree.setCellRenderer(renderer);
 
-        jTree1.setCellEditor(new CheckBoxNodeEditor(jTree1));
-        jTree1.setEditable(true);
-        jTree1.addMouseListener(new java.awt.event.MouseAdapter() {
+        facultyTree.setCellEditor(new CheckBoxNodeEditor(facultyTree));
+        facultyTree.setEditable(true);
+        facultyTree.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jTree1MousePressed(evt);
+                facultyTreeMousePressed(evt);
             }
         });
-        jScrollPane1.setViewportView(jTree1);
+        jScrollPane1.setViewportView(facultyTree);
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -149,6 +156,13 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(jTable1);
 
+        btnAddFile.setText("Вложить файл");
+        btnAddFile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                addButtonPress(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -166,6 +180,8 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAddFile, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1)
                         .addGap(42, 42, 42))))
@@ -185,7 +201,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(btnAddFile))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -232,7 +250,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addContainerGap(213, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,7 +309,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addContainerGap(213, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,7 +333,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -323,39 +341,44 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
-                .addGap(371, 371, 371))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 724, Short.MAX_VALUE)
+            .addGap(0, 723, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 2, Short.MAX_VALUE)
+                    .addGap(2, 2, 2)
                     .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 2, Short.MAX_VALUE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
+            .addGap(0, 470, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 11, Short.MAX_VALUE)
-                    .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 12, Short.MAX_VALUE)))
+                    .addContainerGap()
+                    .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTree1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MousePressed
-        int a;
-        a = 0;
-        System.out.print("pressed");
-    }//GEN-LAST:event_jTree1MousePressed
+    private void facultyTreeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facultyTreeMousePressed
 
+    }//GEN-LAST:event_facultyTreeMousePressed
+
+    private void addButtonPress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonPress
+
+    }//GEN-LAST:event_addButtonPress
+    public JTree getFacultyTree()
+    {
+        return facultyTree;
+    }
     /**
     * @param args the command line arguments
     */
@@ -368,6 +391,8 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddFile;
+    private javax.swing.JTree facultyTree;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -392,7 +417,6 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTree jTree1;
     private javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables
 class CheckBoxNodeRenderer implements TreeCellRenderer {
@@ -495,11 +519,13 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
         if ((node != null) && (node instanceof DefaultMutableTreeNode)) {
           DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
           Object userObject = treeNode.getUserObject();
-          returnValue = ((treeNode.isLeaf()) && (userObject instanceof CheckBoxNode));
+         // returnValue = ((treeNode.isLeaf()) && (userObject instanceof CheckBoxNode));
+           returnValue = treeNode.isLeaf();
         }
       }
     }
     return returnValue;
+    //return returnValue;
   }
 
   public Component getTreeCellEditorComponent(JTree tree, Object value,
@@ -572,5 +598,6 @@ class NamedVector extends Vector {
   public String toString() {
     return "[" + name + "]";
   }
+
 }
 }

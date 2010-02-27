@@ -22,24 +22,24 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="724" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="723" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="mainPanel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="487" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="470" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
-                  <Component id="mainPanel" min="-2" pref="464" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="mainPanel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -53,7 +53,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTabbedPane1" pref="700" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane1" pref="691" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -63,7 +63,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jTabbedPane1" pref="426" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" pref="371" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -100,6 +100,8 @@
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="1">
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                  <Component id="btnAddFile" min="-2" pref="135" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
@@ -123,7 +125,10 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jScrollPane3" min="-2" pref="128" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnAddFile" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
@@ -139,17 +144,17 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTree" name="jTree1">
+                    <Component class="javax.swing.JTree" name="facultyTree">
                       <Properties>
                         <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
                           <TreeModel code="&#x422;&#x41d;&#x423;&#xa; &#x424;&#x430;&#x43a;&#x443;&#x43b;&#x44c;&#x442;&#x435;&#x442;&#x44b;&#xa;  blue&#xa;  violet&#xa;  red&#xa;  yellow&#xa; &#x414;&#x435;&#x43a;&#x430;&#x442;&#x430;&#x442;&#x44b;&#xa;  basketball&#xa;  soccer&#xa;  football&#xa;  hockey&#xa; &#x414;&#x435;&#x43a;&#x430;&#x43d;&#x44b;&#xa;  hot dogs&#xa;  pizza&#xa;  ravioli&#xa;  bananas"/>
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTree1MousePressed"/>
+                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="facultyTreeMousePressed"/>
                       </Events>
                       <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jTree1.getSelectionModel().setSelectionMode(&#xa;    TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);&#xa;CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();&#xa;jTree1.setCellRenderer(renderer);&#xa;&#xa;jTree1.setCellEditor(new CheckBoxNodeEditor(jTree1));&#xa;    jTree1.setEditable(true);"/>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="facultyTree.getSelectionModel().setSelectionMode(&#xa;    TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);&#xa;CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();&#xa;facultyTree.setCellRenderer(renderer);&#xa;&#xa;facultyTree.setCellEditor(new CheckBoxNodeEditor(facultyTree));&#xa;    facultyTree.setEditable(true);"/>
                         <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="MessengerMainFrame_jTree1"/>
                       </AuxValues>
                     </Component>
@@ -206,6 +211,14 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JButton" name="btnAddFile">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="&#x412;&#x43b;&#x43e;&#x436;&#x438;&#x442;&#x44c; &#x444;&#x430;&#x439;&#x43b;"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addButtonPress"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel2">
@@ -228,7 +241,7 @@
                               <Component id="jScrollPane4" alignment="0" min="-2" pref="452" max="-2" attributes="0"/>
                               <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="222" max="32767" attributes="0"/>
+                          <EmptySpace pref="213" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -323,7 +336,7 @@
                               <Component id="jScrollPane6" alignment="0" min="-2" pref="452" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="222" max="32767" attributes="0"/>
+                          <EmptySpace pref="213" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
