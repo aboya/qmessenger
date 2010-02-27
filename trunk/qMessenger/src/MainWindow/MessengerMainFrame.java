@@ -19,21 +19,34 @@ import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.StringReader;
 import java.util.EventObject;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.Vector;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+ import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
 
 
 /**
@@ -41,7 +54,8 @@ import javax.swing.tree.TreeSelectionModel;
  * @author oleksandr
  */
 public class MessengerMainFrame extends javax.swing.JFrame {
-    Map <String, Integer> treeIds;
+    Map <String, Integer> treeIds = new TreeMap<String, Integer>();
+    Vector < File > fileList = new Vector<File>();
 
     /** Creates new form MessengerMainFrame */
     public MessengerMainFrame() {
@@ -66,10 +80,11 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnSend = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblFiles = new javax.swing.JTable();
         btnAddFile = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -141,25 +156,47 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Вложения");
 
-        jButton1.setText("Отправить");
+        btnSend.setText("Отправить");
+        btnSend.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                SendFilePress(evt);
+            }
+        });
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblFiles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Имя файла", "Размер", "Дата создания", "Расположение"
+                "Имя файла", "Размер"
             }
-        ));
-        jScrollPane3.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tblFiles);
 
         btnAddFile.setText("Вложить файл");
         btnAddFile.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 addButtonPress(evt);
+            }
+        });
+
+        btnClear.setText("Очистить");
+        btnClear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ClearButtonPress(evt);
             }
         });
 
@@ -183,7 +220,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnAddFile, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(btnClear)
+                        .addGap(29, 29, 29)
+                        .addComponent(btnSend)
                         .addGap(42, 42, 42))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -202,8 +241,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(btnAddFile))))
+                            .addComponent(btnSend)
+                            .addComponent(btnAddFile)
+                            .addComponent(btnClear))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -373,12 +413,140 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_facultyTreeMousePressed
 
     private void addButtonPress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonPress
+       JFileChooser fc = new JFileChooser();
 
+       fc.setMultiSelectionEnabled(true);
+       int returnVal = fc.showOpenDialog(this);
+       if(returnVal != JFileChooser.APPROVE_OPTION ) return;
+       DefaultTableModel model = (DefaultTableModel)tblFiles.getModel();
+       for(File f:fc.getSelectedFiles())
+       {
+           model.addRow(new Object[] { f.getName(), f.length()});
+           fileList.add(f);
+       }
+       tblFiles.updateUI();
     }//GEN-LAST:event_addButtonPress
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSendActionPerformed
+
+    private void ClearButtonPress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearButtonPress
+        DefaultTableModel model = (DefaultTableModel)tblFiles.getModel();
+        model.setNumRows(0);
+        fileList.clear();
+        tblFiles.updateUI();
+    }//GEN-LAST:event_ClearButtonPress
+
+    private void SendFilePress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SendFilePress
+
+        if(fileList.size() == 0) return;
+        String []filePaths = new String[fileList.size()];
+        int i = 0;
+        for(File f:fileList)
+        {
+            filePaths[i++] = f.getPath();
+        }
+        try {
+            Set<Integer> ids = getSelectedIds();
+            if(ids.size() == 0)
+            {
+                //JOptionPane.showMessageDialog(this, "Message", "Title", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            Global.getUser().SendFiles(filePaths, getSelectedIds());
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+
+    }//GEN-LAST:event_SendFilePress
+
     public JTree getFacultyTree()
     {
         return facultyTree;
     }
+    public int findIdByName(String name)
+    {
+        return treeIds.get(name);
+    }
+    public Set <Integer> getSelectedIds()
+    {
+        int i, n;
+        DefaultTreeModel model = (DefaultTreeModel)facultyTree.getModel();
+
+        DefaultMutableTreeNode rootNode =(DefaultMutableTreeNode) model.getRoot();
+
+
+        //TreeItem [] items = tree.getItems();
+        LinkedList<DefaultMutableTreeNode> Q = new LinkedList<DefaultMutableTreeNode>();
+        Set <Integer> selectedIds = new TreeSet<Integer>();
+        
+        Q.addLast(rootNode);
+        DefaultMutableTreeNode treeItem = null;
+        while(!Q.isEmpty())
+        {
+            treeItem = Q.getFirst();
+
+            Q.removeFirst();
+            if(treeItem.isLeaf()) // select only last node
+                selectedIds.add(this.findIdByName(treeItem.getUserObject().toString()));
+
+
+            for(i = 0; i < treeItem.getChildCount(); i++)
+                Q.addLast((DefaultMutableTreeNode)treeItem.getChildAt(i));
+        }
+        return selectedIds;
+    }
+
+    public  void fillTree(String xml)
+    {
+
+        try {
+
+           DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+           DocumentBuilder db = factory.newDocumentBuilder();
+           InputSource inStream = new InputSource();
+           inStream.setCharacterStream(new StringReader(xml));
+           Document doc = db.parse(inStream);
+
+           Element rootElement = doc.getDocumentElement();
+           String s = rootElement.getNodeName();
+           DefaultMutableTreeNode treeNode1 = new DefaultMutableTreeNode("TNU");
+           JTree facultyTree = getFacultyTree();
+
+           //TreeItem rootItem = new TreeItem(tree, SWT.NONE);
+           //rootItem.setText(s);
+           treeIds.clear();
+           treeIds.put(s, Integer.parseInt(rootElement.getAttribute("id")));
+           //treeNode1.setUserObject(Integer.parseInt(rootElement.getAttribute("id")));
+           BuildTNUTree(treeNode1,(Node) rootElement.getChildNodes().item(1));
+           facultyTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+
+    }
+    private void BuildTNUTree(DefaultMutableTreeNode treeItem, Node element)
+    {
+        String s = element.getNodeName();
+        if(s.equals("#text")) return;
+
+        String id = element.getAttributes().getNamedItem("id").getNodeValue();
+        treeIds.put(s, Integer.valueOf(id));
+
+        DefaultMutableTreeNode newItem = new DefaultMutableTreeNode(element.getNodeName());
+
+
+        //newItem.setText(element.getNodeName());
+        NodeList list = element.getChildNodes();
+        for(int i = 0; i < list.getLength(); i++)
+            BuildTNUTree(newItem, list.item(i));
+        treeItem.add(newItem);
+    }
+
+
     /**
     * @param args the command line arguments
     */
@@ -392,8 +560,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddFile;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnSend;
     private javax.swing.JTree facultyTree;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -411,13 +580,13 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JTable tblFiles;
     // End of variables declaration//GEN-END:variables
 class CheckBoxNodeRenderer implements TreeCellRenderer {
   private JCheckBox leafRenderer = new JCheckBox();
@@ -502,6 +671,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 
   public Object getCellEditorValue() {
+
     JCheckBox checkbox = renderer.getLeafRenderer();
     CheckBoxNode checkBoxNode = new CheckBoxNode(checkbox.getText(),
         checkbox.isSelected());

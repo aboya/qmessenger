@@ -106,7 +106,7 @@ public class UserControls {
                 String path = fd.getFilterPath() + File.separator;
                 if(fd.getFileNames().length == 0) return;
                 try {
-                    Global.getUser().SendFiles(path, fd.getFileNames(),ids);
+                    Global.getUser().SendFiles(fd.getFileNames(),ids);
                 }catch(Exception ee)
                 {
                     Log.WriteException(ee);

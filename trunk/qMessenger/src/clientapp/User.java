@@ -59,7 +59,7 @@ public class User extends Thread {
          *
          */
         ScreenView.launch(ScreenView.class, null);
-        this.screenView = (ScreenView)ScreenView.getInstance();
+        this.screenView = (ScreenView)ScreenView.getInstance(ScreenView.class);
         
     }
     public void Connect() throws Exception
@@ -185,7 +185,7 @@ public class User extends Thread {
     {
         message.getOfflineMessages();
     }
-    public void SendFiles(String path, String [] fileList, Set <Integer> ids) throws Exception
+    public void SendFiles(String [] fileList, Set <Integer> ids) throws Exception
     {
         /*
         if(sendFiles == null || !sendFiles.isAlive())  {
@@ -197,7 +197,7 @@ public class User extends Thread {
         }
          * 
          */
-        sendFiles = new SendFileDialogView(path, fileList, ids);
+        //sendFiles = new SendFileDialogView(path, fileList, ids);
         sendFiles.launch(SendFileDialogView.class, new String[]{""});
         
         
