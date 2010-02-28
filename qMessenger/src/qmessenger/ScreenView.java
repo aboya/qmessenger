@@ -13,6 +13,7 @@ import MainWindow.MessengerMainFrame;
 import clientapp.Global;
 import clientapp.Log;
 import java.io.StringReader;
+import javax.swing.JFrame;
 import javax.swing.JTree;
 import javax.swing.RepaintManager;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -99,17 +100,7 @@ public class ScreenView extends SingleFrameApplication {
    }
    public void Close()
    {
-       /*
-        display.syncExec(
-            new Runnable() {
-                public void run(){
-                     userControls.Close();
-                     display.dispose();
-                }
-            }
-        );
-        * 
-        */
+
        messengerMainFrame.setVisible(false);
        
 
@@ -175,5 +166,9 @@ public class ScreenView extends SingleFrameApplication {
         for(int i = 0; i < list.getLength(); i++)
             BuildTNUTree(newItem, list.item(i));
         treeItem.add(newItem);
+    }
+    public JFrame getFrame()
+    {
+        return messengerMainFrame;
     }
 }

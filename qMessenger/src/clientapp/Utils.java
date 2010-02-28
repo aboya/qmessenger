@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.util.Date;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 
 /**
  *
@@ -80,4 +82,6 @@ public class Utils {
             path += fname;   
         }
     }
+
+
 }
