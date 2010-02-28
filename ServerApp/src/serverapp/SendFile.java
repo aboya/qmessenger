@@ -100,10 +100,7 @@ public class SendFile extends Thread {
                 if(readed <= 0) throw new Exception("Somthing failed when read file");
                 socketOutputStrean.write(packet, 0, readed);
                 fileSize -= readed;
-                if(socketInputStream.read() == Global.DontUploadThisFile)
-                {
-                    break;
-                }
+
             }
         }catch(Exception ee)
         {
@@ -113,14 +110,14 @@ public class SendFile extends Thread {
         try {
           if(socket != null) socket.close();
           }catch(Exception ee) {}
+         socket = null;
          try {
           if(rs != null) rs.close();
           }catch(Exception ee) {}
          try {
-          if(fileInputStream != null)
-              fileInputStream.close();
-              fileInputStream = null;
+          if(fileInputStream != null)  fileInputStream.close();
          }catch(Exception ee) {}
+         fileInputStream = null;
         if(ReceiveOk)
         {
             try {
@@ -132,7 +129,7 @@ public class SendFile extends Thread {
                 Log.WriteException(ee);
             }
         }
-        socketBufferedWriter = null;
+
         connection.Close();
     }
 }

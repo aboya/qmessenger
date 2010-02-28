@@ -96,7 +96,7 @@ public class ReceiveFileDialogView extends Thread {
            model.addRow(new Object[] {fileNames[i], "0%" } );
            fileQuene.addLast(new Pair<String, Integer >(fileNames[i], fileIds[i]));
        }
-       this.start();
+       this.run();
     }
     @Override
     public void run()
@@ -158,14 +158,15 @@ public class ReceiveFileDialogView extends Thread {
             //socket.getInputStream().read(packet, 0, len);
             socketBufferedReader.read(buf, 0, len);
             metadata = new String(buf, 0, len);
-            socketBufferedReader = null;
-            socketBufferedWriter = null;
+
             String []arr = metadata.split(FormatCharacters.marker + "");
             fileSize = Long.valueOf(arr[0]);
             fileName = arr[1];
             checkSum = Long.valueOf(arr[2]);
-            fileOutputStream = new FileOutputStream(Utils.GenerateName(Global.lastSavePath + fileName));
+            fileOutputStream = new FileOutputStream(fileName = Utils.GenerateName(Global.lastSavePath + fileName));
             Len = fileSize;
+            socketBufferedReader = null;
+            socketBufferedWriter = null;
             System.gc();
             this.sleep(500);
             while(fileSize > 0)
@@ -181,20 +182,13 @@ public class ReceiveFileDialogView extends Thread {
                     this.SetStatus(String.format("%.2f%%", 100.0 - 100.0 * fileSize / Len));
                     this.CheckWait();
                 }
-                if(this.isRemoveFileFromServer)
-                {
-                    socketOutputStream.write(Global.DontDownloadThisFile);
-                    break;
-                }else {
-                    socketOutputStream.write(Global.DownloadingOk);
-                }
-                socketOutputStream.flush();
+
             }
             fileOutputStream.flush();
             fileOutputStream.close();
             fileOutputStream = null;
             System.gc();
-            if(Utils.Checksum(Global.lastSavePath + fileName) != checkSum)
+            if(Utils.Checksum(fileName) != checkSum)
             {
                 System.out.println("incorect checksum");
                 status = false;
@@ -213,6 +207,7 @@ public class ReceiveFileDialogView extends Thread {
         try{
            if(socket != null) socket.close();
         }catch(Exception ee) {}
+        socket = null;
         if(!this.isClosed())
         {
             if(status) {
@@ -224,27 +219,14 @@ public class ReceiveFileDialogView extends Thread {
                 new File(Utils.GenerateName(Global.lastSavePath + fileName)).delete();
             }
         }
-        try {
-        }catch(Exception ee)
-        {
-            Log.WriteException(ee);
-        }
-        if(semaphore != null)
-        {
-            // отпускаем поток ждущий завершения этого цикла
-            semaphore.release();
-            // теперь сами ждем его завершения
-            try {
-             this.Pause();
-            }catch(Exception ee) {}
-        }
+
     }
     private void SetStatus(final String s)
     {
          JTable table = receiveFileDialogFrame.getTable();
          DefaultTableModel model = (DefaultTableModel)table.getModel();
-         model.setValueAt(s, index,1);
-         //table.updateUI();
+         model.setValueAt(s, index, 1);
+         table.repaint();
     }
     // вызывается когда клиент закрывает окно
     public void Close()

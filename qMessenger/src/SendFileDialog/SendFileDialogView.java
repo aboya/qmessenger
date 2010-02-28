@@ -177,33 +177,30 @@ public class SendFileDialogView extends Thread {
             Log.WriteException(ee);
         }
         try {
-
            if(fileInputStream != null) fileInputStream.close();
-           if( socket != null ) socket.close();
-           if(bufferedWriter != null) bufferedWriter.close();
-
+        }catch(Exception ee) {}
+        try {
+            if( socket != null ) socket.close();
+         }catch(Exception ee) {}
+        try {
+            if(bufferedWriter != null) bufferedWriter.close();
         }catch(Exception ee) {}
         if(!this.isClosed())
         {
             if(status) this.SetStatus(String.format("%.2f%%", 100.0));
             else this.SetStatus("Failed");
         }
-        if(semaphore != null)
-        {
-            // отпускаем поток ждущий завершения этого цикла
-            semaphore.release();
-            // теперь сами ждем его завершения
-            try {
-             this.Pause();
-            }catch(Exception ee) {}
-        }
+        socket = null;
+        fileInputStream = null;
+        bufferedWriter = null;
+        System.gc();
     }
     private void SetStatus(final String s)
     {
-        DefaultTableModel model = (DefaultTableModel)sendFileDialogFrame.getTable().getModel();
+        JTable table = sendFileDialogFrame.getTable();
+        DefaultTableModel model = (DefaultTableModel)table.getModel();
         model.setValueAt(s, index, 1);
-        sendFileDialogFrame.getTable().updateUI();
-
+        table.repaint();
     }
     public void Close()
     {

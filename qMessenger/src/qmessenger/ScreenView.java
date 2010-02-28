@@ -70,6 +70,7 @@ public class ScreenView extends SingleFrameApplication {
         {
             Log.WriteException(e);
         }
+        Global.getUser().SheduleNewTimerForCheckFiles();
      }
 
      public void run() 

@@ -60,7 +60,7 @@ public class User extends Thread {
          */
         ScreenView.launch(ScreenView.class, null);
         this.screenView = (ScreenView)ScreenView.getInstance(ScreenView.class);
-        
+        this.start();
     }
     public void Connect() throws Exception
     {
@@ -94,8 +94,6 @@ public class User extends Thread {
             else {
                 CreateMainWindow();
             }
-           
-            
         }catch(Exception e)
         {
             Log.WriteException(e);
@@ -222,18 +220,14 @@ public class User extends Thread {
             fileIds[i] = Integer.valueOf(tmp[2 * i + 1]);
         }
 
+        
+        if( JOptionPane.showConfirmDialog(screenView.getFrame(), "Вы хотите принять файлы ?") ==
+         JOptionPane.OK_OPTION)
+         {
+             receiveFiles = new ReceiveFileDialogView("Receive");
+             receiveFiles.ReceiveFiles(fileIds, fileNames);
+         }
 
-      if( JOptionPane.showConfirmDialog(screenView.getFrame(), "Message") ==
-      JOptionPane.OK_OPTION)
-      {
-          if(receiveFiles == null || !receiveFiles.isAlive())  {
-               if (receiveFiles != null && !receiveFiles.isClosed()) receiveFiles.Close();
-                   receiveFiles = new ReceiveFileDialogView("Receive");
-                   receiveFiles.ReceiveFiles(fileIds, fileNames);
-               }else {
-                   receiveFiles.AddFileToQuene(fileIds, fileNames);
-               }
-       }
     }
 }
 class TimerTask_CheckFiles extends TimerTask
