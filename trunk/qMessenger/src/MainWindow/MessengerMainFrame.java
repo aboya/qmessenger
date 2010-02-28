@@ -500,8 +500,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
             Q.removeFirst();
             if(treeItem.isLeaf()) // select only last node
-            {   
-                selectedIds.add(this.findIdByName(treeItem.getUserObject().toString()));
+            {
+                CheckBoxNode chk = (CheckBoxNode)treeItem.getUserObject();
+                if(chk.selected) selectedIds.add(this.findIdByName(chk.toString()));
             }
 
 

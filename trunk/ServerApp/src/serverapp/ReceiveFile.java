@@ -100,6 +100,8 @@ public class ReceiveFile  extends Thread{
         try {
           if(fileOutputStream != null) fileOutputStream.close();
         }catch(Exception e) {}
+        fileOutputStream = null;
+        System.gc();
         try {
          if(socket != null) socket.close();
         }catch(Exception ee){}

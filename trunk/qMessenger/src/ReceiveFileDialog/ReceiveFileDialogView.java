@@ -236,8 +236,10 @@ public class ReceiveFileDialogView extends Thread {
             // жестко вырубаем текущий аплоад
             this.socket.close();
         }catch(Exception e){}
-
-         this.interrupt();
+        this.interrupt();
+        receiveFileDialogFrame.setVisible(false);
+        receiveFileDialogFrame = null;
+        System.gc();
     }
     public boolean isClosed()
     {
