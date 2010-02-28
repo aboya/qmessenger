@@ -11,6 +11,10 @@
 
 package ReceiveFileDialog;
 
+import java.awt.Graphics;
+import javax.swing.JTable;
+import javax.swing.RepaintManager;
+
 /**
  *
  * @author Администратор
@@ -20,6 +24,16 @@ public class ReceiveFileDialogFrame extends javax.swing.JFrame {
     /** Creates new form ReceiveFileDialogFrame */
     public ReceiveFileDialogFrame() {
         initComponents();
+ 
+    }
+    @Override
+    public Graphics getGraphics()
+    {
+        return super.getGraphics();
+    }
+    JTable getTable()
+    {
+        return tblFiles;
     }
 
     /** This method is called from within the constructor to
@@ -31,28 +45,47 @@ public class ReceiveFileDialogFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblFiles = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("jButton1");
-        jButton1.setName("jButton1"); // NOI18N
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        tblFiles.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Файл", "%"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tblFiles.setName("tblFiles"); // NOI18N
+        jScrollPane1.setViewportView(tblFiles);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(149, 149, 149)
-                .addComponent(jButton1)
-                .addContainerGap(178, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(138, 138, 138)
-                .addComponent(jButton1)
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -70,7 +103,8 @@ public class ReceiveFileDialogFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblFiles;
     // End of variables declaration//GEN-END:variables
 
 }

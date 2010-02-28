@@ -14,6 +14,7 @@ import clientapp.Global;
 import clientapp.Log;
 import java.io.StringReader;
 import javax.swing.JTree;
+import javax.swing.RepaintManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -54,9 +55,20 @@ public class ScreenView extends SingleFrameApplication {
          */
     }
      @Override protected void startup() {
-         show(messengerMainFrame = new MessengerMainFrame());
-         //fillTree(Global.getUser().structTreeXml);
-         messengerMainFrame.fillTree(Global.getUser().structTreeXml);
+        show(messengerMainFrame = new MessengerMainFrame());
+        //fillTree(Global.getUser().structTreeXml);
+        messengerMainFrame.fillTree(Global.getUser().structTreeXml);
+        // comments this line on http://weblogs.java.net/blog/2008/04/13/repaintmanagers-side-effect
+        // for correct updating window
+        RepaintManager.currentManager(null).setDoubleBufferingEnabled(false);
+        RepaintManager.currentManager(null).setDoubleBufferingEnabled(true);
+        try
+        {
+            Global.getUser().getOfflineMessages();
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
      }
 
      public void run() 

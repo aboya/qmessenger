@@ -61,7 +61,7 @@ public class SendFileDialogView extends Thread {
 
     public SendFileDialogView() {
 
-        sendFileDialogFrame = new SendFileDialogFrame();
+        sendFileDialogFrame = new SendFileDialogFrame(this);
         sendFileDialogFrame.setVisible(true);
         sendFileDialogFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
