@@ -36,13 +36,9 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.concurrent.Semaphore;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -51,8 +47,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @author Администратор
  */
 public class ReceiveFileDialogView extends Thread {
-     Shell shell;
-     final Display display;
+    ReceiveFileDialogFrame receiveFileDialogFrame = null;
      boolean isClosed = false; // нужна для корректного выхода
      boolean pleaseWait = false;
      Integer index;
@@ -74,47 +69,9 @@ public class ReceiveFileDialogView extends Thread {
 
 
     public ReceiveFileDialogView(final String WindowName) {
-        display = Global.getDisplay();
-        display.syncExec(new Runnable() {
-            public void run() {
-                shell = new Shell(display);
-                DirectoryDialog dlg = new DirectoryDialog(shell);
-                dlg.setFilterPath(Global.lastSavePath);
-                Global.lastSavePath = dlg.open() + File.separator;
-            }
-        });
-        
-        userControls = new ReceiveFileDialogControls(shell, display);
-
-        final Listener resizeListner = new Listener() {
-               public void handleEvent(Event e)  {
-                   shell.setRedraw(false);
-                   Rectangle rect = shell.getBounds();
-                   rect.width = Math.max(rect.width, 400);
-                   rect.height = Math.max(rect.height, 400);
-                   shell.setBounds(rect);
-                   userControls.Resize(rect);
-                   shell.setRedraw(true);
-                }
-         };
-        final Listener closeListner = new Listener() {
-               public void handleEvent(Event e)  {
-                   Global.getUser().getReceiveFileDialogView().Close();
-                }
-         };
-         display.syncExec(
-           new Runnable() {
-                public void run(){
-                    shell.setText(WindowName);
-                    shell.addListener(SWT.Resize, resizeListner);
-                    shell.addListener(SWT.Move, resizeListner);
-                    shell.addListener(SWT.Close, closeListner);
-                    shell.setSize(200, 200);
-                    shell.open();
-                }
-            }
-         );
-
+        receiveFileDialogFrame = new ReceiveFileDialogFrame();
+        receiveFileDialogFrame.setVisible(true);
+        receiveFileDialogFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
     public void AddFileToQuene(int [] fileIds, String [] fileNames)
     {
@@ -130,21 +87,16 @@ public class ReceiveFileDialogView extends Thread {
     }
     public void ReceiveFiles(final int [] fileIds, final String [] fileNames)
     {
-        Global.getDisplay().syncExec(new Runnable() {
-            public void run() {
-                Table table = userControls.getTable();
-                table.removeAll();
-                fileQuene.clear();
-                for(int i = 0; i < fileNames.length; i++)
-                {
-                    TableItem item = new TableItem(table, i);
-                    item.setText(0, fileNames[i]);
-                    item.setText(1, "0%");
-                    fileQuene.addLast(new Pair<String, Integer >(fileNames[i], fileIds[i]));
-                }
-            }
-        });
-        this.run();
+        JTable table = receiveFileDialogFrame.getTable();
+        DefaultTableModel model = (DefaultTableModel)table.getModel();
+
+       fileQuene.clear();
+       for(int i = 0; i < fileNames.length; i++)
+       {
+           model.addRow(new Object[] {fileNames[i], "0%" } );
+           fileQuene.addLast(new Pair<String, Integer >(fileNames[i], fileIds[i]));
+       }
+       this.start();
     }
     @Override
     public void run()
@@ -289,36 +241,21 @@ public class ReceiveFileDialogView extends Thread {
     }
     private void SetStatus(final String s)
     {
-          display.syncExec(
-           new Runnable() {
-                public void run(){
-                    if(isClosed()) return;
-                    if(index < 0) return;
-                    Table table = userControls.getTable();
-                    table.getItem(index).setText(1, s);
-                }
-            }
-         );
+         JTable table = receiveFileDialogFrame.getTable();
+         DefaultTableModel model = (DefaultTableModel)table.getModel();
+         model.setValueAt(s, index,1);
+         //table.updateUI();
     }
     // вызывается когда клиент закрывает окно
     public void Close()
     {
         isClosed = true;
-        if(this.shell != null && !this.shell.isDisposed())
-        {
-            // если вызовим close - сработает перехватчик событий и вызовит эту функцию опять, и получится
-            // бесконечная рекурсия
-            Global.getDisplay().syncExec(new Runnable() {
-                public void run() {
-                    shell.dispose();
-                }
-            });
-        }
         try {
             // жестко вырубаем текущий аплоад
             this.socket.close();
-            this.interrupt();
-        }catch(Exception e) {}
+        }catch(Exception e){}
+
+         this.interrupt();
     }
     public boolean isClosed()
     {
