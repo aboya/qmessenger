@@ -12,9 +12,9 @@ import java.net.*;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.JOptionPane;
 import org.eclipse.swt.SWT;
 import qmessenger.ScreenView;
-import org.jdesktop.application.SingleFrameApplication;
 /**
  *
  * @author Серёжа
@@ -94,6 +94,7 @@ public class User extends Thread {
             else {
                 CreateMainWindow();
             }
+           
             
         }catch(Exception e)
         {
@@ -220,17 +221,10 @@ public class User extends Thread {
             fileNames[i] = tmp[2 * i];
             fileIds[i] = Integer.valueOf(tmp[2 * i + 1]);
         }
-        Global.getDisplay().syncExec(new Runnable() {
 
-            public void run() {
-                 int res;
-                 uMessageBox msg = new uMessageBox(String.format("вы хотите принять %d файла(ов) с общим размером %d ?",
-                         count, totalSize), SWT.OK|SWT.CANCEL);
-                 // ниче умней я не придумал
-                 result = msg.open();
-            }
-       });
-      if(result == SWT.OK)
+
+      if( JOptionPane.showConfirmDialog(screenView.getFrame(), "Message") ==
+      JOptionPane.OK_OPTION)
       {
           if(receiveFiles == null || !receiveFiles.isAlive())  {
                if (receiveFiles != null && !receiveFiles.isClosed()) receiveFiles.Close();
