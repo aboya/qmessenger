@@ -219,6 +219,7 @@ public class SendFileDialogView extends Thread {
         sendFileDialogFrame.setVisible(false);
         sendFileDialogFrame = null;
         this.interrupt();
+        System.gc();
 
     }
     public boolean isClosed()

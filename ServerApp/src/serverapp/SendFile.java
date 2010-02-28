@@ -123,7 +123,7 @@ public class SendFile extends Thread {
             try {
                 //RemoveFileByID удаляет фалй из базы и возвращает количество юзеров ожидающих этот файл
              if( file != null && dbFunc.RemoveFileByID(connection, fileid) == 0 ) {
-                 new DeleteFile(file).run();
+                 new DeleteFile(file).start();
              }
             }catch(Exception ee) {
                 Log.WriteException(ee);
