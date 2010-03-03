@@ -431,7 +431,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
            fileList.add(f);
        }
        this.repaint();
-       tblFiles.updateUI();
+       tblFiles.repaint();
     }//GEN-LAST:event_addButtonPress
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -442,7 +442,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)tblFiles.getModel();
         model.setNumRows(0);
         fileList.clear();
-        tblFiles.updateUI();
+        tblFiles.repaint();
     }//GEN-LAST:event_ClearButtonPress
 
     private void SendFilePress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SendFilePress
