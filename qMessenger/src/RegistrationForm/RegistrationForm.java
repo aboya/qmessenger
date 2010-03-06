@@ -9,24 +9,13 @@ package RegistrationForm;
  *
  * @author Администратор
  */
-import UserGUIControls.uMessageBox;
-import clientapp.FormatCharacters;
+
 import clientapp.Global;
-import clientapp.Log;
-import java.util.EventObject;
 import javax.swing.JTree;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
 
 public class RegistrationForm extends SingleFrameApplication{
-     RegistrationFormControls userControls;
      RegistrationFormFrame registrationFormFrame;
      public RegistrationForm() {
      }

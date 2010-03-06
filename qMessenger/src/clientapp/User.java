@@ -43,20 +43,13 @@ public class User extends Thread {
     }
     public User()
     {
-        //sendFiles = new SendFileDialogView("Send");
-        
-
 
     }
+
     public void CreateMainWindow()
     {
-        if( RegistrationForm.getInstance(RegistrationForm.class) != null )
-        {
-            
-
-        }
         ScreenView.launch(ScreenView.class, null);
-        this.screenView = (ScreenView)ScreenView.getInstance(ScreenView.class);
+        this.screenView = null;
         this.start();
     }
     public void Connect() throws Exception
@@ -81,15 +74,7 @@ public class User extends Thread {
             
             this.RequestStructureTree();
             if(!this.AuthenticateUser()) {
-               // new RegistrationForm(structTreeXml);
                 RegistrationForm.launch(RegistrationForm.class, null);
-                //ScreenView.launch(RegistrationForm.class, null);
-
-    //            int RetCode = new RegistrationForm(this.structTreeXml).run();
-   //             if(RetCode == SWT.CLOSE ) this.Disconnect();
-  //              if(RetCode == 0) {
- //                   CreateMainWindow();
-//                }
             }
             else {
                 CreateMainWindow();
@@ -194,6 +179,10 @@ public class User extends Thread {
     }
 
     public ScreenView getScreenView() {
+        if(screenView == null)
+        {
+            screenView = ScreenView.getInstance(ScreenView.class);
+        }
         return screenView;
     }
     public ReceiveFileDialogView getReceiveFileDialogView()

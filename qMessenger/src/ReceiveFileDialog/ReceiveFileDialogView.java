@@ -39,8 +39,7 @@ import java.util.concurrent.Semaphore;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+
 
 /**
  *
@@ -63,7 +62,6 @@ public class ReceiveFileDialogView extends Thread {
       */
 
      Socket socket;
-     ReceiveFileDialogControls userControls;
      LinkedList<Pair<String, Integer > > fileQuene = new LinkedList<Pair<String, Integer >>();
      FileOutputStream fileOutputStream = null;
 
@@ -73,18 +71,7 @@ public class ReceiveFileDialogView extends Thread {
         receiveFileDialogFrame.setVisible(true);
         receiveFileDialogFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
-    public void AddFileToQuene(int [] fileIds, String [] fileNames)
-    {
-        Table table = userControls.getTable();
-        for(int i = 0; i < fileNames.length; i++)
-        {
-            TableItem item = new TableItem(table, i);
-            item.setText(0, fileNames[i]);
-            item.setText(1, "0%");
-            fileQuene.addLast(new Pair<String, Integer >(fileNames[i], fileIds[i]));
-        }
-        this.start();
-    }
+
     public void ReceiveFiles(final int [] fileIds, final String [] fileNames)
     {
         JTable table = receiveFileDialogFrame.getTable();
@@ -308,36 +295,5 @@ public class ReceiveFileDialogView extends Thread {
         }catch(Exception e) {}
     }
 
-}
- class RemoveTask extends Thread
- {
-     ReceiveFileDialogView receiveFile;
-     int []selectedIndexes;
-     Table table;
-
-     public RemoveTask(ReceiveFileDialogView view, int [] indexes, Table _table) {
-         this.receiveFile = view;
-         this.selectedIndexes = indexes;
-         this.table = _table;
-     }
-
-     @Override
-     public void run() {
-           if(selectedIndexes.length == 0) return;
-           try {
-                  // делаем паузу для синхронизации
-                 Global.getUser().getReceiveFileDialogView().Pause();
-           }catch(Exception e)
-           {
-               Log.WriteException(e);
-           }
-           receiveFile.RemoveFilesFromQuene(selectedIndexes);
-           Global.getDisplay().syncExec(new Runnable() {
-                  public void run() {
-                       table.remove(selectedIndexes);
-                  }
-                });
-           Global.getUser().getReceiveFileDialogView().Resume();
-    }
 }
 
