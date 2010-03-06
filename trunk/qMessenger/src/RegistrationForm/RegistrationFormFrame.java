@@ -308,10 +308,13 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         }
         if(isRegister == false)
         {
-            JOptionPane.showMessageDialog(this, "Registarion failed", "Error", JOptionPane.ERROR);
+            JOptionPane.showMessageDialog(this, "Registarion failed", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         JOptionPane.showMessageDialog(this, "Регистрация успешна", "Информация", JOptionPane.INFORMATION_MESSAGE);
+        this.setVisible(false);
+        Global.getUser().CreateMainWindow();
+
 
         //ReturnCode = 0;
         //display.close();

@@ -118,7 +118,7 @@
                   </Group>
                   <EmptySpace min="-2" pref="234" max="-2" attributes="0"/>
                   <Component id="btnRegister" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

@@ -13,6 +13,7 @@ import UserGUIControls.uMessageBox;
 import clientapp.FormatCharacters;
 import clientapp.Global;
 import clientapp.Log;
+import java.util.EventObject;
 import javax.swing.JTree;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
@@ -35,6 +36,9 @@ public class RegistrationForm extends SingleFrameApplication{
        JTree jt = registrationFormFrame.getTree();
        registrationFormFrame.fillTree(Global.getUser().structTreeXml);
     }
+
+
+
  
 
 }
