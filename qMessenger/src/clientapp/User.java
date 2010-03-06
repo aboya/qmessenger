@@ -5,15 +5,14 @@
 
 package clientapp;
 import ReceiveFileDialog.ReceiveFileDialogView;
+import RegistrationForm.RegistrationData;
 import RegistrationForm.RegistrationForm;
 import SendFileDialog.SendFileDialogView;
-import UserGUIControls.uMessageBox;
 import java.net.*;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JOptionPane;
-import org.eclipse.swt.SWT;
 import qmessenger.ScreenView;
 /**
  *
@@ -51,13 +50,7 @@ public class User extends Thread {
     }
     public void CreateMainWindow()
     {
-        /*
-         this.screenView = new ScreenView();
-         this.getScreenView().setStatusText("Connected");
-         this.start();
-         this.getScreenView().run();
-         *
-         */
+
         ScreenView.launch(ScreenView.class, null);
         this.screenView = (ScreenView)ScreenView.getInstance(ScreenView.class);
         this.start();
@@ -72,8 +65,7 @@ public class User extends Thread {
         }catch(Exception e)
         {
             Log.WriteException(e);
-            uMessageBox messageBox = new uMessageBox("Cannot Connect to server",  SWT.ICON_ERROR);
-            messageBox.open();
+            JOptionPane.showMessageDialog(null,"Невозможно подключится к серверу", "Ошибка", JOptionPane.ERROR_MESSAGE);
             if(timer != null) timer.cancel();
             return;
         }
@@ -85,11 +77,15 @@ public class User extends Thread {
             
             this.RequestStructureTree();
             if(!this.AuthenticateUser()) {
-                int RetCode = new RegistrationForm(this.structTreeXml).run();
-                if(RetCode == SWT.CLOSE ) this.Disconnect();
-                if(RetCode == 0) {
-                    CreateMainWindow();
-                }
+               // new RegistrationForm(structTreeXml);
+                RegistrationForm.launch(RegistrationForm.class, null);
+                //ScreenView.launch(RegistrationForm.class, null);
+
+    //            int RetCode = new RegistrationForm(this.structTreeXml).run();
+   //             if(RetCode == SWT.CLOSE ) this.Disconnect();
+  //              if(RetCode == 0) {
+ //                   CreateMainWindow();
+//                }
             }
             else {
                 CreateMainWindow();
@@ -97,8 +93,7 @@ public class User extends Thread {
         }catch(Exception e)
         {
             Log.WriteException(e);
-            uMessageBox messageBox = new uMessageBox("Server drop connection",  SWT.ICON_ERROR);
-            messageBox.open();
+            JOptionPane.showMessageDialog(null,"Невозможно подключится к серверу", "Ошибка", JOptionPane.ERROR_MESSAGE);
         }
     }
     @Override
@@ -172,9 +167,9 @@ public class User extends Thread {
              this.interrupt();
         }catch(Exception ee) {  }
     }
-    public boolean RegisterUser(int structureId) throws Exception
+    public boolean RegisterUser(RegistrationData rData) throws Exception
     {
-        return message.RegisterUser(structureId);
+        return message.RegisterUser(rData);
     }
     public void SendTextMessage(String txtMessage, Set <Integer> ids) throws Exception
     {

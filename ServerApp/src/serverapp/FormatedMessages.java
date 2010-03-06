@@ -88,8 +88,10 @@ public class FormatedMessages extends Messages{
     }
     public void RegisterUser() throws Exception
     {
-        String structureId = this.ReceiveMessage();
-        String result = this.getUser().RegisterUser(structureId).toString();
+
+        String registrationData = this.ReceiveMessage();
+        RegistrationData rData = RegistrationData.Parse(registrationData);
+        String result = this.getUser().RegisterUser(rData).toString();
         this.SendMessageSync(result);   
     }
     public void getListFiles()
