@@ -23,10 +23,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+
 import org.jdesktop.application.SingleFrameApplication;
 
 /**
@@ -34,8 +31,7 @@ import org.jdesktop.application.SingleFrameApplication;
  * @author Администратор
  */
 public class SendFileDialogView extends Thread {
-     Shell shell;
-     final Display display = null;
+
      boolean isClosed = false; // нужна для корректного выхода
      boolean pleaseWait = false;
      Integer index;
@@ -43,7 +39,7 @@ public class SendFileDialogView extends Thread {
      SendFileDialogFrame sendFileDialogFrame = null;
 
      Socket socket;
-     SendFileDialogControls userControls;
+
      LinkedList<Pair<String, Set<Integer> > > fileQuene = new LinkedList<Pair<String, Set<Integer>>>();
      FileInputStream fileInputStream = null;
 
@@ -67,17 +63,7 @@ public class SendFileDialogView extends Thread {
 
 
     }
-    public void AddFileToQuene(String [] filePaths, Set <Integer> ids)
-    {
-        Table table = userControls.getTable();
-        for(int i = 0; i < filePaths.length; i++)
-        {
-            TableItem item = new TableItem(table, i);
-            item.setText(0, filePaths[i]);
-            item.setText(1, "0%");
-            fileQuene.addLast(new Pair<String, Set<Integer>>(filePaths[i], ids));
-        }
-    }
+
     public void SendFiles(String [] filePaths, Set <Integer> ids)
     {
 
@@ -289,34 +275,4 @@ public class SendFileDialogView extends Thread {
     }
 
 }
- class RemoveTask extends Thread
- {
-     SendFileDialogView sendFile;
-     int []selectedIndexes;
-     Table table;
-
-     public RemoveTask(SendFileDialogView view, int [] indexes, Table _table) {
-         this.sendFile = view;
-         this.selectedIndexes = indexes;
-         this.table = _table;
-     }
-
-     @Override
-     public void run() {
-           if(selectedIndexes.length == 0) return;
-           try {
-                  // делаем паузу для синхронизации
-                 Global.getUser().getSendFileDialogView().Pause();
-           }catch(Exception e)
-           {
-               Log.WriteException(e);
-           }
-           sendFile.RemoveFilesFromQuene(selectedIndexes);
-           Global.getDisplay().syncExec(new Runnable() {
-                  public void run() {
-                       table.remove(selectedIndexes);
-                  }
-                });
-           Global.getUser().getSendFileDialogView().Resume();
-    }
-}
+ 

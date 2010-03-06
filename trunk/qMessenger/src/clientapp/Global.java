@@ -5,7 +5,7 @@
 
 package clientapp;
 
-import org.eclipse.swt.widgets.Display;
+
 
 /**
  *
@@ -20,7 +20,6 @@ public class Global {
         public static String ServAddr = "192.168.2.2";
         public static int ReconnectInterval = 10000;
         private static User user = null;
-        private static Display display = new Display();
         public static String lastOpenPath = "C:\\2\\";
         public static String lastSavePath = "C:\\2\\";
         public static String defaultSavePath = "C:\\2\\";
@@ -34,12 +33,7 @@ public class Global {
     public static User getUser() {
         return user;
     }
-    public static Display getDisplay()
-    {
-        if(display.isDisposed())
-            display = new Display();
-        return display;
-    }
+
 
     /**
      * @param aUser the user to set
