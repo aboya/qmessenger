@@ -21,14 +21,15 @@ public class Main {
 
 public static void main(String args[]) throws Exception {
         //new SendFileDialogView("SEND").run();
-      //  new SendFileDialogView().launch(SendFileDialogView.class, null);
+       // new SendFileDialogView().launch(SendFileDialogView.class, null);
         
         ApplicationSettings.Initialize();
         ApplicationSettings.saveProperties();
         User u = new User();
         Global.setUser(u);
         u.Connect();
- 
+   
+
   }
 }
 

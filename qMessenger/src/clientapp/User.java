@@ -50,7 +50,11 @@ public class User extends Thread {
     }
     public void CreateMainWindow()
     {
+        if( RegistrationForm.getInstance(RegistrationForm.class) != null )
+        {
+            
 
+        }
         ScreenView.launch(ScreenView.class, null);
         this.screenView = (ScreenView)ScreenView.getInstance(ScreenView.class);
         this.start();
