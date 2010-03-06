@@ -82,6 +82,17 @@ public class Utils {
             path += fname;   
         }
     }
+    public static String getAdekvatSize(Long size)
+    {
+        String res;
+        Long a = 1024L;
+        if(size < a) res = size.toString() + " байт";
+        else if(size < a * a) res = String.format("%.2f Килобайт",  size / 1024.0);
+        else if(size < a * a * a) res = String.format("%.2f Мегабайт",  size / 1024.0 / 1024.0);
+        else if(size < a * a * a * a) res = String.format("%.2f Гигабайт",  size / 1024.0 / 1024.0 / 1024.0);
+        else res = String.format("%.2lf Терабайт",  size / 1024.0 / 1024.0 / 1024.0 / 1024.0);
+        return res;
+    }
 
 
 }
