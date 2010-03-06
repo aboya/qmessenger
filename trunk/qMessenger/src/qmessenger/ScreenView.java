@@ -32,6 +32,7 @@ public class ScreenView extends SingleFrameApplication {
     }
      @Override protected void startup() {
 
+
         show(messengerMainFrame = new MessengerMainFrame());
         //fillTree(Global.getUser().structTreeXml);
         messengerMainFrame.fillTree(Global.getUser().structTreeXml);
