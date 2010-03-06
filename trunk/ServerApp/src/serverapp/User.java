@@ -86,10 +86,10 @@ public class User extends Thread{
 
         messages.AuthenticateUserPostBack(Auth);
     }
-    public Boolean RegisterUser(String structureId) throws Exception
+    public Boolean RegisterUser(RegistrationData rData) throws Exception
     {
         boolean res;
-        res = dbFunc.RegisterUser(connection, ip, structureId);
+        res = dbFunc.RegisterUser(connection, ip, rData);
         if(res) this.getUserTreeName();
         return res;
     }

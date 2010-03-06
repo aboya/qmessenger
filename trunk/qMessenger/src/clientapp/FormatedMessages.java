@@ -5,10 +5,10 @@
 
 package clientapp;
 
+import RegistrationForm.RegistrationData;
 import java.io.File;
 import java.net.Socket;
 import java.util.Set;
-import java.util.Vector;
 
 /**
  *
@@ -81,10 +81,10 @@ public class FormatedMessages extends Messages{
         this.SendMessage(FormatCharacters.RequestStructureTree);
         return this.ReceiveMessageSync();
     }
-    public boolean RegisterUser(int structureId) throws Exception
+    public boolean RegisterUser(RegistrationData rData) throws Exception
     {
         this.SendMessage(FormatCharacters.RequestRegistration);
-        this.SendMessage(String.valueOf(structureId));
+        this.SendMessage(rData.toString());
         String response = this.ReceiveMessageSync();
         if(response.length() == 4) return true;
         return false;

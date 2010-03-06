@@ -22,6 +22,6 @@ public class Main {
         byte[] buffer = new byte[(int) new File(filePath).length()];
         FileInputStream f = new FileInputStream(filePath);
         f.read(buffer);
-        new RegistrationForm(new String(buffer)).run();
+       // new RegistrationForm(new String(buffer)).run();
     }
 }

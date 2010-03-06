@@ -501,8 +501,12 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             Q.removeFirst();
             if(treeItem.isLeaf()) // select only last node
             {
-                CheckBoxNode chk = (CheckBoxNode)treeItem.getUserObject();
-                if(chk.selected) selectedIds.add(this.findIdByName(chk.toString()));
+                Object o = treeItem.getUserObject();
+                if(o instanceof CheckBoxNode)
+                {
+                    CheckBoxNode chk = (CheckBoxNode)o;
+                    if(chk.selected) selectedIds.add(this.findIdByName(chk.toString()));
+                }
             }
 
 
@@ -601,7 +605,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTable tblFiles;
     // End of variables declaration//GEN-END:variables
-class CheckBoxNodeRenderer implements TreeCellRenderer {
+public class CheckBoxNodeRenderer implements TreeCellRenderer {
   private JCheckBox leafRenderer = new JCheckBox();
 
   private DefaultTreeCellRenderer nonLeafRenderer = new DefaultTreeCellRenderer();
@@ -671,7 +675,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
   }
 }
 
-class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
+public class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 
   CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();
 
@@ -733,7 +737,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 }
 
-class CheckBoxNode {
+public class CheckBoxNode {
   String text;
 
   boolean selected;
@@ -764,7 +768,7 @@ class CheckBoxNode {
   }
 }
 
-class NamedVector extends Vector {
+public class NamedVector extends Vector {
   String name;
 
   public NamedVector(String name) {
