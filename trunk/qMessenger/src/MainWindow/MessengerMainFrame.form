@@ -7,6 +7,10 @@
       <Dimension value="[723, 470]"/>
     </Property>
   </Properties>
+  <AccessibilityProperties>
+    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="descrp"/>
+    <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value="descrp" noResource="true"/>
+  </AccessibilityProperties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
