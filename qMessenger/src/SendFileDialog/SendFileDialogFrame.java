@@ -11,8 +11,8 @@
 
 package SendFileDialog;
 
+import MainWindow.DisableEditingTableModel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -48,7 +48,7 @@ public class SendFileDialogFrame extends javax.swing.JFrame {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        jtProcessTable.setModel(new DefaultTableModel(new Object[]{"Файл","%"}, 0));
+        jtProcessTable.setModel(new DisableEditingTableModel(new Object[]{"Файл","%"}, 0));
         jtProcessTable.setName("jtProcessTable"); // NOI18N
         jScrollPane1.setViewportView(jtProcessTable);
 

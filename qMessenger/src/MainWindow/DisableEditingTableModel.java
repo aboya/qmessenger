@@ -17,4 +17,12 @@ public class DisableEditingTableModel extends DefaultTableModel {
     public boolean isCellEditable(int row, int column) {
         return false;
     }
+    public DisableEditingTableModel(Object [] columns, int rowCount)
+    {
+        super(columns, rowCount);
+    }
+    public  DisableEditingTableModel()
+    {
+        super();
+    }
 }

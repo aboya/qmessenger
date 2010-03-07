@@ -9,6 +9,7 @@ package qmessenger;
  *
  * @author Администратор
  */
+import MainWindow.DisableEditingTableModel;
 import MainWindow.MessengerMainFrame;
 import clientapp.Global;
 import clientapp.Log;
