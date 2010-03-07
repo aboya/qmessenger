@@ -413,6 +413,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                     .addContainerGap()))
         );
 
+        getAccessibleContext().setAccessibleName("descrp");
+        getAccessibleContext().setAccessibleDescription("descrp"); // NOI18N
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 

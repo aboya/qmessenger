@@ -209,7 +209,7 @@ public class User extends Thread {
         }
 
         
-        if( JOptionPane.showConfirmDialog(screenView.getFrame(), "Вы хотите принять файлы ?") ==
+        if( JOptionPane.showConfirmDialog(getScreenView().getFrame(), "Вы хотите принять файлы ?") ==
          JOptionPane.OK_OPTION)
          {
              receiveFiles = new ReceiveFileDialogView("Receive");
