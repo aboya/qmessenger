@@ -31,8 +31,10 @@ public class ApplicationSettings {
             vProp.loadFromXML(iFile);
             String property;
             if( (property = vProp.getProperty("IncomingPort")) != null) Global.IncomingPort = Integer.parseInt(property) ;
-            if( (property = vProp.getProperty("ServAddr")) != null && checkIp(property))  Global.ServAddr = property;
+            if( (property = vProp.getProperty("ServAddr")) != null && Utils.CheckIp(property))  Global.ServAddr = property;
             if( (property = vProp.getProperty("ServerPort")) != null) Global.ServerPort = Integer.parseInt(property);
+            if( (property = vProp.getProperty("DefaultSavePath")) != null && Utils.CheckDirectoryExists(property)) Global.defaultSavePath = property;
+
             iFile.close();
         }catch(Exception e)
         {
@@ -46,6 +48,7 @@ public class ApplicationSettings {
             vProp.setProperty("IncomingPort",String.valueOf(Global.IncomingPort));
             vProp.setProperty("ServAddr", Global.ServAddr) ;
             vProp.setProperty("ServerPort", String.valueOf(Global.ServerPort));
+            vProp.setProperty("DefaultSavePath", Global.defaultSavePath);
             vProp.storeToXML(oFile = new FileOutputStream(fileName), "qMessengerProperties");
             if(oFile != null) oFile.close();
         }catch(Exception e)
@@ -53,22 +56,11 @@ public class ApplicationSettings {
             Log.WriteException(e);
         }
     }
-    public static boolean checkIp(String ip)
+    public static void SetProperty(String key, String value)
     {
-        try {
-            String[] parts = ip.split( "\\." );
-            for ( String s : parts )
-            {
-                int i = Integer.parseInt( s );
-                if ( (i < 0) || (i > 255) )
-                {
-                    return false;
-                }
-            }
-        }catch(Exception e)
-        {
-            return false;
-        }
-        return true;
+        vProp.setProperty(key, value);
+        saveProperties();
     }
+
+
 }

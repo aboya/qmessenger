@@ -5,6 +5,8 @@
 
 package clientapp;
 
+import java.io.File;
+
 
 
 /**
@@ -20,9 +22,7 @@ public class Global {
         public static String ServAddr = "192.168.2.2";
         public static int ReconnectInterval = 10000;
         private static User user = null;
-        public static String lastOpenPath = "C:\\2\\";
-        public static String lastSavePath = "C:\\2\\";
-        public static String defaultSavePath = "C:\\2\\";
+        public static String defaultSavePath = System.getProperty("java.io.tmpdir") + File.separator + "ReceivedFiles" + File.separator;;
         public static String codePage = "UTF-8";
         public static int DontDownloadThisFile = 23;
         public static int DownloadingOk = 12;
@@ -30,6 +30,7 @@ public class Global {
     /**
      * @return the user
      */
+
     public static User getUser() {
         return user;
     }
