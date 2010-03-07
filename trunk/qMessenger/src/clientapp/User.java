@@ -203,10 +203,11 @@ public class User extends Thread {
             fileNames[i] = tmp[2 * i];
             fileIds[i] = Integer.valueOf(tmp[2 * i + 1]);
         }
+     
+        String mes = String.format("Вы хотите принять %d файла(ов) общим размером %s",count, Utils.getAdekvatSize(totalSize));
+        if(JOptionPane.showConfirmDialog(getScreenView().getMainFrame(), mes, "Вопрос", JOptionPane.OK_CANCEL_OPTION) ==
+                JOptionPane.OK_OPTION)
 
-        
-        if( JOptionPane.showConfirmDialog(getScreenView().getFrame(), "Вы хотите принять файлы ?") ==
-         JOptionPane.OK_OPTION)
          {
              receiveFiles = new ReceiveFileDialogView("Receive");
              receiveFiles.ReceiveFiles(fileIds, fileNames);
