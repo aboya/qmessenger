@@ -50,6 +50,7 @@ import javax.swing.tree.TreeSelectionModel;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
+import qmessenger.ScreenView;
 
 
 /**
@@ -59,11 +60,14 @@ import org.xml.sax.InputSource;
 public class MessengerMainFrame extends javax.swing.JFrame {
     Map <String, Integer> treeIds = new TreeMap<String, Integer>();
     Vector < File > fileList = new Vector<File>();
+    ScreenView parent;
+    private qMessengerPreferences preferencesWindow = null;
 
     /** Creates new form MessengerMainFrame */
-    public MessengerMainFrame() {
+    public MessengerMainFrame(ScreenView _parent) {
         initComponents();
          RepaintManager.currentManager(this).setDoubleBufferingEnabled(false);
+         parent = _parent;
     }
 
     /** This method is called from within the constructor to
@@ -75,6 +79,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
         mainPanel = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -103,8 +108,13 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tblSendedFiles = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        mnPreferences = new javax.swing.JMenuItem();
+        mnAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("qMessenger");
         setMinimumSize(new java.awt.Dimension(723, 470));
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("ТНУ");
@@ -229,16 +239,16 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
                         .addGap(11, 11, 11))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnSend)
@@ -285,11 +295,11 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -327,11 +337,11 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -349,8 +359,25 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
         );
+
+        jMenu1.setText("Меню");
+
+        mnPreferences.setText("Настройки");
+        mnPreferences.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                preferences_mousePress(evt);
+            }
+        });
+        jMenu1.add(mnPreferences);
+
+        mnAbout.setText("О программе");
+        jMenu1.add(mnAbout);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -365,10 +392,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 470, Short.MAX_VALUE)
+            .addGap(0, 428, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
@@ -385,6 +411,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
     private void addButtonPress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonPress
        JFileChooser fc = new JFileChooser();
+       
 
        fc.setMultiSelectionEnabled(true);
        int returnVal = fc.showOpenDialog(this);
@@ -421,6 +448,10 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         SendTextMessage(ids);
         
     }//GEN-LAST:event_SendFilePress
+
+    private void preferences_mousePress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_preferences_mousePress
+         getPreferencesWindow().setVisible(true);
+    }//GEN-LAST:event_preferences_mousePress
     private void SendTextMessage(Set<Integer> ids)
     {
         String message = txtMessage.getText();
@@ -544,18 +575,13 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             BuildTNUTree(newItem, list.item(i));
         treeItem.add(newItem);
     }
-
-
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MessengerMainFrame().setVisible(true);
-            }
-        });
+    private qMessengerPreferences getPreferencesWindow()
+    {
+        if(preferencesWindow == null) preferencesWindow = new qMessengerPreferences();
+        return preferencesWindow;
     }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddFile;
@@ -568,9 +594,12 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -580,6 +609,8 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JMenuItem mnAbout;
+    private javax.swing.JMenuItem mnPreferences;
     private javax.swing.JTable tblFiles;
     public javax.swing.JTable tblIncomingFiles;
     public javax.swing.JTable tblIncomingMessages;

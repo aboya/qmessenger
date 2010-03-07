@@ -150,7 +150,7 @@ public class ReceiveFileDialogView extends Thread {
             fileSize = Long.valueOf(arr[0]);
             fileName = arr[1];
             checkSum = Long.valueOf(arr[2]);
-            fileOutputStream = new FileOutputStream(fileName = Utils.GenerateName(Global.lastSavePath + fileName));
+            fileOutputStream = new FileOutputStream(fileName = Utils.GenerateName(Global.defaultSavePath + fileName));
             Len = fileSize;
             socketBufferedReader = null;
             socketBufferedWriter = null;
@@ -204,7 +204,7 @@ public class ReceiveFileDialogView extends Thread {
             else {
                 System.gc();
                 this.SetStatus("Failed");
-                new File(Utils.GenerateName(Global.lastSavePath + fileName)).delete();
+                new File(Utils.GenerateName(Global.defaultSavePath + fileName)).delete();
             }
         }
 

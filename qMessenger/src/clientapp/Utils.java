@@ -93,6 +93,32 @@ public class Utils {
         else res = String.format("%.2lf Терабайт",  size / 1024.0 / 1024.0 / 1024.0 / 1024.0);
         return res;
     }
+    public static boolean CheckIp(String ip)
+    {
+        try {
+            String[] parts = ip.split( "\\." );
+            for ( String s : parts )
+            {
+                int i = Integer.parseInt( s );
+                if ( (i < 0) || (i > 255) )
+                {
+                    return false;
+                }
+            }
+            parts = null;
+        }catch(Exception e)
+        {
+            return false;
+        }
+        return true;
+    }
+    public static boolean CheckDirectoryExists(String path)
+    {
+        File f = new File(path);
+        boolean res = f.isDirectory();
+        f = null;
+        return res;
+    }
 
 
 }
