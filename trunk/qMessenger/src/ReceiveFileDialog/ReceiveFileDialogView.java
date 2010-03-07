@@ -297,7 +297,7 @@ public class ReceiveFileDialogView extends Thread {
     }
     private void AddReceiveFileToScreen(String from, String fileName, String size)
     {
-        Global.getUser().getScreenView().AddReceiveFileToStrceen(from, fileName, size);
+        Global.getUser().getScreenView().AddReceiveFileToScreen(from, fileName, size);
     }
 
 }

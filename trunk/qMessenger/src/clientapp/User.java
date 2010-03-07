@@ -146,12 +146,7 @@ public class User extends Thread {
     public void Disconnect()
     {
         if(timer != null) timer.cancel();
-        try {
-            message.CloseConnection();
-        }catch(Exception e)
-        {
-            Log.WriteException(e);
-        }
+        message.CloseConnection();
         try {
              this.interrupt();
         }catch(Exception ee) {  }
@@ -163,6 +158,7 @@ public class User extends Thread {
     public void SendTextMessage(String txtMessage, Set <Integer> ids) throws Exception
     {
         message.SendTextMessage(txtMessage, ids);
+        getScreenView().AddSendedMessageToScreen("", txtMessage);
     }
     public void getOfflineMessages() throws Exception
     {
