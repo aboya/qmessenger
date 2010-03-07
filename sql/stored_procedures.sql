@@ -36,6 +36,10 @@ CREATE TABLE `user` (
   `UserIP`    varchar(50) CHARACTER SET `utf8` COLLATE `utf8_general_ci` NOT NULL,
   `TreeID`    int NOT NULL,
   `UserName`  varchar(50) CHARACTER SET `utf8` COLLATE `utf8_general_ci`,
+  `FirstName`  varchar(20) CHARACTER SET `utf8` COLLATE `utf8_general_ci`,
+  `LastName`   varchar(20) CHARACTER SET `utf8` COLLATE `utf8_general_ci`,
+  `Phone`      varchar(20),
+  `Mobile`     varchar(20)	
   PRIMARY KEY (`UserID`)
 ) ENGINE = InnoDB;
 
@@ -82,8 +86,8 @@ then
 
   SET autocommit=0;
   start TRANSACTION;
-  insert into user (user.UserIP, user.TreeID ) 
-  				   values(UserIp, treeid);
+  insert into user (User.UserIP, user.TreeID, user.`FirstName`, user.`LastName`, user.`Phone`, user.`Mobile` ) 
+  				   values(UserIp, treeid, firstname, lastname, phone, mobile);
   commit;
   end if;
 
