@@ -305,7 +305,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
         jLabel6.setText("Вложения");
 
-        tblSendedFiles.setModel(new DefaultTableModel(new Object[]{"Кому","Имя файла", "Размер"}, 0));
+        tblSendedFiles.setModel(new DisableEditingTableModel(new Object[]{"Кому","Имя файла", "Размер"}, 0));
         jScrollPane7.setViewportView(tblSendedFiles);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);

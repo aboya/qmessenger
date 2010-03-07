@@ -11,9 +11,9 @@
 
 package ReceiveFileDialog;
 
+import MainWindow.DisableEditingTableModel;
 import java.awt.Graphics;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -52,7 +52,7 @@ public class ReceiveFileDialogFrame extends javax.swing.JFrame {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        tblFiles.setModel(new DefaultTableModel(new Object[]{"Файл","%"}, 0));
+        tblFiles.setModel(new DisableEditingTableModel(new Object[]{"Файл","%"}, 0));
         tblFiles.setName("tblFiles"); // NOI18N
         jScrollPane1.setViewportView(tblFiles);
 
