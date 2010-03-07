@@ -16,6 +16,7 @@ import java.io.StringReader;
 import javax.swing.JFrame;
 import javax.swing.JTree;
 import javax.swing.RepaintManager;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jdesktop.application.SingleFrameApplication;
@@ -54,9 +55,15 @@ public class ScreenView extends SingleFrameApplication {
    {
         
    }
+   public void AddReceiveFileToStrceen(String from, String fileName, String size)
+   {
+       DefaultTableModel model = (DefaultTableModel)messengerMainFrame.tblIncomingFiles.getModel();
+       model.addRow(new Object[]{from, fileName, size});
+   }
    public void AddMessageToScreen(String message)
    {
-       
+       DefaultTableModel model = (DefaultTableModel) messengerMainFrame.tblIncomingMessages.getModel();
+       model.addRow(new Object[]{"",message});
    }
    public void Close()
    {

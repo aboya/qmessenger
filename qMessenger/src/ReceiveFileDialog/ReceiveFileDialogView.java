@@ -112,7 +112,7 @@ public class ReceiveFileDialogView extends Thread {
         long lasttime = 0, currenttime = 0;
         boolean status = true;
         String metadata;
-        long fileSize, checkSum, Len;
+        long fileSize, checkSum, Len = 0;
         String fileName = "";
         InputStream socketInputStream;
         OutputStream socketOutputStream;
@@ -199,6 +199,7 @@ public class ReceiveFileDialogView extends Thread {
         {
             if(status) {
                 this.SetStatus(String.format("%.2f%%", 100.0));
+                AddReceiveFileToScreen("", fileName, Utils.getAdekvatSize(Len));
             }
             else {
                 System.gc();
@@ -293,6 +294,10 @@ public class ReceiveFileDialogView extends Thread {
 
 
         }catch(Exception e) {}
+    }
+    private void AddReceiveFileToScreen(String from, String fileName, String size)
+    {
+        Global.getUser().getScreenView().AddReceiveFileToStrceen(from, fileName, size);
     }
 
 }

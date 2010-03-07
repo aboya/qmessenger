@@ -32,6 +32,7 @@ import java.util.Vector;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.RepaintManager;
 import javax.swing.UIManager;
@@ -80,7 +81,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         facultyTree = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtMessage = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnSend = new javax.swing.JButton();
@@ -90,11 +91,11 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         btnClear = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblIncomingMessages = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tblIncomingFiles = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -152,9 +153,10 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(facultyTree);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        txtMessage.setColumns(20);
+        txtMessage.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        txtMessage.setRows(5);
+        jScrollPane2.setViewportView(txtMessage);
 
         jLabel1.setText("Текст сообщения");
 
@@ -259,48 +261,50 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Отправить сообщение", jPanel1);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblIncomingMessages.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "От", "Сообщение"
             }
-        ));
-        jScrollPane4.setViewportView(jTable2);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(tblIncomingMessages);
 
         jLabel3.setText("Сообщения");
 
         jLabel4.setText("Вложения");
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblIncomingFiles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "От", "Имя файла", "Размер"
             }
         ));
-        jScrollPane5.setViewportView(jTable3);
+        jScrollPane5.setViewportView(tblIncomingFiles);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addContainerGap(223, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,12 +312,12 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Полученные", jPanel2);
@@ -355,9 +359,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addContainerGap(223, Short.MAX_VALUE))
         );
@@ -451,7 +455,31 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ClearButtonPress
 
     private void SendFilePress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SendFilePress
-
+        Set <Integer> ids = getSelectedIds();
+        if(ids.size() == 0)
+        {
+            JOptionPane.showMessageDialog(this, "Вы не выбрали кому отсылать", "Информация", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        SendFiles(ids);
+        SendTextMessage(ids);
+        
+    }//GEN-LAST:event_SendFilePress
+    private void SendTextMessage(Set<Integer> ids)
+    {
+        String message = txtMessage.getText();
+        if(message.isEmpty()) return;
+        try{
+           Global.getUser().SendTextMessage(message, ids);
+           txtMessage.setText("");
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        
+    }
+    private void SendFiles(Set<Integer> ids)
+    {
         if(fileList.size() == 0) return;
         String []filePaths = new String[fileList.size()];
         int i = 0;
@@ -460,20 +488,13 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             filePaths[i++] = f.getPath();
         }
         try {
-            Set<Integer> ids = getSelectedIds();
-            if(ids.size() == 0)
-            {
-                //JOptionPane.showMessageDialog(this, "Message", "Title", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
             Global.getUser().SendFiles(filePaths, ids);
+            this.ClearButtonPress(null);
         }catch(Exception ee)
         {
             Log.WriteException(ee);
         }
-
-    }//GEN-LAST:event_SendFilePress
-
+    }
     public JTree getFacultyTree()
     {
         return facultyTree;
@@ -602,13 +623,13 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTable tblFiles;
+    public javax.swing.JTable tblIncomingFiles;
+    public javax.swing.JTable tblIncomingMessages;
+    private javax.swing.JTextArea txtMessage;
     // End of variables declaration//GEN-END:variables
 public class CheckBoxNodeRenderer implements TreeCellRenderer {
   private JCheckBox leafRenderer = new JCheckBox();
