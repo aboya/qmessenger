@@ -161,18 +161,19 @@ public class qMessengerPreferences extends javax.swing.JFrame {
 
     private void SaveButonPress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SaveButonPress
         if(!CheckInput()) return;
-        ApplicationSettings.SetProperty("ServAddr", txtServerAddress.getText());
-        ApplicationSettings.SetProperty("DefaultSavePath", txtSavePath.getText());
+        Global.ServAddr = txtServerAddress.getText();
+        Global.defaultSavePath = txtSavePath.getText();
+        ApplicationSettings.saveProperties();
         this.setVisible(false);
     }//GEN-LAST:event_SaveButonPress
 
     private void btnExplore_Press(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExplore_Press
-          JFileChooser chooser = new JFileChooser();
-          chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-          if (JFileChooser.APPROVE_OPTION == chooser.showDialog(this, "Select"))
-          {
-               txtSavePath.setText(chooser.getSelectedFile().getPath());
-          }
+       JFileChooser chooser = new JFileChooser();
+       chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+       if (JFileChooser.APPROVE_OPTION == chooser.showDialog(this, "Select"))
+       {
+            txtSavePath.setText(chooser.getSelectedFile().getPath());
+       }
     }//GEN-LAST:event_btnExplore_Press
     public boolean CheckInput()
     {

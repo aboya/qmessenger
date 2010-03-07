@@ -56,11 +56,4 @@ public class ApplicationSettings {
             Log.WriteException(e);
         }
     }
-    public static void SetProperty(String key, String value)
-    {
-        vProp.setProperty(key, value);
-        saveProperties();
-    }
-
-
 }

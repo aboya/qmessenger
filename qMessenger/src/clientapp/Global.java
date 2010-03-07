@@ -22,7 +22,7 @@ public class Global {
         public static String ServAddr = "192.168.2.2";
         public static int ReconnectInterval = 10000;
         private static User user = null;
-        public static String defaultSavePath = System.getProperty("java.io.tmpdir") + File.separator + "ReceivedFiles" + File.separator;;
+        public static String defaultSavePath = System.getProperty("user.dir") + File.separator + "ReceivedFiles" + File.separator;;
         public static String codePage = "UTF-8";
         public static int DontDownloadThisFile = 23;
         public static int DownloadingOk = 12;
