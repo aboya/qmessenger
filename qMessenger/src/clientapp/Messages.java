@@ -104,14 +104,37 @@ public class Messages {
         }
         return res;
     }
-    protected void CloseConnection() throws Exception
+    protected void CloseConnection()
     {
+        try{
         SocketIn.close();
+        }catch(Exception e)
+        {}
+        try{
         SocketOut.close();
+        }catch(Exception e)
+        {}
+        try{
         bufferedReader.close();
+        }catch(Exception e)
+        {}
+        try{
         bufferedReaderSync.close();
+        }catch(Exception e)
+        {}
+        try{
         bufferedWriter.close();
+        }catch(Exception e){}
+        try{
         bufferedWriterSync.close();
+        }catch(Exception e)
+        {}
+        SocketIn = null;
+        SocketOut = null;
+        bufferedReader = null;
+        bufferedReaderSync = null;
+        bufferedWriter = null;
+        bufferedWriterSync = null;
     }
     public void ReConnect(Socket in, Socket out) throws Exception
     {

@@ -223,13 +223,13 @@
                   <SubComponents>
                     <Component class="javax.swing.JTable" name="tblFiles">
                       <Properties>
-                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="2" rowCount="0">
-                            <Column editable="true" title="&#x418;&#x43c;&#x44f; &#x444;&#x430;&#x439;&#x43b;&#x430;" type="java.lang.String"/>
-                            <Column editable="true" title="&#x420;&#x430;&#x437;&#x43c;&#x435;&#x440;" type="java.lang.String"/>
-                          </Table>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="new DisableEditingTableModel()" type="code"/>
                         </Property>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="DisableEditingTableModel tblAttachModel = (DisableEditingTableModel)tblFiles.getModel();&#xa;tblAttachModel.addColumn(&quot;&#x418;&#x43c;&#x44f; &#x444;&#x430;&#x439;&#x43b;&#x430;&quot;);&#xa;tblAttachModel.addColumn(&quot;&#x420;&#x430;&#x437;&#x43c;&#x435;&#x440;&quot;);"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -301,14 +301,12 @@
                   <SubComponents>
                     <Component class="javax.swing.JTable" name="tblIncomingMessages">
                       <Properties>
-                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="2" rowCount="0">
-                            <Column editable="true" title="&#x41e;&#x442;" type="java.lang.String"/>
-                            <Column editable="true" title="&#x421;&#x43e;&#x43e;&#x431;&#x449;&#x435;&#x43d;&#x438;&#x435;" type="java.lang.String"/>
-                          </Table>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="new DisableEditingTableModel()" type="code"/>
                         </Property>
                       </Properties>
                       <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="DisableEditingTableModel model = (DisableEditingTableModel)tblIncomingMessages.getModel();&#xa;model.addColumn(&quot;&#x41e;&#x442;&quot;);&#xa;model.addColumn(&quot;&#x421;&#x43e;&#x43e;&#x431;&#x449;&#x435;&#x43d;&#x438;&#x435;&quot;);"/>
                         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                       </AuxValues>
                     </Component>
@@ -333,15 +331,12 @@
                   <SubComponents>
                     <Component class="javax.swing.JTable" name="tblIncomingFiles">
                       <Properties>
-                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="0">
-                            <Column editable="true" title="&#x41e;&#x442;" type="java.lang.Object"/>
-                            <Column editable="true" title="&#x418;&#x43c;&#x44f; &#x444;&#x430;&#x439;&#x43b;&#x430;" type="java.lang.Object"/>
-                            <Column editable="true" title="&#x420;&#x430;&#x437;&#x43c;&#x435;&#x440;" type="java.lang.Object"/>
-                          </Table>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="new DisableEditingTableModel()" type="code"/>
                         </Property>
                       </Properties>
                       <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="DisableEditingTableModel filesModel = (DisableEditingTableModel) tblIncomingFiles.getModel();&#xa;filesModel.addColumn(&quot;&#x41e;&#x442;&quot;);&#xa;filesModel.addColumn(&quot;&#x418;&#x43c;&#x44f; &#x444;&#x430;&#x439;&#x43b;&#x430;&quot;);&#xa;filesModel.addColumn(&quot;&#x420;&#x430;&#x437;&#x43c;&#x435;&#x440;&quot;);"/>
                         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                       </AuxValues>
                     </Component>
@@ -402,17 +397,16 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="jTable4">
+                    <Component class="javax.swing.JTable" name="tblSendedMessages">
                       <Properties>
-                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="4">
-                            <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 4" type="java.lang.Object"/>
-                          </Table>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="new DisableEditingTableModel()" type="code"/>
                         </Property>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="DisableEditingTableModel sendedMessagesModel = (DisableEditingTableModel)tblSendedMessages.getModel();&#xa;sendedMessagesModel.addColumn(&quot;&#x41a;&#x43e;&#x43c;&#x443;&quot;);&#xa;sendedMessagesModel.addColumn(&quot;&#x421;&#x43e;&#x43e;&#x431;&#x449;&#x435;&#x43d;&#x438;&#x435;&quot;);"/>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -428,17 +422,15 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="jTable5">
+                    <Component class="javax.swing.JTable" name="tblSendedFiles">
                       <Properties>
-                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="4">
-                            <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 4" type="java.lang.Object"/>
-                          </Table>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="new DefaultTableModel(new Object[]{&quot;&#x41a;&#x43e;&#x43c;&#x443;&quot;,&quot;&#x418;&#x43c;&#x44f; &#x444;&#x430;&#x439;&#x43b;&#x430;&quot;, &quot;&#x420;&#x430;&#x437;&#x43c;&#x435;&#x440;&quot;}, 0)" type="code"/>
                         </Property>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>

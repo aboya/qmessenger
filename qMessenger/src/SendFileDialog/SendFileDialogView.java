@@ -173,7 +173,10 @@ public class SendFileDialogView extends Thread {
         }catch(Exception ee) {}
         if(!this.isClosed())
         {
-            if(status) this.SetStatus(String.format("%.2f%%", 100.0));
+            if(status) {
+                this.SetStatus(String.format("%.2f%%", 100.0));
+                AddSendedFileToScreen("", f.getName(), Utils.getAdekvatSize(f.length()));
+            }
             else this.SetStatus("Failed");
         }
         socket = null;
@@ -272,6 +275,10 @@ public class SendFileDialogView extends Thread {
             
 
         }catch(Exception e) {}
+    }
+    private void AddSendedFileToScreen(String to, String fileName, String size)
+    {
+        Global.getUser().getScreenView().AddSendedFileToScreen(to, fileName, size);
     }
 
 }

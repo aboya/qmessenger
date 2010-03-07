@@ -51,19 +51,26 @@ public class ScreenView extends SingleFrameApplication {
         Global.getUser().SheduleNewTimerForCheckFiles();
      }
 
-   public void run()
-   {
-        
-   }
-   public void AddReceiveFileToStrceen(String from, String fileName, String size)
+
+   public void AddReceiveFileToScreen(String from, String fileName, String size)
    {
        DefaultTableModel model = (DefaultTableModel)messengerMainFrame.tblIncomingFiles.getModel();
        model.addRow(new Object[]{from, fileName, size});
    }
-   public void AddMessageToScreen(String message)
+   public void AddMessageToScreen(String from, String message)
    {
        DefaultTableModel model = (DefaultTableModel) messengerMainFrame.tblIncomingMessages.getModel();
-       model.addRow(new Object[]{"",message});
+       model.addRow(new Object[]{from,message});
+   }
+   public void AddSendedFileToScreen(String forName, String fileName, String fileSize)
+   {
+       DefaultTableModel model = (DefaultTableModel) messengerMainFrame.tblSendedFiles.getModel();
+       model.addRow(new Object[]{forName, fileName, fileSize});
+   }
+   public void AddSendedMessageToScreen(String forName, String message)
+   {
+       DefaultTableModel model = (DefaultTableModel) messengerMainFrame.tblSendedMessages.getModel();
+       model.addRow(new Object[]{forName, message});
    }
    public void Close()
    {

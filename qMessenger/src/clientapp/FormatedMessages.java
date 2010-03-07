@@ -43,7 +43,7 @@ public class FormatedMessages extends Messages{
     {
         // получили мессагу и выводим отправляем на экран
         String txtMessage = this.ReceiveMessage();
-        this.user.getScreenView().AddMessageToScreen(txtMessage);
+        this.user.getScreenView().AddMessageToScreen("",txtMessage);
 
     }
     public void SendTextMessage(String txtMessage, Set<Integer> ids) throws Exception

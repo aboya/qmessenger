@@ -99,10 +99,10 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        tblSendedMessages = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        tblSendedFiles = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(723, 470));
@@ -174,23 +174,11 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             }
         });
 
-        tblFiles.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Имя файла", "Размер"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        tblFiles.setModel(new DisableEditingTableModel());
         jScrollPane3.setViewportView(tblFiles);
+        DisableEditingTableModel tblAttachModel = (DisableEditingTableModel)tblFiles.getModel();
+        tblAttachModel.addColumn("Имя файла");
+        tblAttachModel.addColumn("Размер");
 
         btnAddFile.setText("Вложить файл");
         btnAddFile.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -261,37 +249,22 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Отправить сообщение", jPanel1);
 
-        tblIncomingMessages.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "От", "Сообщение"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        tblIncomingMessages.setModel(new DisableEditingTableModel());
         jScrollPane4.setViewportView(tblIncomingMessages);
+        DisableEditingTableModel model = (DisableEditingTableModel)tblIncomingMessages.getModel();
+        model.addColumn("От");
+        model.addColumn("Сообщение");
 
         jLabel3.setText("Сообщения");
 
         jLabel4.setText("Вложения");
 
-        tblIncomingFiles.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "От", "Имя файла", "Размер"
-            }
-        ));
+        tblIncomingFiles.setModel(new DisableEditingTableModel());
         jScrollPane5.setViewportView(tblIncomingFiles);
+        DisableEditingTableModel filesModel = (DisableEditingTableModel) tblIncomingFiles.getModel();
+        filesModel.addColumn("От");
+        filesModel.addColumn("Имя файла");
+        filesModel.addColumn("Размер");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -324,33 +297,16 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
         jLabel5.setText("Сообщения");
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane6.setViewportView(jTable4);
+        tblSendedMessages.setModel(new DisableEditingTableModel());
+        jScrollPane6.setViewportView(tblSendedMessages);
+        DisableEditingTableModel sendedMessagesModel = (DisableEditingTableModel)tblSendedMessages.getModel();
+        sendedMessagesModel.addColumn("Кому");
+        sendedMessagesModel.addColumn("Сообщение");
 
         jLabel6.setText("Вложения");
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane7.setViewportView(jTable5);
+        tblSendedFiles.setModel(new DefaultTableModel(new Object[]{"Кому","Имя файла", "Размер"}, 0));
+        jScrollPane7.setViewportView(tblSendedFiles);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -623,12 +579,12 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable jTable5;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTable tblFiles;
     public javax.swing.JTable tblIncomingFiles;
     public javax.swing.JTable tblIncomingMessages;
+    public javax.swing.JTable tblSendedFiles;
+    public javax.swing.JTable tblSendedMessages;
     private javax.swing.JTextArea txtMessage;
     // End of variables declaration//GEN-END:variables
 public class CheckBoxNodeRenderer implements TreeCellRenderer {
