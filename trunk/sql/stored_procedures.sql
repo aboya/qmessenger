@@ -76,8 +76,12 @@ DELIMITER |
 
 CREATE DEFINER = 'root'@'localhost' PROCEDURE `AddUser` 
 (
-  IN  `UserIp`  varchar(50),
-  IN  `treeid`  integer
+  IN  `UserIp`     varchar(50),
+  IN  `treeid`     integer,
+  IN  `firstname`  varchar(20),
+  IN  `lastname`   varchar(20),
+  IN  `phone`      varchar(20),
+  IN  `mobile`     varchar(20)
 )
 BEGIN
 
