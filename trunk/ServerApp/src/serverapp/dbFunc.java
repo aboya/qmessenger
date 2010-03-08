@@ -51,6 +51,7 @@ public class dbFunc {
         ResultSet res = connection.ExecuteQuery(
                                    String.format("call getUserTreeName('%s')", ip)
                                    );
+        
         if(res.next())
         {
             return res;
@@ -58,6 +59,27 @@ public class dbFunc {
         res.close();
         connection.Close();
         return null;
+    }
+    public static UserInfo getUserInfo(dbConnection connection, String ip) throws Exception
+    {
+        UserInfo uInfo = null;
+        connection.Connect();
+        ResultSet res = connection.ExecuteQuery(
+                                   String.format("call getUserInfo('%s')", ip)
+                                   );
+        
+        if(res.next())
+        {
+            uInfo = UserInfo.Parse(res);
+        }
+        try{
+            res.close();
+        }catch(Exception e) {}
+        try{
+          connection.Close();
+        }catch(Exception e) {}
+        res = null;
+        return uInfo;
     }
     public static void sendOfflineMessageToUser(dbConnection connection, String message, int TreeID, int FromTreeID) throws Exception
     {

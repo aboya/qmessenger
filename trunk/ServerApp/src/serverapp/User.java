@@ -11,10 +11,9 @@ import java.sql.ResultSet;
  * @author Серёжа
  */
 public class User extends Thread{
-
+    UserInfo userInfo = null;
     String ip;
-    String TreeName = "";
-    int TreeId = 0;
+
     int Timeout;
     boolean isRun;
     private ConnectionQueue queue;
@@ -62,7 +61,7 @@ public class User extends Thread{
     //Send message to client
     public void SendMessageTo(String message, User srcUser)throws Exception
     {
-        messages.SendTextMessage(srcUser.getTreeName() + ":" + message);
+        messages.SendTextMessage(userInfo.toString() + ":" + message);
     }
     public void DisconnectUser() throws Exception
     {
@@ -95,18 +94,15 @@ public class User extends Thread{
     }
     public String getTreeName()
     {
-        return TreeName;
+        return userInfo.treeName;
     }
     public int getTreeID()
     {
-        return TreeId;
+        return userInfo.treeId;
     }
     private void getUserTreeName() throws Exception
     {
-         ResultSet r = dbFunc.getUserTreeName(connection, ip);
-         this.TreeName = r.getString("TreeName");
-         this.TreeId = r.getInt("TreeID");
-         r.close();
+         userInfo = dbFunc.getUserInfo(connection, ip);
     }
 
     /**

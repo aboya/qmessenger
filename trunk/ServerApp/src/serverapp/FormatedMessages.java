@@ -57,7 +57,7 @@ public class FormatedMessages extends Messages{
         }
         allIds.add(this.getUser().getTreeID());
         String txtMessage = this.ReceiveMessage();
-        txtMessage = String.format("(%s) %s", Utils.GetShortDate(), txtMessage);
+        txtMessage = String.format("%s",txtMessage);
         this.getUser().getQueue().SendMessageToUser(txtMessage, allIds,getUser());
     }
     public void SendTextMessage(String txtMessage) throws Exception
