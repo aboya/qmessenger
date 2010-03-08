@@ -49,6 +49,7 @@ public class ReceiveFileDialogFrame extends javax.swing.JFrame {
         tblFiles = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Получение файлов");
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 

@@ -40,6 +40,7 @@ public class SendFileDialogFrame extends javax.swing.JFrame {
         jtProcessTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Отправка файлов");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 closeWindow(evt);
