@@ -68,6 +68,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         initComponents();
          RepaintManager.currentManager(this).setDoubleBufferingEnabled(false);
          parent = _parent;
+
     }
 
     /** This method is called from within the constructor to

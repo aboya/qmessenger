@@ -68,17 +68,16 @@ public class SendFileDialogView extends Thread {
     {
 
         DefaultTableModel model = (DefaultTableModel)sendFileDialogFrame.getTable().getModel();
-        model.addColumn("Файл");
-        model.addColumn("%");
         fileQuene.clear();
         for(int i = 0; i < filePaths.length; i++)
         {
-            
-            Object [] row = {filePaths[i], "0%"};
+            File f = new File(filePaths[i]);
+            Object [] row = {f.getName(), "0%"};
+            f = null;
             model.addRow(row);
             fileQuene.addLast(new Pair<String, Set<Integer>>(filePaths[i], ids));
         }
-        sendFileDialogFrame.getTable().updateUI();
+        sendFileDialogFrame.getTable().repaint();
 
         this.start();
         

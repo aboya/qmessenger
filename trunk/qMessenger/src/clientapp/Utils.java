@@ -10,8 +10,7 @@ import java.io.FileInputStream;
 import java.util.Date;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 /**
  *
@@ -118,6 +117,15 @@ public class Utils {
         boolean res = f.isDirectory();
         f = null;
         return res;
+    }
+    public static void SetLookAndFeel()
+    {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+         }catch(Exception e)
+         {
+             Log.WriteException(e);
+         }
     }
 
 

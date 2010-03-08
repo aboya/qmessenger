@@ -83,6 +83,7 @@ public class ReceiveFileDialogView extends Thread {
            model.addRow(new Object[] {fileNames[i], "0%" } );
            fileQuene.addLast(new Pair<String, Integer >(fileNames[i], fileIds[i]));
        }
+       table.repaint();
        this.run();
     }
     @Override
@@ -155,7 +156,7 @@ public class ReceiveFileDialogView extends Thread {
             socketBufferedReader = null;
             socketBufferedWriter = null;
             System.gc();
-            this.sleep(500);
+            sleep(500);
             while(fileSize > 0)
             {
                 readed =  socketInputStream.read(packet, 0, (int)Math.min(fileSize,Global.PACKET_SIZE));

@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import qmessenger.ScreenView;
 /**
  *
@@ -51,9 +52,11 @@ public class User extends Thread {
         ScreenView.launch(ScreenView.class, null);
         this.screenView = null;
         this.start();
+
     }
     public void Connect() throws Exception
     {
+
         Socket SocketOut,SocketIn;
         try {
             inp = new ServerSocket(Global.IncomingPort, 0);
@@ -61,6 +64,7 @@ public class User extends Thread {
 
         }catch(Exception e)
         {
+            Utils.SetLookAndFeel();
             Log.WriteException(e);
             JOptionPane.showMessageDialog(null,"Невозможно подключится к серверу", "Ошибка", JOptionPane.ERROR_MESSAGE);
             if(timer != null) timer.cancel();
