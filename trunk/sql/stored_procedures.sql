@@ -396,3 +396,30 @@ CREATE UNIQUE INDEX ID
 CREATE INDEX `UserID`
   ON `usermessages`
   (`UserID`);
+
+--Procedure: getUserInfo
+
+DROP PROCEDURE IF EXISTS `getUserInfo`;
+
+DELIMITER |
+
+CREATE DEFINER = 'root'@'localhost' PROCEDURE `getUserInfo` 
+(
+  IN `userip` varchar(50)
+)
+BEGIN
+
+   select tnu_tree.Name as TreeName, 
+          tnu_tree.ID as TreeID ,
+          user.`FirstName` ,
+          user.`LastName`,
+          user.`UserID` 
+          
+   from user inner join tnu_tree
+   		on tnu_tree.ID = user.TreeID
+   		and user.UserIP = userip;
+
+END|
+
+DELIMITER ;
+
