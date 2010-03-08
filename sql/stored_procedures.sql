@@ -39,7 +39,7 @@ CREATE TABLE `user` (
   `FirstName`  varchar(20) CHARACTER SET `utf8` COLLATE `utf8_general_ci`,
   `LastName`   varchar(20) CHARACTER SET `utf8` COLLATE `utf8_general_ci`,
   `Phone`      varchar(20),
-  `Mobile`     varchar(20)	
+  `Mobile`     varchar(20),
   PRIMARY KEY (`UserID`)
 ) ENGINE = InnoDB;
 
