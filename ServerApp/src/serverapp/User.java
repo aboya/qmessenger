@@ -94,15 +94,22 @@ public class User extends Thread{
     }
     public String getTreeName()
     {
+        if(userInfo == null) getUserTreeName();
         return userInfo.treeName;
     }
     public int getTreeID()
     {
+        if(userInfo == null) getUserTreeName();
         return userInfo.treeId;
     }
-    private void getUserTreeName() throws Exception
+    private void getUserTreeName() 
     {
-         userInfo = dbFunc.getUserInfo(connection, ip);
+        try{
+            userInfo = dbFunc.getUserInfo(connection, ip);
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
     }
 
     /**
