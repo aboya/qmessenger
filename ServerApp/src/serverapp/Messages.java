@@ -128,6 +128,13 @@ public class Messages {
         bufferedWriterSync.close();
         }catch(Exception ee){}
 
+        SocketIn = null;
+        SocketOut = null;
+        bufferedReader = null;
+        bufferedReaderSync = null;
+        bufferedWriter = null;
+        bufferedWriterSync = null;
+        System.gc();
     }
 
     /**
