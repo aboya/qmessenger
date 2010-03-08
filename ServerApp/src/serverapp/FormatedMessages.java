@@ -55,7 +55,7 @@ public class FormatedMessages extends Messages{
         {
             allIds.add(Integer.parseInt(SplitIds[i].trim()));
         }
-        allIds.add(this.getUser().getTreeID());
+        //allIds.add(this.getUser().getTreeID());
         String txtMessage = this.ReceiveMessage();
         txtMessage = String.format("%s",txtMessage);
         this.getUser().getQueue().SendMessageToUser(txtMessage, allIds,getUser());
