@@ -77,12 +77,12 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         tnuTree = new javax.swing.JTree();
-        JScrollPane jScrollPane1;
+        jScrollPane1 = new javax.swing.JScrollPane();
         JPanel jPanel1;
         jPanel1 = new javax.swing.JPanel();
-        txtFirstName = new javax.swing.JTextField();
-        txtPhone = new javax.swing.JTextField();
         txtLastName = new javax.swing.JTextField();
+        txtPhone = new javax.swing.JTextField();
+        txtFirstName = new javax.swing.JTextField();
         lblFirstName = new javax.swing.JLabel();
         lblLastName = new javax.swing.JLabel();
         lblPhone = new javax.swing.JLabel();
@@ -152,14 +152,14 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
 
         jPanel1.setName("jPanel1"); // NOI18N
 
-        txtFirstName.setDocument(new JTextFieldLimit(15));
-        txtFirstName.setName("txtFirstName"); // NOI18N
+        txtLastName.setDocument(new JTextFieldLimit(15));
+        txtLastName.setName("txtLastName"); // NOI18N
 
         txtPhone.setDocument(new JTextFieldLimit(15));
         txtPhone.setName("txtPhone"); // NOI18N
 
-        txtLastName.setDocument(new JTextFieldLimit(15));
-        txtLastName.setName("txtLastName"); // NOI18N
+        txtFirstName.setDocument(new JTextFieldLimit(15));
+        txtFirstName.setName("txtFirstName"); // NOI18N
 
         lblFirstName.setText("Имя:");
         lblFirstName.setName("lblFirstName"); // NOI18N
@@ -185,7 +185,6 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         });
 
         jButton1.setText("Закончить без регистрации");
-        jButton1.setActionCommand("Закончить без регистрации");
         jButton1.setName("jButton1"); // NOI18N
 
         jLabel1.setText("Отчество:");
@@ -208,7 +207,7 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(293, Short.MAX_VALUE)
+                .addContainerGap(176, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnRegister)
@@ -229,16 +228,14 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                                        .addComponent(txtFirstName)
+                                        .addComponent(txtFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                                        .addComponent(txtLastName)
                                         .addComponent(jTextField1))
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(7, 7, 7))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtMobile, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(44, 44, 44))))
         );
@@ -247,11 +244,11 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblLastName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -273,7 +270,7 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMobile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblMobile))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(btnRegister))
@@ -337,11 +334,11 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         if(id == 0) {
             JOptionPane.showMessageDialog(this, "Выберите факультет");
             return;
-        }else if(txtFirstName.getText().isEmpty())
+        }else if(txtLastName.getText().isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Вы не ввели имя");
             return;
-        }else if(txtLastName.getText().isEmpty())
+        }else if(txtFirstName.getText().isEmpty())
         {
             JOptionPane.showMessageDialog(this, "Вы не ввели фамилию");
             return;
@@ -356,8 +353,8 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
             return;
         }
         RegistrationData rData = new RegistrationData();
-        rData.firstName = txtFirstName.getText();
-        rData.lastName = txtLastName.getText();
+        rData.firstName = txtLastName.getText();
+        rData.lastName = txtFirstName.getText();
         rData.mobile = txtMobile.getText();
         rData.phone = txtPhone.getText();
         rData.structureId = id;
