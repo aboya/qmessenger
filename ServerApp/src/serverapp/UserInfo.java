@@ -23,6 +23,7 @@ public class UserInfo {
     {
         UserInfo uInfo = new UserInfo();
         try{
+
            uInfo.firstName = rs.getString("FirstName");
            uInfo.lastName = rs.getString("LastName");
            uInfo.treeId = rs.getInt("TreeID");

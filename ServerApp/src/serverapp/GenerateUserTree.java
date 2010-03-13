@@ -39,7 +39,7 @@ public class GenerateUserTree {
         NodeList nodeList = xmlDocument.getChildNodes();
         Element e;
         LinkedList<Node> Q = new LinkedList<Node>();
-        int i,n = nodeList.getLength();
+        int i,n = nodeList.getLength(), badNodes;
         for(i = 0; i < n; i++)
         {
             Q.add(nodeList.item(i));
@@ -52,12 +52,14 @@ public class GenerateUserTree {
 
             nodeList = v.getChildNodes();
             n = nodeList.getLength();
+            badNodes = 0;
             for(i = 0; i < n; i++)
             {
-                Q.addLast(nodeList.item(i));
+                if(nodeList.item(i).getNodeName().equals("#text")) badNodes++;
+                else  Q.addLast(nodeList.item(i));
             }
             
-            if(n == 0) // если лист
+            if(n - badNodes == 0) // если лист
             {
                 Element element = (Element)v;
                 Object id = element.getAttribute("id");
