@@ -15,8 +15,11 @@ public class RegistrationData {
         Integer structureId = 0;
         String firstName = "";
         String lastName = "";
+        String middleName = "";
         String phone = "";
         String mobile = "";
+        String building = "";
+        String apartaments = "";
         public RegistrationData()
         {
         }
@@ -25,8 +28,11 @@ public class RegistrationData {
         {
             return structureId.toString() + FormatCharacters.marker +
                     firstName + FormatCharacters.marker +
+                    middleName + FormatCharacters.marker +
                     lastName + FormatCharacters.marker +
                     phone + FormatCharacters.marker +
-                    mobile + FormatCharacters.marker;
+                    mobile + FormatCharacters.marker +
+                    building + FormatCharacters.marker +
+                    apartaments + FormatCharacters.marker;
         }
 }
