@@ -42,7 +42,7 @@ public class FormatedMessages extends Messages{
     }
     public void SendOfflineMessages() throws Exception
     {
-        Vector <Pair> Offmess = dbFunc.getMessagesForUser(this.getUser().connection, null, this.getUser().ip);
+        Vector <Pair> Offmess = dbFunc.getMessagesForUser(this.getUser().connection, this.getUser().ip);
         for(int i = 0; i < Offmess.size(); i++)
              this.SendTextMessage((String)Offmess.get(i).getSecond() + ":" + (String)Offmess.get(i).getFirst());
     }

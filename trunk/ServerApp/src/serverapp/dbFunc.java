@@ -90,13 +90,13 @@ public class dbFunc {
                 );
         connection.Close();
     }
-    public static Vector <Pair> getMessagesForUser(dbConnection connection, Integer TreeID, String ip)
+    public static Vector <Pair> getMessagesForUser(dbConnection connection, String ip)
     {
         Vector <Pair> results = new Vector<Pair>();   
         try {
             connection.Connect();
             ResultSet res = connection.ExecuteQuery(
-                       String.format("call GetMessagesForUser('%s', %d) ",ip, TreeID)
+                       String.format("call GetMessagesForUser('%s') ",ip)
                     );
             while(res.next())
             {
@@ -152,12 +152,9 @@ public class dbFunc {
     public static ResultSet getFilesForUser(dbConnection connection, String userIp)
     {
         ResultSet rs = null;
-        int TreeID;
         try {
-            rs = getUserTreeName(connection, userIp);
-            connection.Connect();
-            TreeID = rs.getInt("TreeID");
-            rs =  connection.ExecuteQuery(String.format("call GetFilesFor(%d)", TreeID));
+             connection.Connect();
+             rs =  connection.ExecuteQuery(String.format("call GetFilesFor('%s')", userIp));
         }catch(Exception ee)
         {
             Log.WriteException(ee);
