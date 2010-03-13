@@ -14,6 +14,7 @@ package RegistrationForm;
 
 import clientapp.Global;
 import clientapp.Log;
+import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators.ParentIterator;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -31,7 +32,6 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -155,7 +155,7 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         txtLastName.setDocument(new JTextFieldLimit(15));
         txtLastName.setName("txtLastName"); // NOI18N
 
-        txtPhone.setDocument(new JTextFieldLimit(15));
+        txtPhone.setDocument(new JTextFieldLimit(13));
         txtPhone.setName("txtPhone"); // NOI18N
 
         txtFirstName.setDocument(new JTextFieldLimit(15));
@@ -173,7 +173,7 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         lblMobile.setText("Мобильный телефон:");
         lblMobile.setName("lblMobile"); // NOI18N
 
-        txtMobile.setDocument(new JTextFieldLimit(15));
+        txtMobile.setDocument(new JTextFieldLimit(13));
         txtMobile.setName("txtMobile"); // NOI18N
 
         btnRegister.setText("Зарегистрировать меня");
@@ -186,20 +186,28 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
 
         btnExit.setText("Закончить без регистрации");
         btnExit.setName("btnExit"); // NOI18N
+        btnExit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                CloseButtonPress(evt);
+            }
+        });
 
         jLabel1.setText("Отчество:");
         jLabel1.setName("jLabel1"); // NOI18N
 
+        txtMiddleName.setDocument(new JTextFieldLimit(15));
         txtMiddleName.setName("txtMiddleName"); // NOI18N
 
         jLabel2.setText("Корпус:");
         jLabel2.setName("jLabel2"); // NOI18N
 
+        txtBuiding.setDocument(new JTextFieldLimit(3));
         txtBuiding.setName("txtBuiding"); // NOI18N
 
         jLabel3.setText("Комната:");
         jLabel3.setName("jLabel3"); // NOI18N
 
+        txtApartment.setDocument(new JTextFieldLimit(4));
         txtApartment.setName("txtApartment"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -352,12 +360,25 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Вы не ввели мобильный телефон");
             return;
         }
+        else if(txtBuiding.getText().isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Вы не ввели корпус");
+            return;
+        }else if(txtApartment.getText().isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Вы не ввели аудиторию");
+            return;            
+        }
+
         RegistrationData rData = new RegistrationData();
         rData.firstName = txtLastName.getText();
         rData.lastName = txtFirstName.getText();
         rData.mobile = txtMobile.getText();
         rData.phone = txtPhone.getText();
         rData.structureId = id;
+        rData.apartaments = txtApartment.getText();
+        rData.building = txtBuiding.getText();
+        rData.middleName = txtMiddleName.getText();
 
 
         try {
@@ -381,6 +402,10 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         //display.close();
        
     }//GEN-LAST:event_registrationButtonPress
+
+    private void CloseButtonPress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CloseButtonPress
+        registrationForm.exit();
+    }//GEN-LAST:event_CloseButtonPress
     public JTree getTree()
     {
         return tnuTree;

@@ -203,7 +203,7 @@
             <Component class="javax.swing.JTextField" name="txtPhone">
               <Properties>
                 <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new JTextFieldLimit(15)" type="code"/>
+                  <Connection code="new JTextFieldLimit(13)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="txtPhone" noResource="true"/>
               </Properties>
@@ -243,7 +243,7 @@
             <Component class="javax.swing.JTextField" name="txtMobile">
               <Properties>
                 <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new JTextFieldLimit(15)" type="code"/>
+                  <Connection code="new JTextFieldLimit(13)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="txtMobile" noResource="true"/>
               </Properties>
@@ -262,6 +262,9 @@
                 <Property name="text" type="java.lang.String" value="&#x417;&#x430;&#x43a;&#x43e;&#x43d;&#x447;&#x438;&#x442;&#x44c; &#x431;&#x435;&#x437; &#x440;&#x435;&#x433;&#x438;&#x441;&#x442;&#x440;&#x430;&#x446;&#x438;&#x438;"/>
                 <Property name="name" type="java.lang.String" value="btnExit" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="CloseButtonPress"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
@@ -271,6 +274,9 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtMiddleName">
               <Properties>
+                <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new JTextFieldLimit(15)" type="code"/>
+                </Property>
                 <Property name="name" type="java.lang.String" value="txtMiddleName" noResource="true"/>
               </Properties>
             </Component>
@@ -282,6 +288,9 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtBuiding">
               <Properties>
+                <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new JTextFieldLimit(3)" type="code"/>
+                </Property>
                 <Property name="name" type="java.lang.String" value="txtBuiding" noResource="true"/>
               </Properties>
             </Component>
@@ -293,6 +302,9 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtApartment">
               <Properties>
+                <Property name="document" type="javax.swing.text.Document" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new JTextFieldLimit(4)" type="code"/>
+                </Property>
                 <Property name="name" type="java.lang.String" value="txtApartment" noResource="true"/>
               </Properties>
             </Component>

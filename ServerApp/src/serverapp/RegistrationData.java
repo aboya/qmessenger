@@ -5,6 +5,7 @@
 
 package serverapp;
 
+
 /**
  *
  * @author Администратор
@@ -13,15 +14,19 @@ public class RegistrationData {
         Integer structureId = 0;
         String firstName = "";
         String lastName = "";
+        String middleName = "";
         String phone = "";
         String mobile = "";
+        String building = "";
+        String apartaments = "";
         public RegistrationData()
         {
         }
         @Override
         public String toString()
         {
-            return String.format("%d, '%s', '%s', '%s', '%s'", structureId, firstName, lastName, phone, mobile);
+            return String.format("%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s'",
+                    structureId, firstName, lastName, phone, mobile, apartaments, building, middleName);
 
         }
         
@@ -31,9 +36,13 @@ public class RegistrationData {
             String [] inp = s.split(FormatCharacters.marker + "");
             res.structureId = Integer.valueOf(inp[0]);
             res.firstName = inp[1];
-            res.lastName = inp[2];
-            res.phone = inp[3];
-            res.mobile = inp[4];
+            res.middleName = inp[2];
+            res.lastName = inp[3];
+            res.phone = inp[4];
+            res.mobile = inp[5];
+            res.building = inp[6];
+            res.apartaments = inp[7];
+
             return res;
         }
 }
