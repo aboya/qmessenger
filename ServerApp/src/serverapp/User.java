@@ -102,6 +102,11 @@ public class User extends Thread{
         if(userInfo == null) getUserTreeName();
         return userInfo.treeId;
     }
+    public int getUserID()
+    {
+        if(userInfo == null) getUserTreeName();
+        return userInfo.userId;
+    }
     private void getUserTreeName() 
     {
         try{

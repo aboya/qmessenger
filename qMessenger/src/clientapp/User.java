@@ -25,6 +25,7 @@ public class User extends Thread {
 
     FormatedMessages message;
     public String structTreeXml;
+    public String userStructTreeXml;
     private ScreenView screenView;
     SendFileDialogView sendFiles = null;
     ReceiveFileDialogView receiveFiles = null;
@@ -47,8 +48,9 @@ public class User extends Thread {
 
     }
 
-    public void CreateMainWindow()
+    public void CreateMainWindow() 
     {
+
         ScreenView.launch(ScreenView.class, null);
         this.screenView = null;
         this.start();
@@ -81,6 +83,7 @@ public class User extends Thread {
                 RegistrationForm.launch(RegistrationForm.class, null);
             }
             else {
+                this.RequestUserStructureTree();
                 CreateMainWindow();
             }
         }catch(Exception e)
@@ -146,6 +149,12 @@ public class User extends Thread {
     {
         structTreeXml = null;
         structTreeXml = message.RequestStructureTree();
+    }
+    public void RequestUserStructureTree() throws Exception
+    {
+        userStructTreeXml = null;
+        userStructTreeXml = message.RequestUserStructureTree();
+
     }
     public void Disconnect()
     {

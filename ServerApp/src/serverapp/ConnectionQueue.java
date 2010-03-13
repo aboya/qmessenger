@@ -90,13 +90,14 @@ public class ConnectionQueue {
        if(queue.isEmpty()) return;
        ListIterator <User> it = queue.listIterator();
        User usr;
+       //sending online messages
        do {
            try {
                 usr = it.next();
-                if(dstUsers.contains(usr.getTreeID()))
+                if(dstUsers.contains(usr.getUserID()))
                 {
                     usr.SendMessageTo(txtMessage, srcUser);
-                    dstUsers.remove(usr.getTreeID());
+                    dstUsers.remove(usr.getUserID());
                 }
            }catch(Exception e)
            {
@@ -104,13 +105,14 @@ public class ConnectionQueue {
            }
 
        }while(it.hasNext());
+       // тем кто остался, посылаем оффлайновые мессаги
        try {
           if(!dstUsers.isEmpty())
           {
               Object [] ids = dstUsers.toArray();
               for(int i = 0; i < ids.length; i++)
               {
-                  dbFunc.sendOfflineMessageToUser(connection, txtMessage, (Integer)ids[i], srcUser.getTreeID());
+                  dbFunc.sendOfflineMessageToUser(connection, txtMessage, (Integer)ids[i], srcUser.getUserID());
               }
           }
        }catch(Exception e)

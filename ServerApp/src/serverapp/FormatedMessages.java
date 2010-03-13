@@ -37,6 +37,7 @@ public class FormatedMessages extends Messages{
             else if(metaData.equals(FormatCharacters.RequestRegistration)) this.RegisterUser();
             else if(metaData.equals(FormatCharacters.getOfflineMessages)) this.SendOfflineMessages();
             else if(metaData.equals(FormatCharacters.getFiles)) this.getListFiles();
+            else if(metaData.equals(FormatCharacters.getUserStructureTree)) this.ResponseUserStructureTree();
         }
     }
     public void SendOfflineMessages() throws Exception
@@ -58,7 +59,7 @@ public class FormatedMessages extends Messages{
         //allIds.add(this.getUser().getTreeID());
         String txtMessage = this.ReceiveMessage();
         txtMessage = String.format("%s",txtMessage);
-        this.getUser().getQueue().SendMessageToUser(txtMessage, allIds,getUser());
+        this.getUser().getQueue().SendMessageToUser(txtMessage, allIds, getUser());
     }
     public void SendTextMessage(String txtMessage) throws Exception
     {
@@ -85,6 +86,10 @@ public class FormatedMessages extends Messages{
     public void ResponseStructureTree() throws Exception
     {
         this.SendMessageSync(Global.XmlTree);
+    }
+    public void ResponseUserStructureTree() throws Exception
+    {
+        this.SendMessageSync(GenerateUserTree.getUserTree());
     }
     public void RegisterUser() throws Exception
     {

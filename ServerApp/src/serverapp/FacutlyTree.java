@@ -50,6 +50,13 @@ public class FacutlyTree extends HandlerBase {
         connection.Close();
         ids.clear();
     }
+
+    public void startElement(String uri, String localName, String qName,
+		Attributes attributes) throws SAXException
+    {
+        
+    }
+
     @Override
     public void startElement (String name, AttributeList attrs) throws SAXException
     {

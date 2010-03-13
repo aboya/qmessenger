@@ -29,7 +29,7 @@ public class ScreenView extends SingleFrameApplication {
 
         show(messengerMainFrame = new MessengerMainFrame(this));
         //fillTree(Global.getUser().structTreeXml);
-        messengerMainFrame.fillTree(Global.getUser().structTreeXml);
+        messengerMainFrame.fillTree(Global.getUser().userStructTreeXml);
         // comments this line on http://weblogs.java.net/blog/2008/04/13/repaintmanagers-side-effect
         // for correct updating window
         RepaintManager.currentManager(null).setDoubleBufferingEnabled(false);
