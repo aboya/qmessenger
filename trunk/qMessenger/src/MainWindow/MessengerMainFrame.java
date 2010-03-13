@@ -59,6 +59,8 @@ import qmessenger.ScreenView;
  */
 public class MessengerMainFrame extends javax.swing.JFrame {
     Map <String, Integer> treeIds = new TreeMap<String, Integer>();
+    Map <Integer, String> treeNames = new TreeMap<Integer, String>();
+    Map <String, Boolean> isFaculty = new TreeMap<String, Boolean>();
     Vector < File > fileList = new Vector<File>();
     ScreenView parent;
     private qMessengerPreferences preferencesWindow = null;
@@ -435,6 +437,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)tblFiles.getModel();
         model.setNumRows(0);
         fileList.clear();
+        txtMessage.setText("");
         tblFiles.repaint();
     }//GEN-LAST:event_ClearButtonPress
 
@@ -487,10 +490,15 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     {
         return facultyTree;
     }
-    public int findIdByName(String name)
+    public int getIdByName(String name)
     {
         return treeIds.get(name);
     }
+    public String getNameById(int id)
+    {
+        return treeNames.get(id);
+    }
+
     public Set <Integer> getSelectedIds()
     {
         int i, n;
@@ -519,7 +527,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 if(o instanceof CheckBoxNode)
                 {
                     CheckBoxNode chk = (CheckBoxNode)o;
-                    if(chk.selected) selectedIds.add(this.findIdByName(chk.toString()));
+                    if(chk.selected) selectedIds.add(this.getIdByName(chk.toString()));
                 }
             }
 
@@ -546,11 +554,13 @@ public class MessengerMainFrame extends javax.swing.JFrame {
            DefaultMutableTreeNode treeNode1 = new DefaultMutableTreeNode("TNU");
            JTree facultyTree = getFacultyTree();
 
-           //TreeItem rootItem = new TreeItem(tree, SWT.NONE);
-           //rootItem.setText(s);
            treeIds.clear();
+           treeNames.clear();
+           isFaculty.clear();
+           isFaculty.put(s, true);
            treeIds.put(s, Integer.parseInt(rootElement.getAttribute("id")));
-           //treeNode1.setUserObject(Integer.parseInt(rootElement.getAttribute("id")));
+           treeNames.put(Integer.parseInt(rootElement.getAttribute("id")), s);
+
            BuildTNUTree(treeNode1,(Node) rootElement.getChildNodes().item(1));
            facultyTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         }catch(Exception e)
@@ -561,14 +571,23 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     }
     private void BuildTNUTree(DefaultMutableTreeNode treeItem, Node element)
     {
+        
         String s = element.getNodeName();
         if(s.equals("#text")) return;
-
         String id = element.getAttributes().getNamedItem("id").getNodeValue();
-        treeIds.put(s, Integer.valueOf(id));
+        String nodeName;
+        if(element.getAttributes().getNamedItem("fullName") == null)
+        {
+             nodeName = element.getNodeName();
+             isFaculty.put(nodeName, true);
+        }else {
+            nodeName = element.getAttributes().getNamedItem("fullName").getNodeValue();
+            isFaculty.put(nodeName, false);
 
-        DefaultMutableTreeNode newItem = new DefaultMutableTreeNode(element.getNodeName());
-
+        }
+        treeIds.put(nodeName, Integer.valueOf(id));
+        treeNames.put(Integer.valueOf(id), nodeName);
+        DefaultMutableTreeNode newItem = new DefaultMutableTreeNode(nodeName);
 
         //newItem.setText(element.getNodeName());
         NodeList list = element.getChildNodes();
@@ -654,6 +673,21 @@ public class CheckBoxNodeRenderer implements TreeCellRenderer {
       boolean hasFocus) {
 
     Component returnValue;
+
+    if ((value != null) && (value instanceof DefaultMutableTreeNode)) {
+        Object userObject = ((DefaultMutableTreeNode) value)
+            .getUserObject();
+        if (userObject instanceof CheckBoxNode) {
+          CheckBoxNode node = (CheckBoxNode) userObject;
+          if(isFaculty.get(node.getText()) == true) leaf = false;
+        }
+
+    }
+    if(value != null)
+        if(isFaculty != null)
+                if( isFaculty.get(value.toString()) != null)
+                    if(isFaculty.get(value.toString()))
+                        leaf = false;
     if (leaf) {
 
       String stringValue = tree.convertValueToText(value, selected,
@@ -752,7 +786,8 @@ public class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEd
 }
 
 public class CheckBoxNode {
-  String text;
+  private String text;
+
 
   boolean selected;
 

@@ -65,6 +65,10 @@ public class ScreenView extends SingleFrameApplication {
        DefaultTableModel model = (DefaultTableModel) messengerMainFrame.tblSendedMessages.getModel();
        model.addRow(new Object[]{forName, message});
    }
+   public String getTreeUserNameById(int id)
+   {
+       return messengerMainFrame.getNameById(id);
+   }
    public void Close()
    {
        messengerMainFrame.setVisible(false);

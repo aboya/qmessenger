@@ -171,7 +171,10 @@ public class User extends Thread {
     public void SendTextMessage(String txtMessage, Set <Integer> ids) throws Exception
     {
         message.SendTextMessage(txtMessage, ids);
-        getScreenView().AddSendedMessageToScreen("", txtMessage);
+        for(int id : ids)
+        {
+            getScreenView().AddSendedMessageToScreen(getScreenView().getTreeUserNameById(id), txtMessage);
+        }
     }
     public void getOfflineMessages() throws Exception
     {

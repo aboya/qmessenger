@@ -45,7 +45,8 @@ public class FormatedMessages extends Messages{
         String txtMessage = this.ReceiveMessage();
         String []usrInfo = txtMessage.split(":", 2);
         UserInfo uInfo = UserInfo.Parse(usrInfo[0]);
-        this.user.getScreenView().AddMessageToScreen(uInfo.treeName,usrInfo[1]);
+        this.user.getScreenView().AddMessageToScreen(String.format("%s %s(%s)",uInfo.firstName, uInfo.lastName ,uInfo.treeName)
+                ,usrInfo[1]);
 
     }
     public void SendTextMessage(String txtMessage, Set<Integer> ids) throws Exception

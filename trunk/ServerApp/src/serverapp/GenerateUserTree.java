@@ -111,6 +111,7 @@ public class GenerateUserTree {
     {
         Element e = xmlDocument.createElement(usr.lastName);
         e.setAttribute("id", String.valueOf((usr.userId)));
+        e.setAttribute("fullName", String.format("%s %s", usr.firstName, usr.lastName));
         return e;
     }
 
