@@ -17,7 +17,7 @@ public class UserInfo {
     public int treeId = 0;
     public String treeName = "";
     public String ip = "";
-    public int userId;
+    public int userId = -1;
 
     public static UserInfo Parse(ResultSet rs)
     {

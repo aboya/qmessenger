@@ -26,7 +26,11 @@ public class Global {
         public static String DataBasePassword = "admin";
         public static int DontUploadThisFile = 23;
         public static int UploadOk = 12;
-
-
         public static String XmlTree;
+        private static dbConnection connection = null;
+        public static dbConnection getConnection()
+        {
+            if(connection == null) connection = new dbConnection();
+            return connection;
+        }
 }

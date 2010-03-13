@@ -83,6 +83,11 @@ public class FormatedMessages extends Messages{
         this.SendMessage(FormatCharacters.RequestStructureTree);
         return this.ReceiveMessageSync();
     }
+    public String RequestUserStructureTree() throws Exception
+    {
+        this.SendMessage(FormatCharacters.getUserStructureTree);
+        return this.ReceiveMessageSync();
+    }
     public boolean RegisterUser(RegistrationData rData) throws Exception
     {
         this.SendMessage(FormatCharacters.RequestRegistration);

@@ -81,12 +81,12 @@ public class dbFunc {
         res = null;
         return uInfo;
     }
-    public static void sendOfflineMessageToUser(dbConnection connection, String message, int TreeID, int FromTreeID) throws Exception
+    public static void sendOfflineMessageToUser(dbConnection connection, String message, int UserID, int FromUserID) throws Exception
     {
         
         connection.Connect();
         connection.ExecuteNonQuery(
-                String.format("call SendMessageToUser(%d,'%s', %d)", TreeID, message, FromTreeID)
+                String.format("call SendMessageToUser(%d,'%s', %d)", UserID, message, FromUserID)
                 );
         connection.Close();
     }
@@ -192,5 +192,23 @@ public class dbFunc {
         }
         connection.Close();
         return count == 0 ? 0 : 1;
+    }
+    public static Vector<UserInfo> getUsersByTreeID(dbConnection connection,int treeId)
+    {
+        Vector < UserInfo > users = new Vector<UserInfo>();
+        try {
+            connection.Connect();
+            ResultSet rs = connection.ExecuteQuery(String.format("call getUsersByTreeId(%d)", treeId));
+            while(rs.next())
+            {
+                users.add(UserInfo.Parse(rs));
+            }
+
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        connection.Close();
+        return users;
     }
 }

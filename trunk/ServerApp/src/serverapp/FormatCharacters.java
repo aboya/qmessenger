@@ -24,4 +24,5 @@ public class FormatCharacters {
         public static String RequestStructureTree = "reqStructTree";
         public static String getOfflineMessages = "getOffline";
         public static String getFiles = "getFiles";
+        public static String getUserStructureTree = "getUsrStruct";
 }
