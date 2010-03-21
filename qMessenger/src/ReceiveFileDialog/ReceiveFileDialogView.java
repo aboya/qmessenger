@@ -67,7 +67,7 @@ public class ReceiveFileDialogView extends Thread {
 
 
     public ReceiveFileDialogView(final String WindowName) {
-        receiveFileDialogFrame = new ReceiveFileDialogFrame();
+        receiveFileDialogFrame = new ReceiveFileDialogFrame(this);
         receiveFileDialogFrame.setVisible(true);
         receiveFileDialogFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
@@ -225,6 +225,11 @@ public class ReceiveFileDialogView extends Thread {
             // жестко вырубаем текущий аплоад
             this.socket.close();
         }catch(Exception e){}
+        try{
+           if(fileOutputStream != null) fileOutputStream.close();
+        }catch(Exception e)
+        {}
+        fileOutputStream = null;
         this.interrupt();
         receiveFileDialogFrame.setVisible(false);
         receiveFileDialogFrame = null;

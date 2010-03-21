@@ -45,6 +45,9 @@ public class SendFileDialogFrame extends javax.swing.JFrame {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 closeWindow(evt);
             }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                windowClose(evt);
+            }
         });
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
@@ -76,6 +79,10 @@ public class SendFileDialogFrame extends javax.swing.JFrame {
     private void closeWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeWindow
         parent.Close();
     }//GEN-LAST:event_closeWindow
+
+    private void windowClose(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_windowClose
+        parent.Close();
+    }//GEN-LAST:event_windowClose
 
     /**
     * @param args the command line arguments

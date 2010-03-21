@@ -20,10 +20,12 @@ import javax.swing.JTable;
  * @author Администратор
  */
 public class ReceiveFileDialogFrame extends javax.swing.JFrame {
+    ReceiveFileDialogView parent = null;
 
     /** Creates new form ReceiveFileDialogFrame */
-    public ReceiveFileDialogFrame() {
+    public ReceiveFileDialogFrame(ReceiveFileDialogView _parent) {
         initComponents();
+        parent = _parent;
  
     }
     @Override
@@ -50,6 +52,11 @@ public class ReceiveFileDialogFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Получение файлов");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                WindowClose(evt);
+            }
+        });
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -77,16 +84,11 @@ public class ReceiveFileDialogFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ReceiveFileDialogFrame().setVisible(true);
-            }
-        });
-    }
+    private void WindowClose(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_WindowClose
+        parent.Close();
+    }//GEN-LAST:event_WindowClose
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
