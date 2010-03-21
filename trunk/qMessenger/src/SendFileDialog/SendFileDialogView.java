@@ -206,6 +206,7 @@ public class SendFileDialogView extends Thread {
         
         sendFileDialogFrame.setVisible(false);
         sendFileDialogFrame = null;
+        fileInputStream = null;
         this.interrupt();
         System.gc();
 
