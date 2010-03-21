@@ -116,15 +116,14 @@ public class dbFunc {
         int fromTreeId;
         ResultSet rs = null;
         try {
-            rs = getUserTreeName(connection, fromIp.substring(1));
-            fromTreeId = rs.getInt("TreeID");
+            fromIp = fromIp.substring(1);
             connection.Connect();
             fileName = EscapeCharecters(fileName);
             filePath = EscapeCharecters(filePath);
             for(int i = 0; i < whereIds.length; i++)
             {
                 connection.ExecuteNonQuery(
-                    String.format("call SendFile('%s', '%s', %d, %d, '%s')",filePath, fileName, fromTreeId, whereIds[i], checkSum.toString())
+                    String.format("call SendFile('%s', '%s', '%s', %d, '%s')",filePath, fileName, fromIp, whereIds[i], checkSum.toString())
                         );
             }
         }catch(Exception ee)
