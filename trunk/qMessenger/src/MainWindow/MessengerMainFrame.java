@@ -43,6 +43,7 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.RepaintManager;
@@ -654,15 +655,12 @@ public class MessengerMainFrame extends javax.swing.JFrame {
      {
           trayIcon = new TrayIcon(getImage(),
                 "qMessenger", createPopupMenu());
-          /*
+          final JFrame j = this;
           trayIcon.addActionListener(new ActionListener() {
            public void actionPerformed(ActionEvent e) {
-               JOptionPane.showMessageDialog(null,
-                       "Bring Java to the Desktop app");
+                 j.setVisible(true);
               }
            });
-           * 
-           */
         try{
           SystemTray.getSystemTray().add(trayIcon);
         }catch(Exception ee)
