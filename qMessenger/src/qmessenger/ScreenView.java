@@ -12,8 +12,22 @@ package qmessenger;
 import MainWindow.MessengerMainFrame;
 import clientapp.Global;
 import clientapp.Log;
+import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.Panel;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import javax.swing.Icon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.RepaintManager;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.application.SingleFrameApplication;
@@ -21,9 +35,11 @@ public class ScreenView extends SingleFrameApplication {
 
 
     MessengerMainFrame messengerMainFrame;
+
     public ScreenView() {
 
     }
+
      @Override protected void startup() {
 
 
@@ -42,6 +58,16 @@ public class ScreenView extends SingleFrameApplication {
             Log.WriteException(e);
         }
         Global.getUser().SheduleNewTimerForCheckFiles();
+        try{
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+     }
+     public void DisplayTrayMessage(String header, String message)
+     {
+         messengerMainFrame.DisplayTrayMessage(header, message);
      }
 
 

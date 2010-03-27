@@ -5,6 +5,14 @@
 
 package MainWindow;
 
+import clientapp.Global;
+import java.awt.HeadlessException;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 /**
@@ -15,8 +23,9 @@ import org.jdesktop.application.SingleFrameApplication;
 public class MessengerMainApplication extends SingleFrameApplication {
      /*** At startup create and show the main frame of the application.
      */
+
     @Override protected void startup() {
-        
+
     }
 
     /**

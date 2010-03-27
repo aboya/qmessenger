@@ -12,6 +12,7 @@
 package ReceiveFileDialog;
 
 import MainWindow.DisableEditingTableModel;
+import clientapp.Global;
 import java.awt.Graphics;
 import javax.swing.JTable;
 
@@ -26,6 +27,7 @@ public class ReceiveFileDialogFrame extends javax.swing.JFrame {
     public ReceiveFileDialogFrame(ReceiveFileDialogView _parent) {
         initComponents();
         parent = _parent;
+        this.setIconImage(Global.applicationIcon);
  
     }
     @Override

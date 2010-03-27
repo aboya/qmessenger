@@ -154,8 +154,6 @@ public class SendFileDialogView extends Thread {
                     this.CheckWait();
                 }
             }
-            socket.getOutputStream().flush();
-            status = socket.getInputStream().read() == 1;
         }catch(Exception ee)
         {
             status = false;

@@ -17,9 +17,19 @@ import clientapp.Utils;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.Panel;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.StringReader;
 import java.util.EventObject;
@@ -30,6 +40,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 import javax.swing.AbstractCellEditor;
+import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -37,6 +48,7 @@ import javax.swing.JTree;
 import javax.swing.RepaintManager;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
+import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -64,13 +76,15 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     Vector < File > fileList = new Vector<File>();
     ScreenView parent;
     private qMessengerPreferences preferencesWindow = null;
+    TrayIcon trayIcon;
 
     /** Creates new form MessengerMainFrame */
     public MessengerMainFrame(ScreenView _parent) {
         initComponents();
          RepaintManager.currentManager(this).setDoubleBufferingEnabled(false);
          parent = _parent;
-
+         this.setIconImage(Global.applicationIcon);
+         trayIconCreate();
     }
 
     /** This method is called from within the constructor to
@@ -116,9 +130,13 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         mnPreferences = new javax.swing.JMenuItem();
         mnAbout = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("qMessenger");
         setMinimumSize(new java.awt.Dimension(723, 470));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                MessengerMainFrame.this.windowClosed(evt);
+            }
+        });
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("ТНУ");
         javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Факультеты");
@@ -456,6 +474,10 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private void preferences_mousePress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_preferences_mousePress
          getPreferencesWindow().setVisible(true);
     }//GEN-LAST:event_preferences_mousePress
+
+    private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_windowClosed
+        
+    }//GEN-LAST:event_windowClosed
     private void SendTextMessage(Set<Integer> ids)
     {
         String message = txtMessage.getText();
@@ -600,6 +622,61 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         if(preferencesWindow == null) preferencesWindow = new qMessengerPreferences();
         return preferencesWindow;
     }
+    private PopupMenu createPopupMenu() throws HeadlessException {
+        PopupMenu menu = new PopupMenu();
+        MenuItem mainWindow = new MenuItem("Восстановить");
+        mainWindow.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setVisible(true);
+            }
+        });
+        menu.add(mainWindow);
+        MenuItem exit = new MenuItem("Exit");
+        exit.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               System.exit(0);
+           }
+        });
+        menu.add(exit);
+        return menu;
+    }
+    private Image getImage() throws HeadlessException {
+
+        Icon defaultIcon = MetalIconFactory.getTreeComputerIcon();
+        Image img = new BufferedImage(defaultIcon.getIconWidth(),
+                defaultIcon.getIconHeight(),
+                BufferedImage.TYPE_4BYTE_ABGR);
+        defaultIcon.paintIcon(new Panel(), img.getGraphics(), 0, 0);
+        return img;
+
+    }
+     private void trayIconCreate()
+     {
+          trayIcon = new TrayIcon(getImage(),
+                "qMessenger", createPopupMenu());
+          /*
+          trayIcon.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               JOptionPane.showMessageDialog(null,
+                       "Bring Java to the Desktop app");
+              }
+           });
+           * 
+           */
+        try{
+          SystemTray.getSystemTray().add(trayIcon);
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee);
+        }
+          DisplayTrayMessage("Информация", "это qMessenger. Я буду извещать о новых сообщениях");
+
+     }
+     public void DisplayTrayMessage(String header, String message)
+     {
+         trayIcon.displayMessage(header, message, TrayIcon.MessageType.INFO);
+     }
+
 
 
 
