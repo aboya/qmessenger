@@ -5,7 +5,9 @@
 
 package clientapp;
 
+import java.awt.Image;
 import java.io.File;
+import javax.swing.ImageIcon;
 
 
 
@@ -26,6 +28,7 @@ public class Global {
         public static String codePage = "UTF-8";
         public static int DontDownloadThisFile = 23;
         public static int DownloadingOk = 12;
+        public static Image applicationIcon = new ImageIcon("TrayIcon.png").getImage();
 
     /**
      * @return the user

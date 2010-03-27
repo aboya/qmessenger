@@ -62,6 +62,7 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         registrationForm = _parent;
         initComponents();
         this.setResizable(false);
+        this.setIconImage(Global.applicationIcon);
     }
 
     /** This method is called from within the constructor to

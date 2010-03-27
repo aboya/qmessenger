@@ -26,6 +26,7 @@ public class qMessengerPreferences extends javax.swing.JFrame {
     /** Creates new form qMessengerPreferences */
     public qMessengerPreferences() {
         initComponents();
+        this.setIconImage(Global.applicationIcon);
     }
 
     /** This method is called from within the constructor to

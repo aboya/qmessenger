@@ -12,6 +12,7 @@
 package SendFileDialog;
 
 import MainWindow.DisableEditingTableModel;
+import clientapp.Global;
 import javax.swing.JTable;
 
 /**
@@ -25,6 +26,7 @@ public class SendFileDialogFrame extends javax.swing.JFrame {
     public SendFileDialogFrame(SendFileDialogView _parent) {
         initComponents();
         parent = _parent;
+        setIconImage(Global.applicationIcon);
     }
 
     /** This method is called from within the constructor to
