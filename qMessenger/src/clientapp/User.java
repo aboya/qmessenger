@@ -125,6 +125,7 @@ public class User extends Thread {
                     this.AuthenticateUser();
                     this.getScreenView().setStatusText("Connected");
                     this.SheduleNewTimerForCheckFiles();
+                    Global.getUser().getOfflineMessages();
                     break;
                 }catch(Exception ee)
                 {
@@ -139,9 +140,9 @@ public class User extends Thread {
     }
     public boolean AuthenticateUser() throws Exception
     {
-        InetAddress thisIp =InetAddress.getLocalHost();
+        InetAddress thisIp = InetAddress.getLocalHost();
         String ip = thisIp.toString();
-        ip = ip.substring(ip.indexOf("/")+1);
+        ip = ip.substring(ip.indexOf("/") + 1);
         return  message.AuthenticateUser(ip);
 
     }

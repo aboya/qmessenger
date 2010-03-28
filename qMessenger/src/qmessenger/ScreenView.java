@@ -59,11 +59,12 @@ public class ScreenView extends SingleFrameApplication {
         }
         Global.getUser().SheduleNewTimerForCheckFiles();
         try{
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+           UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(Exception ee)
         {
             Log.WriteException(ee);
         }
+        setStatusText("Conected");
      }
      public void DisplayTrayMessage(String header, String message)
      {
@@ -80,11 +81,13 @@ public class ScreenView extends SingleFrameApplication {
    {
        DefaultTableModel model = (DefaultTableModel) messengerMainFrame.tblIncomingMessages.getModel();
        model.addRow(new Object[]{from,message});
+       messengerMainFrame.SetUnreadMessageForTab(1);
    }
    public void AddSendedFileToScreen(String forName, String fileName, String fileSize)
    {
        DefaultTableModel model = (DefaultTableModel) messengerMainFrame.tblSendedFiles.getModel();
        model.addRow(new Object[]{forName, fileName, fileSize});
+       messengerMainFrame.SetUnreadMessageForTab(1);
    }
    public void AddSendedMessageToScreen(String forName, String message)
    {
@@ -101,7 +104,7 @@ public class ScreenView extends SingleFrameApplication {
    }
    public void setStatusText(final String txt)
    {
-
+       messengerMainFrame.SetStatus(txt);
    }
     public JFrame getFrame()
     {

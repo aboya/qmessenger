@@ -86,6 +86,18 @@ public class MessengerMainFrame extends javax.swing.JFrame {
          parent = _parent;
          this.setIconImage(Global.applicationIcon);
          trayIconCreate();
+
+    }
+    public void SetUnreadMessageForTab(int index)
+    {
+        if(jTabbedPane1.getSelectedIndex() != index)
+        {
+           jTabbedPane1.setForegroundAt(index, Color.MAGENTA);
+        }
+    }
+    public void ClearUnreadTab(int index)
+    {
+        jTabbedPane1.setForegroundAt(index, Color.BLACK);
     }
 
     /** This method is called from within the constructor to
@@ -112,6 +124,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         tblFiles = new javax.swing.JTable();
         btnAddFile = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
+        lblStatus = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblIncomingMessages = new javax.swing.JTable();
@@ -136,6 +149,12 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 MessengerMainFrame.this.windowClosed(evt);
+            }
+        });
+
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
             }
         });
 
@@ -226,6 +245,8 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             }
         });
 
+        lblStatus.setText("jLabel7");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -239,21 +260,21 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-                                .addGap(13, 13, 13))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE))
+                                .addGap(13, 13, 13))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(btnAddFile, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnClear)
-                        .addGap(29, 29, 29)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSend)
-                        .addGap(42, 42, 42))))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblStatus)))
+                .addGap(0, 0, 0))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,21 +282,22 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
                         .addGap(11, 11, 11))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSend)
                             .addComponent(btnAddFile)
-                            .addComponent(btnClear))))
+                            .addComponent(btnClear)
+                            .addComponent(btnSend)
+                            .addComponent(lblStatus))))
                 .addContainerGap())
         );
 
@@ -317,7 +339,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -363,7 +385,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -381,7 +403,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Меню");
@@ -414,7 +436,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 428, Short.MAX_VALUE)
+            .addGap(0, 427, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -479,6 +501,11 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_windowClosed
         
     }//GEN-LAST:event_windowClosed
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        int index = jTabbedPane1.getSelectedIndex();
+        this.ClearUnreadTab(index);
+    }//GEN-LAST:event_jTabbedPane1StateChanged
     private void SendTextMessage(Set<Integer> ids)
     {
         String message = txtMessage.getText();
@@ -674,6 +701,10 @@ public class MessengerMainFrame extends javax.swing.JFrame {
      {
          trayIcon.displayMessage(header, message, TrayIcon.MessageType.INFO);
      }
+     public void SetStatus(String status)
+     {
+         lblStatus.setText(status);
+     }
 
 
 
@@ -703,6 +734,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblStatus;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuItem mnAbout;
     private javax.swing.JMenuItem mnPreferences;
