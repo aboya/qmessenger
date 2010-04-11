@@ -77,6 +77,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     Vector < File > fileList = new Vector<File>();
     ScreenView parent;
     private qMessengerPreferences preferencesWindow = null;
+    private qMessengerAbout aboutWindow = null;
     TrayIcon trayIcon;
 
     /** Creates new form MessengerMainFrame */
@@ -417,6 +418,11 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         jMenu1.add(mnPreferences);
 
         mnAbout.setText("О программе");
+        mnAbout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menu_aboutPress(evt);
+            }
+        });
         jMenu1.add(mnAbout);
 
         jMenuBar1.add(jMenu1);
@@ -499,13 +505,17 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_preferences_mousePress
 
     private void windowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_windowClosed
-        
+       
     }//GEN-LAST:event_windowClosed
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         int index = jTabbedPane1.getSelectedIndex();
         this.ClearUnreadTab(index);
     }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void menu_aboutPress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_aboutPress
+         getAboutWindow().setVisible(true);
+    }//GEN-LAST:event_menu_aboutPress
     private void SendTextMessage(Set<Integer> ids)
     {
         String message = txtMessage.getText();
@@ -649,6 +659,11 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     {
         if(preferencesWindow == null) preferencesWindow = new qMessengerPreferences();
         return preferencesWindow;
+    }
+    private qMessengerAbout getAboutWindow()
+    {
+        if(aboutWindow == null) aboutWindow = new qMessengerAbout();
+        return aboutWindow;
     }
     private PopupMenu createPopupMenu() throws HeadlessException {
         PopupMenu menu = new PopupMenu();
