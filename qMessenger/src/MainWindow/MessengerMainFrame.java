@@ -643,17 +643,28 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         }else {
             nodeName = element.getAttributes().getNamedItem("fullName").getNodeValue();
             isFaculty.put(nodeName, false);
-
         }
         treeIds.put(nodeName, Integer.valueOf(id));
         treeNames.put(Integer.valueOf(id), nodeName);
-        DefaultMutableTreeNode newItem = new DefaultMutableTreeNode(nodeName);
+        DefaultMutableTreeNode newItem =  null;
+        TreeNodeValue userObject = new TreeNodeValue();
+        if( (element.getAttributes().getNamedItem("isUser")) != null
+                && element.getAttributes().getNamedItem("isUser").getNodeValue().equals("true"))
+        {
+            userObject.isUser = true;
+        }else {
+            userObject.isUser = false;
+        }
+        userObject.name = nodeName;
+        newItem = new DefaultMutableTreeNode(userObject);
+
 
         //newItem.setText(element.getNodeName());
         NodeList list = element.getChildNodes();
         for(int i = 0; i < list.getLength(); i++)
             BuildTNUTree(newItem, list.item(i));
         treeItem.add(newItem);
+
     }
     private qMessengerPreferences getPreferencesWindow()
     {
@@ -801,17 +812,19 @@ public class CheckBoxNodeRenderer implements TreeCellRenderer {
             .getUserObject();
         if (userObject instanceof CheckBoxNode) {
           CheckBoxNode node = (CheckBoxNode) userObject;
-          if(isFaculty.get(node.getText()) == true) leaf = false;
+          
+        }
+        if(userObject instanceof TreeNodeValue)
+        {
+            TreeNodeValue v = (TreeNodeValue)userObject;
+            if(v.isUser == false)
+            {
+                leaf = false;
+            }
         }
 
     }
-    if(value != null)
-        if(isFaculty != null)
-                if( isFaculty.get(value.toString()) != null)
-                    if(isFaculty.get(value.toString()))
-                        leaf = false;
     if (leaf) {
-
       String stringValue = tree.convertValueToText(value, selected,
           expanded, leaf, row, false);
       leafRenderer.setText(stringValue);
@@ -957,5 +970,16 @@ public class NamedVector extends Vector {
     return "[" + name + "]";
   }
 
-}
+  }
+  public class TreeNodeValue  extends Object
+  {
+      public  String name;
+      boolean isUser;
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+  }
 }

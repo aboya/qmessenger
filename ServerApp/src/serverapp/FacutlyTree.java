@@ -63,6 +63,9 @@ public class FacutlyTree extends HandlerBase {
         Integer val;
         String fname;
         val = Integer.parseInt((String)attrs.getValue("id"));
+        String attrName = "";
+        if(attrs.getValue("fullName") != null) attrName = attrs.getValue("fullName");
+        else attrName = name;
         if(val == null) {
             isCorrect = false;
             throw new SAXException("can not find attribute ID for tag:" + name);
@@ -72,7 +75,7 @@ public class FacutlyTree extends HandlerBase {
             isCorrect = false;
             throw new SAXException("Found Same ids:" + fname + " and " + name);
         }
-        ids.put(val, name);
+        ids.put(val, attrName);
         String errorMess = ""; // not null !!
         try {
             errorMess =(String) dbFunc.CheckFacultyNode(connection, val, name);

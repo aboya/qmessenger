@@ -24,12 +24,12 @@ public class ListenIncomingConnections {
     }
     public void Listen()
     {
-       WaitForConnections a = new WaitForConnections();
-       WaitForReceiveFiles b = new WaitForReceiveFiles();
-       WaitForSendFiles c = new WaitForSendFiles();
-       a.start();
-       b.start();
-       c.start();
+       WaitForConnections ConnectionsWaiter = new WaitForConnections();
+       WaitForReceiveFiles ReceiveFileWaiter = new WaitForReceiveFiles();
+       WaitForSendFiles SendFileWaiter = new WaitForSendFiles();
+       ConnectionsWaiter.start();
+       ReceiveFileWaiter.start();
+       SendFileWaiter.start();
     }
 
     public class WaitForConnections extends  Thread {
@@ -146,7 +146,7 @@ public class ListenIncomingConnections {
                     Log.WriteException(e);
                 }
                 try {
-                   if(listenSocket != null ) listenSocket.close();
+                   if(listenSocket != null) listenSocket.close();
                 }catch(Exception ee) {}
             }
 

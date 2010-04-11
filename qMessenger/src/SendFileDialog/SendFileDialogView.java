@@ -25,6 +25,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.tree.TreePath;
 
 import org.jdesktop.application.SingleFrameApplication;
+import qmessenger.ScreenView;
 
 /**
  *
@@ -172,7 +173,7 @@ public class SendFileDialogView extends Thread {
         {
             if(status) {
                 this.SetStatus(String.format("%.2f%%", 100.0));
-                AddSendedFileToScreen("", f.getName(), Utils.getAdekvatSize(f.length()));
+                AddSendedFileToScreen(ids, f.getName(), Utils.getAdekvatSize(f.length()));
             }
             else this.SetStatus("Failed");
         }
@@ -274,9 +275,13 @@ public class SendFileDialogView extends Thread {
 
         }catch(Exception e) {}
     }
-    private void AddSendedFileToScreen(String to, String fileName, String size)
+    private void AddSendedFileToScreen(Set<Integer> toIds, String fileName, String size)
     {
-        Global.getUser().getScreenView().AddSendedFileToScreen(to, fileName, size);
+        ScreenView sv = Global.getUser().getScreenView();
+        for(Integer id:toIds)
+        {
+            sv.AddSendedFileToScreen(sv.getTreeUserNameById(id), fileName, size);
+        }
     }
 
 }

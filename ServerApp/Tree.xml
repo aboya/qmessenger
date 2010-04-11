@@ -1,13 +1,26 @@
 <TNU id="1">  
 <Faculty id="2">
-    <Mathematics id="3">
-      <MathDecanat id="4"></MathDecanat>
+    <Mathematics id="3" fullName="Факультет математики и иформатики">
+      <decanat id="4"></decanat>
     </Mathematics>
-    <Phisics id="5">
-      <PhisicsDecanat id="6">      
-      </PhisicsDecanat>
+    <Phisics id="5" fullName="Физический факультет">
+      <decanat id="6">      
+      </decanat>
     </Phisics>
-	<Economics id="7">
-	</Economics>
+  <Biology id="7" fullName="Биологический факультет"></Biology>
+  <Geography id="8" fullName="Географический факультет"></Geography>
+  <BurjuyLang id="9" fullName="Факультет иностранной филологии"></BurjuyLang>
+  <Tatars id="10" fullName="Факультет крымскотатарской и восточной филологии"></Tatars>
+  <Psix id="11" fullName="Факультет психологии"></Psix>
+  <Journalistics id="12" fullName="Факультет славянской филологии и журналистики"></Journalistics>
+  <UrkFilology id="13" fullName="Факультет украинской филологии и украиноведения"></UrkFilology>
+  <Managment id="14" fullName="Факультет управления"></Managment>
+  <PhisVospt id="15" fullName="Факультет физической культуры и спорта"></PhisVospt>
+  <Philosophy id="16" fullName="Философский факультет"></Philosophy>
+  <Chemistry id="17" fullName="Химический факультет"></Chemistry>
+  <Ecomomics id="18" fullName="Экономический факультет"></Ecomomics>
+  <Jurists id="19" fullName="Юридический факультет"></Jurists>
+  <History id="20" fullName="Исторический факультет"></History>
+  
   </Faculty>
 </TNU>

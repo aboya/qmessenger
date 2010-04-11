@@ -39,6 +39,7 @@ import java.util.concurrent.Semaphore;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import qmessenger.ScreenView;
 
 
 /**
@@ -114,6 +115,7 @@ public class ReceiveFileDialogView extends Thread {
         boolean status = true;
         String metadata;
         long fileSize, checkSum, Len = 0;
+        int fromUserId = 0;
         String fileName = "";
         InputStream socketInputStream;
         OutputStream socketOutputStream;
@@ -151,6 +153,7 @@ public class ReceiveFileDialogView extends Thread {
             fileSize = Long.valueOf(arr[0]);
             fileName = arr[1];
             checkSum = Long.valueOf(arr[2]);
+            fromUserId = Integer.valueOf(arr[3]);
             fileOutputStream = new FileOutputStream(fileName = Utils.GenerateName(Global.defaultSavePath + fileName));
             Len = fileSize;
             socketBufferedReader = null;
@@ -200,7 +203,7 @@ public class ReceiveFileDialogView extends Thread {
         {
             if(status) {
                 this.SetStatus(String.format("%.2f%%", 100.0));
-                AddReceiveFileToScreen("", fileName, Utils.getAdekvatSize(Len));
+                AddReceiveFileToScreen(fromUserId, fileName, Utils.getAdekvatSize(Len));
             }
             else {
                 System.gc();
@@ -301,9 +304,10 @@ public class ReceiveFileDialogView extends Thread {
 
         }catch(Exception e) {}
     }
-    private void AddReceiveFileToScreen(String from, String fileName, String size)
+    private void AddReceiveFileToScreen(int fromUserId, String fileName, String size)
     {
-        Global.getUser().getScreenView().AddReceiveFileToScreen(from, fileName, size);
+        ScreenView sv = Global.getUser().getScreenView();
+        sv.AddReceiveFileToScreen(sv.getTreeUserNameById(fromUserId), fileName, size);
     }
 
 }
