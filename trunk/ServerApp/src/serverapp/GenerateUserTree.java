@@ -59,7 +59,7 @@ public class GenerateUserTree {
                 else  Q.addLast(nodeList.item(i));
             }
             
-            if(n - badNodes == 0) // если лист
+            if(n - badNodes == 0) // если лист дерева то добавляем пользователей
             {
                 Element element = (Element)v;
                 Object id = element.getAttribute("id");
@@ -112,6 +112,7 @@ public class GenerateUserTree {
         Element e = xmlDocument.createElement(usr.lastName);
         e.setAttribute("id", String.valueOf((usr.userId)));
         e.setAttribute("fullName", String.format("%s %s", usr.firstName, usr.lastName));
+        e.setAttribute("isUser", "true");
         return e;
     }
 

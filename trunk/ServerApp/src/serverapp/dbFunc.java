@@ -28,7 +28,7 @@ public class dbFunc {
         String nname =(String) connection.ExecuteScalar(
             String.format("select AddNewNode(%d,'%s')", id, node)
                 );
-        if(nname != null && nname.length() > 0 && !nname.equalsIgnoreCase(node)) return "this id is used for " +  nname;
+        //if(nname != null && nname.length() > 0 && !nname.equalsIgnoreCase(node)) return "this id is used for " +  nname;
         return null;
     }
     public static boolean RegisterUser(dbConnection connection,String ip,RegistrationData rData)

@@ -35,7 +35,7 @@ public class SendFile extends Thread {
         long fileSize;
         String _len = "";
         int len;
-        String path, fileName;
+        String path, fileName, fromUserId;
         byte []packet = new byte[Global.PACKET_SIZE];
         char [] buf = new char[Global.PACKET_SIZE];
         FileInputStream fileInputStream = null;
@@ -73,7 +73,7 @@ public class SendFile extends Thread {
             if( !rs.next() ) throw new Exception("Ids not found");
             path = rs.getString("Path");
             fileName = rs.getString("FileName");
-            
+            fromUserId = rs.getString("fromUserID");
             file = new File(path);
             fileSize = file.length();
             fileInputStream = new FileInputStream(path);
@@ -82,7 +82,9 @@ public class SendFile extends Thread {
                     FormatCharacters.marker +
                     fileName +
                     FormatCharacters.marker +
-                    String.valueOf(checkSum);
+                    String.valueOf(checkSum) +
+                    FormatCharacters.marker +
+                    fromUserId;
             metadata = String.valueOf(metadata.length()) +
                     String.valueOf(FormatCharacters.marker)+
                     metadata;
