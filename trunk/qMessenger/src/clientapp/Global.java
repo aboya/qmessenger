@@ -29,6 +29,7 @@ public class Global {
         public static int DontDownloadThisFile = 23;
         public static int DownloadingOk = 12;
         public static Image applicationIcon = new ImageIcon("TrayIcon.png").getImage();
+        public static boolean minimizeOnClose;
 
     /**
      * @return the user

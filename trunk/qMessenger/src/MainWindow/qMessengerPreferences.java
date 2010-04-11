@@ -46,6 +46,7 @@ public class qMessengerPreferences extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         lblServerAddress = new javax.swing.JLabel();
         txtServerAddress = new javax.swing.JTextField();
+        chkMinimizeOnClose = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setTitle("Настройки программы");
@@ -61,10 +62,10 @@ public class qMessengerPreferences extends javax.swing.JFrame {
 
         jPanel1.setName("jPanel1"); // NOI18N
 
-        txtSavePath.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtSavePath.setFont(new java.awt.Font("Tahoma", 0, 12));
         txtSavePath.setName("txtSavePath"); // NOI18N
 
-        lblSavePath.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblSavePath.setFont(new java.awt.Font("Tahoma", 0, 12));
         lblSavePath.setText("Путь сохранения файлов");
         lblSavePath.setName("lblSavePath"); // NOI18N
 
@@ -104,7 +105,7 @@ public class qMessengerPreferences extends javax.swing.JFrame {
 
         jPanel2.setName("jPanel2"); // NOI18N
 
-        lblServerAddress.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblServerAddress.setFont(new java.awt.Font("Tahoma", 0, 12));
         lblServerAddress.setText("Адрес сервера");
         lblServerAddress.setName("lblServerAddress"); // NOI18N
 
@@ -133,6 +134,9 @@ public class qMessengerPreferences extends javax.swing.JFrame {
 
         txtServerAddress.setText(Global.ServAddr);
 
+        chkMinimizeOnClose.setText("Сворачивть в трей при выходе");
+        chkMinimizeOnClose.setName("chkMinimizeOnClose"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -140,6 +144,9 @@ public class qMessengerPreferences extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(chkMinimizeOnClose))
                     .addComponent(btnSavePreferences, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -152,10 +159,14 @@ public class qMessengerPreferences extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chkMinimizeOnClose)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addComponent(btnSavePreferences)
                 .addContainerGap())
         );
+
+        chkMinimizeOnClose.setSelected(Global.minimizeOnClose);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -164,7 +175,9 @@ public class qMessengerPreferences extends javax.swing.JFrame {
         if(!CheckInput()) return;
         Global.ServAddr = txtServerAddress.getText();
         Global.defaultSavePath = txtSavePath.getText();
+        Global.minimizeOnClose = chkMinimizeOnClose.isSelected();
         ApplicationSettings.saveProperties();
+        Global.getUser().getScreenView().SetCloseOperation();
         this.setVisible(false);
     }//GEN-LAST:event_SaveButonPress
 
@@ -207,6 +220,7 @@ public class qMessengerPreferences extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExplore;
     private javax.swing.JButton btnSavePreferences;
+    private javax.swing.JCheckBox chkMinimizeOnClose;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblSavePath;
