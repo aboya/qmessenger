@@ -87,7 +87,14 @@ public class MessengerMainFrame extends javax.swing.JFrame {
          parent = _parent;
          this.setIconImage(Global.applicationIcon);
          trayIconCreate();
+         SetCloseOperation();
 
+
+    }
+    public void SetCloseOperation()
+    {
+         if(Global.minimizeOnClose) this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+         else  this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     public void SetUnreadMessageForTab(int index)
     {

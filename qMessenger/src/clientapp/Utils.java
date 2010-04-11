@@ -127,6 +127,14 @@ public class Utils {
              Log.WriteException(e);
          }
     }
+    public static Boolean BooleanTryParse(String s)
+    {
+        Boolean res = false;
+        try {
+            res = Boolean.valueOf(s);
+        }catch(Exception e) {}
+        return res;
+    }
 
 
 }

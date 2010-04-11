@@ -87,7 +87,6 @@ public class ScreenView extends SingleFrameApplication {
    {
        DefaultTableModel model = (DefaultTableModel) messengerMainFrame.tblSendedFiles.getModel();
        model.addRow(new Object[]{forName, fileName, fileSize});
-       messengerMainFrame.SetUnreadMessageForTab(1);
    }
    public void AddSendedMessageToScreen(String forName, String message)
    {
@@ -97,6 +96,10 @@ public class ScreenView extends SingleFrameApplication {
    public String getTreeUserNameById(int id)
    {
        return messengerMainFrame.getNameById(id);
+   }
+   public void SetCloseOperation()
+   {
+       messengerMainFrame.SetCloseOperation();
    }
    public void Close()
    {
