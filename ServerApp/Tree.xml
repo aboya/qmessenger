@@ -1,5 +1,5 @@
 <TNU id="1">  
-<Faculty id="2">
+<Faculty id="2" fullName="Факультеты">
     <Mathematics id="3" fullName="Факультет математики и иформатики">
       <decanat id="4"></decanat>
     </Mathematics>

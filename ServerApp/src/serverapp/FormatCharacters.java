@@ -25,4 +25,5 @@ public class FormatCharacters {
         public static String getOfflineMessages = "getOffline";
         public static String getFiles = "getFiles";
         public static String getUserStructureTree = "getUsrStruct";
+        public static String updateUserTree = "updateUserTree";
 }

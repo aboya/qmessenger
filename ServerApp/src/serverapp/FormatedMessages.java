@@ -97,6 +97,7 @@ public class FormatedMessages extends Messages{
         String registrationData = this.ReceiveMessage();
         RegistrationData rData = RegistrationData.Parse(registrationData);
         String result = this.getUser().RegisterUser(rData).toString();
+        //this.getUser().getQueue().
         this.SendMessageSync(result);   
     }
     public void getListFiles()
@@ -143,5 +144,9 @@ public class FormatedMessages extends Messages{
         try {
             if(rs != null) rs.close();
         }catch(Exception ee){}
+    }
+    public void UpdateUserTree() throws Exception
+    {
+        this.SendMessage(FormatCharacters.updateUserTree);
     }
 }
