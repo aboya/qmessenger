@@ -821,6 +821,7 @@ public class CheckBoxNodeRenderer implements TreeCellRenderer {
           CheckBoxNode node = (CheckBoxNode) userObject;
           
         }
+        // this need for disable checkbox for faculty that have zero users
         if(userObject instanceof TreeNodeValue)
         {
             TreeNodeValue v = (TreeNodeValue)userObject;

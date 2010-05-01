@@ -30,6 +30,7 @@ public class Global {
         public static int DownloadingOk = 12;
         public static Image applicationIcon = new ImageIcon("TrayIcon.png").getImage();
         public static boolean minimizeOnClose;
+        public static String RootNode = "TNU";
 
     /**
      * @return the user

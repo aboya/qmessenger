@@ -421,7 +421,7 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
 
            Element rootElement = doc.getDocumentElement();
            String s = rootElement.getNodeName();
-           DefaultMutableTreeNode treeNode1 = new DefaultMutableTreeNode("TNU");
+           DefaultMutableTreeNode treeNode1 = new DefaultMutableTreeNode(Global.RootNode);
            JTree facultyTree = getTree();
 
            //TreeItem rootItem = new TreeItem(tree, SWT.NONE);
@@ -515,10 +515,13 @@ public class CheckBoxNodeRenderer implements TreeCellRenderer {
       boolean hasFocus) {
 
     Component returnValue;
-    if (leaf) {
-
-      String stringValue = tree.convertValueToText(value, selected,
+    
+    String stringValue = tree.convertValueToText(value, selected,
           expanded, leaf, row, false);
+    if(stringValue.equals(Global.RootNode)) return nonLeafRenderer.getTreeCellRendererComponent(tree,
+          value, selected, expanded, leaf, row, hasFocus);
+
+    if (true) {
       leafRenderer.setText(stringValue);
       leafRenderer.setSelected(false);
 
@@ -546,8 +549,11 @@ public class CheckBoxNodeRenderer implements TreeCellRenderer {
       returnValue = nonLeafRenderer.getTreeCellRendererComponent(tree,
           value, selected, expanded, leaf, row, hasFocus);
     }
+
     return returnValue;
+
   }
+
 }
 
 public class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
@@ -572,7 +578,7 @@ public class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEd
 
 
 
-
+  @Override
   public boolean isCellEditable(EventObject event) {
     boolean returnValue = false;
     if (event instanceof MouseEvent) {
@@ -584,9 +590,15 @@ public class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEd
         if ((node != null) && (node instanceof DefaultMutableTreeNode)) {
           DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
           Object userObject = treeNode.getUserObject();
-         // returnValue = ((treeNode.isLeaf()) && (userObject instanceof CheckBoxNode));
            returnValue = treeNode.isLeaf();
-
+           if(userObject instanceof String && !userObject.equals(Global.RootNode))
+           {
+               returnValue = true;
+           }
+           if(userObject instanceof CheckBoxNode)
+           {
+               returnValue = true;
+           }
         }
       }
     }
