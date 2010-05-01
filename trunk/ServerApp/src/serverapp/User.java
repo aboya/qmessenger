@@ -89,7 +89,10 @@ public class User extends Thread{
     {
         boolean res;
         res = dbFunc.RegisterUser(connection, ip, rData);
-        if(res) this.getUserTreeName();
+        if(res) {
+            this.getUserTreeName();
+            getQueue().UpdateAllUserTree(this);
+        }
         return res;
     }
     public String getTreeName()
@@ -115,6 +118,18 @@ public class User extends Thread{
         {
             Log.WriteException(e);
         }
+    }
+
+    public void updateUserTree()
+    {
+        try {
+            messages.UpdateUserTree();
+        }catch(Exception e)
+        {
+            Log.Write("failed to update user tree");
+            Log.WriteException(e);
+        }
+        
     }
 
     /**

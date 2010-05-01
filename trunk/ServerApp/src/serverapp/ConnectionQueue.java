@@ -85,6 +85,14 @@ public class ConnectionQueue {
 
        }while(it.hasNext());
     }
+    public void UpdateAllUserTree(User newRegistredUser)
+    {
+        for(User u:queue)
+        {
+            if(!u.equals(newRegistredUser))
+                u.updateUserTree();
+        }
+    }
     public void SendMessageToUser(String txtMessage, Set <Integer> dstUsers, User srcUser)  
     {
        if(queue.isEmpty()) return;

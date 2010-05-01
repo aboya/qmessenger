@@ -618,8 +618,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
            Element rootElement = doc.getDocumentElement();
            String s = rootElement.getNodeName();
-           DefaultMutableTreeNode treeNode1 = new DefaultMutableTreeNode("TNU");
+           DefaultMutableTreeNode treeNode1 = new DefaultMutableTreeNode(Global.RootNode);
            JTree facultyTree = getFacultyTree();
+
 
            treeIds.clear();
            treeNames.clear();

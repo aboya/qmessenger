@@ -37,6 +37,7 @@ public class FormatedMessages extends Messages{
             if(metaData.equals(FormatCharacters.TextMessege) ) this.ReceiveTextMessage();
             else if(metaData.equals(FormatCharacters.Auth)) this.AuthenticationPostBack();
             else if(metaData.equals(FormatCharacters.RequestStructureTree)) this.ResponseStructureTree();
+            else if(metaData.equals(FormatCharacters.updateUserTree)) this.UpdateUserTree();
         }        
     }
     public void ReceiveTextMessage() throws Exception
@@ -98,6 +99,10 @@ public class FormatedMessages extends Messages{
         if(response.length() == 4) return true;
         return false;
         
+    }
+    public void UpdateUserTree()
+    {
+        Global.getUser().UpdateUserStructureTree();
     }
     public void getOfflineMessages() throws Exception
     {

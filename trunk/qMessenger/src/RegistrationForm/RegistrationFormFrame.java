@@ -443,9 +443,17 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         if(s.equals("#text")) return;
 
         String id = element.getAttributes().getNamedItem("id").getNodeValue();
-        treeIds.put(s, Integer.valueOf(id));
-
-        DefaultMutableTreeNode newItem = new DefaultMutableTreeNode(element.getNodeName());
+        
+        String NodeName;
+        if(element.getAttributes().getNamedItem("fullName") != null)
+        {
+            NodeName = element.getAttributes().getNamedItem("fullName").getNodeValue();
+        }else
+        {
+             NodeName = element.getNodeName();
+        }
+        treeIds.put(NodeName, Integer.valueOf(id));
+        DefaultMutableTreeNode newItem = new DefaultMutableTreeNode(NodeName);
 
 
         //newItem.setText(element.getNodeName());

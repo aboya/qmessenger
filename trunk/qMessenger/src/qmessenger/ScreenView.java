@@ -113,12 +113,9 @@ public class ScreenView extends SingleFrameApplication {
     {
         return messengerMainFrame;
     }
-    public void ShowPreferences()
+    public void UpdateUserTree(String xml)
     {
-        
+        messengerMainFrame.fillTree(xml);
     }
-    public void ClosePreferences()
-    {
-        
-    }
+
 }

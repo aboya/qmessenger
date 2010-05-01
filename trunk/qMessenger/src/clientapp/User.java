@@ -52,6 +52,7 @@ public class User extends Thread {
     {
         try {
            this.RequestUserStructureTree();
+           
         }catch(Exception e)
         {
             Log.WriteException(e, "RequestStructureTree is failed to get");
@@ -159,6 +160,16 @@ public class User extends Thread {
         userStructTreeXml = null;
         userStructTreeXml = message.RequestUserStructureTree();
 
+    }
+    public void UpdateUserStructureTree()
+    {
+        try {
+            RequestUserStructureTree();
+            getScreenView().UpdateUserTree(this.userStructTreeXml);
+        }catch(Exception ee)
+        {
+            Log.WriteException(ee, "update user tree failed");
+        }
     }
     public void Disconnect()
     {
