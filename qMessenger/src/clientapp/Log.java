@@ -21,6 +21,11 @@ public class Log {
             System.out.println(elems[i]);
         System.out.println("---------------------------------------");
     }
+    public static void WriteException(Exception e, String info)
+    {
+        System.out.println(info);
+        Log.WriteException(e);
+    }
 
 }
 

@@ -50,7 +50,12 @@ public class User extends Thread {
 
     public void CreateMainWindow() 
     {
-
+        try {
+           this.RequestUserStructureTree();
+        }catch(Exception e)
+        {
+            Log.WriteException(e, "RequestStructureTree is failed to get");
+        }
         ScreenView.launch(ScreenView.class, null);
         this.screenView = null;
         this.start();
@@ -77,13 +82,11 @@ public class User extends Thread {
             SocketIn = inp.accept();
             message = new FormatedMessages(SocketIn, SocketOut, this);
             message.Initialize();
-            
-            this.RequestStructureTree();
             if(!this.AuthenticateUser()) {
+                RequestStructureTree();
                 RegistrationForm.launch(RegistrationForm.class, null);
             }
             else {
-                this.RequestUserStructureTree();
                 CreateMainWindow();
             }
         }catch(Exception e)
