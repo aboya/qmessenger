@@ -222,7 +222,7 @@ public class User extends Thread {
         if(input.length() == 0) return;
         String [] metadata = input.split(FormatCharacters.marker + "");
         String fnames = metadata[0];
-        final long totalSize = Integer.valueOf(metadata[1]);
+        final long totalSize = Long.valueOf(metadata[1]);
         final int count = Integer.valueOf(metadata[2]);
         if(count == 0) return;
         String []fileNames = new String[count];

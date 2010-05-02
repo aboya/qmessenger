@@ -594,7 +594,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
                 if(o instanceof CheckBoxNode)
                 {
                     CheckBoxNode chk = (CheckBoxNode)o;
-                    if(chk.selected) selectedIds.add(this.getIdByName(chk.toString()));
+                    if(chk.selected) {
+                        selectedIds.add(this.getIdByName(chk.toString()));
+                    }
                 }
             }
 
