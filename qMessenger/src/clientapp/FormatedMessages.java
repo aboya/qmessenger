@@ -54,7 +54,7 @@ public class FormatedMessages extends Messages{
     public void SendTextMessage(String txtMessage, Set<Integer> ids) throws Exception
     {
         String sids = ids.toString();
-        sids = sids.substring(1, sids.length() - 1);
+        sids = sids.substring(1, sids.length() - 1); // removing brackets [...]
         this.SendMessage(FormatCharacters.TextMessege);
         this.SendMessage(sids);
         this.SendMessage(txtMessage);

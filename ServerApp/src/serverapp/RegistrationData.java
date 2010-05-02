@@ -22,6 +22,7 @@ public class RegistrationData {
         public RegistrationData()
         {
         }
+        
         @Override
         public String toString()
         {

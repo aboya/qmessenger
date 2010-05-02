@@ -4,6 +4,7 @@
  */
 
 package serverapp;
+import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
 import java.net.Socket;
 import java.sql.ResultSet;
 /**
@@ -61,7 +62,8 @@ public class User extends Thread{
     //Send message to client
     public void SendMessageTo(String message, User srcUser)throws Exception
     {
-        messages.SendTextMessage(userInfo.toString() + ":" + message);
+        
+        messages.SendTextMessage(srcUser.getUserInfo().toString() + ":" + message);
     }
     public void DisconnectUser() throws Exception
     {
@@ -109,6 +111,11 @@ public class User extends Thread{
     {
         if(userInfo == null) getUserTreeName();
         return userInfo.userId;
+    }
+    public UserInfo getUserInfo()
+    {
+        if(userInfo == null) getUserTreeName();
+        return userInfo;
     }
     private void getUserTreeName() 
     {
