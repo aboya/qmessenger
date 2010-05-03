@@ -35,6 +35,7 @@ public class ApplicationSettings {
             if( (property = vProp.getProperty("ServerPort")) != null) Global.ServerPort = Integer.parseInt(property);
             if( (property = vProp.getProperty("DefaultSavePath")) != null && Utils.CheckDirectoryExists(property)) Global.defaultSavePath = property;
             if( (property = vProp.getProperty("MinimizeOnClose")) != null) Global.minimizeOnClose = Utils.BooleanTryParse(property);
+            if( (property = vProp.getProperty("ShowFullUserPath")) != null) Global.getFullUserPath = Utils.BooleanTryParse(property);
 
 
             iFile.close();
@@ -52,6 +53,7 @@ public class ApplicationSettings {
             vProp.setProperty("ServerPort", String.valueOf(Global.ServerPort));
             vProp.setProperty("DefaultSavePath", Global.defaultSavePath);
             vProp.setProperty("MinimizeOnClose", String.valueOf(Global.minimizeOnClose));
+            vProp.setProperty("ShowFullUserPath", String.valueOf(Global.getFullUserPath));
             vProp.storeToXML(oFile = new FileOutputStream(fileName), "qMessengerProperties");
 
             if(oFile != null) oFile.close();

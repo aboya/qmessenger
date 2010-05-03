@@ -100,7 +100,7 @@ public class dbFunc {
                     );
             while(res.next())
             {
-                Pair p = new Pair(res.getString("message"), res.getString("TreeName"));
+                Pair p = new Pair(res.getString("message"), res.getString("FirstName") + " " + res.getString("LastName"));
                 results.add(p);
             }
 
@@ -206,5 +206,38 @@ public class dbFunc {
         }
         connection.Close();
         return users;
+    }
+    public static void AddTreeEdge(dbConnection connection, int parendId, int childId)
+    {
+        try {
+            connection.Connect();
+            connection.ExecuteNonQuery(String.format("call add_edge(%d,%d)", parendId, childId));
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }finally
+        {
+            connection.Close();
+        }
+    }
+    public static Pair getParentPath(dbConnection connection, int userId)
+    {
+        Pair res = null;
+        ResultSet rs = null;
+        try {
+            connection.Connect();
+            rs = connection.ExecuteQuery(String.format("call get_parent_path(%d)", userId));
+            if(rs.next())
+                res = new Pair(rs.getString("TreeIDPath"), rs.getString("TreeNamesPath"));
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        connection.Close();
+        try {
+          rs.close();
+        }catch(Exception e){}
+        return res;
+
     }
 }

@@ -653,15 +653,17 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         }else {
             nodeName = element.getAttributes().getNamedItem("fullName").getNodeValue();
             isFaculty.put(nodeName, false);
+
         }
-        treeIds.put(nodeName, Integer.valueOf(id));
-        treeNames.put(Integer.valueOf(id), nodeName);
+
         DefaultMutableTreeNode newItem =  null;
         TreeNodeValue userObject = new TreeNodeValue();
         if( (element.getAttributes().getNamedItem("isUser")) != null
                 && element.getAttributes().getNamedItem("isUser").getNodeValue().equals("true"))
         {
             userObject.isUser = true;
+            treeIds.put(nodeName, Integer.valueOf(id));
+            treeNames.put(Integer.valueOf(id), nodeName);
         }else {
             userObject.isUser = false;
         }

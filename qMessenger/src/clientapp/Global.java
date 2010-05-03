@@ -31,6 +31,7 @@ public class Global {
         public static Image applicationIcon = new ImageIcon("TrayIcon.png").getImage();
         public static boolean minimizeOnClose;
         public static String RootNode = "TNU";
+        public static boolean getFullUserPath = true;
 
     /**
      * @return the user

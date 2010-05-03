@@ -38,7 +38,14 @@ public class FormatedMessages extends Messages{
             else if(metaData.equals(FormatCharacters.getOfflineMessages)) this.SendOfflineMessages();
             else if(metaData.equals(FormatCharacters.getFiles)) this.getListFiles();
             else if(metaData.equals(FormatCharacters.getUserStructureTree)) this.ResponseUserStructureTree();
+            else if(metaData.equals(FormatCharacters.getUserPath)) this.SendUserPath();
         }
+    }
+    public void SendUserPath() throws Exception
+    {
+        String userId = this.ReceiveMessage();
+        Pair p = getUser().getQueue().getUserPath(Integer.valueOf(userId));
+        this.SendMessageSync(String.valueOf(p.getSecond()));
     }
     public void SendOfflineMessages() throws Exception
     {
@@ -58,7 +65,7 @@ public class FormatedMessages extends Messages{
         }
         //allIds.add(this.getUser().getTreeID());
         String txtMessage = this.ReceiveMessage();
-        txtMessage = String.format("%s",txtMessage);
+        txtMessage = String.format("%s", txtMessage);
         this.getUser().getQueue().SendMessageToUser(txtMessage, allIds, getUser());
     }
     public void SendTextMessage(String txtMessage) throws Exception

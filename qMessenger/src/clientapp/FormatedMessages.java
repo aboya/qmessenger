@@ -46,10 +46,28 @@ public class FormatedMessages extends Messages{
         String txtMessage = this.ReceiveMessage();
         String []usrInfo = txtMessage.split(":", 2);
         UserInfo uInfo = UserInfo.Parse(usrInfo[0]);
-        this.user.getScreenView().AddMessageToScreen(String.format("%s %s(%s)",uInfo.firstName, uInfo.lastName ,uInfo.treeName)
-                ,usrInfo[1]);
-         this.user.getScreenView().DisplayTrayMessage("Сообщение от " + uInfo.firstName + " " + uInfo.lastName, usrInfo[1]);
+        txtMessage = String.format("%s %s",uInfo.firstName, uInfo.lastName);
+        if(Global.getFullUserPath)
+        {
+            String path = GetFullPathForUser(uInfo.userId);
+            txtMessage += String.format("(%s)", path);
+        }
+        this.user.getScreenView().AddMessageToScreen(txtMessage, usrInfo[1]);
+        this.user.getScreenView().DisplayTrayMessage("Сообщение от " + uInfo.firstName + " " + uInfo.lastName, usrInfo[1]);
 
+    }
+    public String GetFullPathForUser(int userId)
+    {
+        String res = "";
+        try {
+            this.SendMessage(FormatCharacters.getUserPath);
+            this.SendMessage(String.valueOf(userId));
+            res = this.ReceiveMessageSync();
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        return res;
     }
     public void SendTextMessage(String txtMessage, Set<Integer> ids) throws Exception
     {
