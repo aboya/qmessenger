@@ -4,6 +4,7 @@
  */
 
 package serverapp;
+import java.sql.ResultSet;
 import java.util.*;
 /**
  *
@@ -12,6 +13,7 @@ import java.util.*;
 public class ConnectionQueue {
     LinkedList <User> queue;
     dbConnection connection;
+    Map<Integer, Pair> userPaths = new TreeMap<Integer,Pair>();
 
     public ConnectionQueue() {
         queue = new LinkedList<User>();
@@ -128,5 +130,31 @@ public class ConnectionQueue {
            Log.WriteException(e);
        }
        
+    }
+    public void FillUserPaths()
+    {
+        List<Integer> allIds = new LinkedList<Integer>();
+        try {
+            connection.Connect();
+            ResultSet rs = connection.ExecuteQuery("select UserID from user");
+            while(rs.next())
+            {
+                allIds.add(rs.getInt("UserID"));
+            }
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        connection.Close();
+
+        for(Integer id:allIds)
+        {
+            userPaths.put(id, dbFunc.getParentPath(connection, id));
+        }
+    }
+    public Pair getUserPath(int userId)
+    {
+        if(userPaths.isEmpty()) this.FillUserPaths();
+        return  userPaths.get(userId);
     }
 }

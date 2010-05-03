@@ -4,8 +4,6 @@
  */
 
 package serverapp;
-
-
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.LinkedList;
@@ -27,53 +25,42 @@ import org.xml.sax.InputSource;
  *
  * @author Администратор
  */
-public class GenerateUserTree {
+public class BuildTreePath {
     private static DocumentBuilderFactory docBuilderFactory;
     private static DocumentBuilder docBuilder;
     private static Document xmlDocument;
+    private static dbConnection connection = new dbConnection();
 
-
-    public static  String getUserTree()
+    public static  void BuildTreePath()
     {
         CreateDocument();
         NodeList nodeList = xmlDocument.getChildNodes();
-        Element e;
-        LinkedList<Node> Q = new LinkedList<Node>();
-        int i,n = nodeList.getLength();
-        for(i = 0; i < n; i++)
+        // clear previos tree in db
+        try {
+            connection.Connect();
+            connection.ExecuteNonQuery("delete from tree_edges");
+
+        }catch(Exception e)
         {
-            Q.add(nodeList.item(i));
+            Log.WriteException(e);
         }
-        while(!Q.isEmpty())
+        connection.Close();
+        
+        doDfs(xmlDocument.getFirstChild());
+    }
+    private static void doDfs(Node node)
+    {
+        NodeList childNodes = node.getChildNodes();
+        //if(node.getAttributes().getNamedItem("id") == null) return;
+        int parent = Integer.valueOf(node.getAttributes().getNamedItem("id").getNodeValue());
+        for(int i = 0, n = childNodes.getLength(); i < n; i++)
         {
-            Node v = Q.getFirst();
-            Q.removeFirst();
-            if(v.getNodeName().equals("#text")) continue;
-
-            nodeList = v.getChildNodes();
-            n = nodeList.getLength();
-            for(i = 0; i < n; i++)
-            {
-                if(!nodeList.item(i).getNodeName().equals("#text")) {
-                    Q.addLast(nodeList.item(i));
-                }
-            }
-            
-            Element element = (Element)v;
-            Object id = element.getAttribute("id");
-            if(id == null) continue;
-            int treeId = Integer.valueOf(id.toString());
-            Vector<UserInfo> uInfo = dbFunc.getUsersByTreeID(Global.getConnection(), treeId);
-            for(UserInfo user : uInfo)
-            {
-                v.appendChild(CreateElement(user));
-            }
+            Node childNode = childNodes.item(i);
+            if(childNode.getNodeName().equals("#text")) continue;
+            int child = Integer.valueOf(childNode.getAttributes().getNamedItem("id").getNodeValue());
+            dbFunc.AddTreeEdge(connection, parent, child);
+            doDfs(childNode);
         }
-
-
-
-        //xmlDocument.createElement("asd").setAttribute(null, null);
-        return getStringFromXml();
 
     }
     private static String getStringFromXml()
@@ -90,7 +77,6 @@ public class GenerateUserTree {
         }
 
     }
-
     private static void CreateDocument()
     {
         docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -102,15 +88,5 @@ public class GenerateUserTree {
         {
             Log.WriteException(e);
         }
-
     }
-    private static Element CreateElement(UserInfo usr)
-    {
-        Element e = xmlDocument.createElement(usr.lastName);
-        e.setAttribute("id", String.valueOf((usr.userId)));
-        e.setAttribute("fullName", String.format("%s %s", usr.firstName, usr.lastName));
-        e.setAttribute("isUser", "true");
-        return e;
-    }
-
 }

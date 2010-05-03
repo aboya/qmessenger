@@ -318,15 +318,13 @@ public class RegistrationFormFrame extends javax.swing.JFrame {
         {
             treeItem = Q.getFirst();
             Q.removeFirst();
-            if(treeItem.isLeaf()) // select only last node
+            Object o = treeItem.getUserObject();
+            if(o instanceof CheckBoxNode)
             {
-                Object o = treeItem.getUserObject();
-                if(o instanceof CheckBoxNode)
-                {
-                     CheckBoxNode chk = (CheckBoxNode)o;
-                     if(chk.selected) return findIdByName(chk.toString());
-                }
+                CheckBoxNode chk = (CheckBoxNode)o;
+                if(chk.selected) return findIdByName(chk.toString());
             }
+            
             for(i = 0; i < treeItem.getChildCount(); i++)
                 Q.addLast((DefaultMutableTreeNode)treeItem.getChildAt(i));
         }

@@ -17,6 +17,8 @@ public class Main {
         ApplicationSettings.Initialize();
         ApplicationSettings.saveProperties();
         FacutlyTree tr = new FacutlyTree("Tree.xml");
+        BuildTreePath.BuildTreePath();
+
         ListenIncomingConnections m =  new ListenIncomingConnections();
         m.Listen();
     }

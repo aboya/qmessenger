@@ -29,13 +29,17 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                      <Component id="chkMinimizeOnClose" min="-2" max="-2" attributes="0"/>
-                  </Group>
                   <Component id="btnSavePreferences" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="chkFullPath" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkMinimizeOnClose" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -50,7 +54,9 @@
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="chkMinimizeOnClose" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="71" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="chkFullPath" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="45" max="32767" attributes="0"/>
               <Component id="btnSavePreferences" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -189,6 +195,15 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="chkMinimizeOnClose.setSelected(Global.minimizeOnClose);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chkFullPath">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x412;&#x44b;&#x432;&#x43e;&#x434;&#x438;&#x442;&#x44c; &#x43f;&#x43e;&#x43b;&#x43d;&#x44b;&#x439; &#x43f;&#x443;&#x442;&#x44c; &#x434;&#x43b;&#x44f; &#x43f;&#x43e;&#x43b;&#x44c;&#x437;&#x43e;&#x432;&#x430;&#x442;&#x435;&#x43b;&#x435;&#x439;"/>
+        <Property name="name" type="java.lang.String" value="chkFullPath" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="chkFullPath.setSelected(Global.getFullUserPath);"/>
       </AuxValues>
     </Component>
   </SubComponents>
