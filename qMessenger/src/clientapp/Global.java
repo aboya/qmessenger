@@ -32,6 +32,7 @@ public class Global {
         public static boolean minimizeOnClose;
         public static String RootNode = "TNU";
         public static boolean getFullUserPath = true;
+        public static boolean saveHistoryOnServer = false;
 
     /**
      * @return the user

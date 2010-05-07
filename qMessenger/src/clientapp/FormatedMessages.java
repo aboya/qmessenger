@@ -5,6 +5,9 @@
 
 package clientapp;
 
+import Comunication.ComunicationBase;
+import Comunication.TextMessage;
+import Comunication.UserMessageHistory;
 import RegistrationForm.RegistrationData;
 import java.io.File;
 import java.net.Socket;
@@ -74,8 +77,16 @@ public class FormatedMessages extends Messages{
         String sids = ids.toString();
         sids = sids.substring(1, sids.length() - 1); // removing brackets [...]
         this.SendMessage(FormatCharacters.TextMessege);
-        this.SendMessage(sids);
-        this.SendMessage(txtMessage);
+        TextMessage sendObject = new TextMessage();
+
+        sendObject.ids = ids;
+        sendObject.message = txtMessage;
+        sendObject.saveOnServer = Global.saveHistoryOnServer;
+
+        this.SendMessage(ComunicationBase.toString(sendObject));
+
+        //this.SendMessage(sids);
+        //this.SendMessage(txtMessage);
     }
     public void SendFileTo()
     {
@@ -143,6 +154,16 @@ public class FormatedMessages extends Messages{
         this.SendMessage(FormatCharacters.getFiles);
         String metadata = this.ReceiveMessageSync() ;
         return metadata;
+    }
+    public UserMessageHistory getMessageHistory() throws Exception
+    {
+        this.SendMessage(FormatCharacters.getUserHistory);
+        String IsGetFullTreePath = String.valueOf(Global.getFullUserPath);
+        this.SendMessage(IsGetFullTreePath);
+        UserMessageHistory msg;
+        String object = this.ReceiveMessageSync();
+        msg = (UserMessageHistory) ComunicationBase.fromString(object);
+        return msg;
     }
 
 }

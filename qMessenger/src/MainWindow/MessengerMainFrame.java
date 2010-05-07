@@ -11,6 +11,7 @@
 
 package MainWindow;
 
+import Comunication.UserMessageHistory;
 import clientapp.Global;
 import clientapp.Log;
 import clientapp.Utils;
@@ -61,6 +62,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
  import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import qmessenger.ScreenView;
@@ -150,6 +152,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnPreferences = new javax.swing.JMenuItem();
+        mnLoadMessageHistory = new javax.swing.JMenuItem();
         mnAbout = new javax.swing.JMenuItem();
 
         setTitle("qMessenger");
@@ -205,11 +208,6 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
         facultyTree.setCellEditor(new CheckBoxNodeEditor(facultyTree));
         facultyTree.setEditable(true);
-        facultyTree.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                facultyTreeMousePressed(evt);
-            }
-        });
         jScrollPane1.setViewportView(facultyTree);
 
         txtMessage.setColumns(20);
@@ -424,6 +422,14 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         });
         jMenu1.add(mnPreferences);
 
+        mnLoadMessageHistory.setText("Загрузить историю сообщений");
+        mnLoadMessageHistory.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                mnLoadMessageHistory_Click(evt);
+            }
+        });
+        jMenu1.add(mnLoadMessageHistory);
+
         mnAbout.setText("О программе");
         mnAbout.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -461,10 +467,6 @@ public class MessengerMainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void facultyTreeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_facultyTreeMousePressed
-
-    }//GEN-LAST:event_facultyTreeMousePressed
 
     private void addButtonPress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonPress
        JFileChooser fc = new JFileChooser();
@@ -523,6 +525,31 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private void menu_aboutPress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_aboutPress
          getAboutWindow().setVisible(true);
     }//GEN-LAST:event_menu_aboutPress
+
+    private void mnLoadMessageHistory_Click(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnLoadMessageHistory_Click
+        UserMessageHistory msg = Global.getUser().getHistory();
+
+        DefaultTableModel incomingTable = (DefaultTableModel) tblIncomingMessages.getModel();
+        DefaultTableModel outcomingTable = (DefaultTableModel) tblSendedMessages.getModel();
+        incomingTable.setRowCount(0);
+        outcomingTable.setRowCount(0);
+        String from;
+        for(UserMessageHistory.SingleMessage a: msg)
+        {
+            if(!a.isSended)
+            {
+                 from = a.fromUserName;
+                 if(a.parentPath != null && !a.parentPath.isEmpty())
+                 {
+                    from += "(" + a.parentPath + ")";
+                 }
+                 incomingTable.addRow(new Object[]{from, a.message});
+           }else
+           {
+                 outcomingTable.addRow(new Object[]{a.fromUserName, a.message});
+           }
+       }
+    }//GEN-LAST:event_mnLoadMessageHistory_Click
     private void SendTextMessage(Set<Integer> ids)
     {
         String message = txtMessage.getText();
@@ -716,8 +743,8 @@ public class MessengerMainFrame extends javax.swing.JFrame {
         return img;
 
     }
-     private void trayIconCreate()
-     {
+    private void trayIconCreate()
+    {
           trayIcon = new TrayIcon(getImage(),
                 "qMessenger", createPopupMenu());
           final JFrame j = this;
@@ -735,14 +762,14 @@ public class MessengerMainFrame extends javax.swing.JFrame {
           DisplayTrayMessage("Информация", "это qMessenger. Я буду извещать о новых сообщениях");
 
      }
-     public void DisplayTrayMessage(String header, String message)
-     {
+    public void DisplayTrayMessage(String header, String message)
+    {
          trayIcon.displayMessage(header, message, TrayIcon.MessageType.INFO);
-     }
-     public void SetStatus(String status)
-     {
-         lblStatus.setText(status);
-     }
+    }
+    public void SetStatus(String status)
+    {
+        lblStatus.setText(status);
+    }
 
 
 
@@ -775,6 +802,7 @@ public class MessengerMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblStatus;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuItem mnAbout;
+    private javax.swing.JMenuItem mnLoadMessageHistory;
     private javax.swing.JMenuItem mnPreferences;
     private javax.swing.JTable tblFiles;
     public javax.swing.JTable tblIncomingFiles;

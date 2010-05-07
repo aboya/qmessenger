@@ -67,7 +67,7 @@ public class ScreenView extends SingleFrameApplication {
    public void AddMessageToScreen(String from, String message)
    {
        DefaultTableModel model = (DefaultTableModel) messengerMainFrame.tblIncomingMessages.getModel();
-       model.addRow(new Object[]{from,message});
+       model.addRow(new Object[]{from, message});
        messengerMainFrame.SetUnreadMessageForTab(1);
    }
    public void AddSendedFileToScreen(String forName, String fileName, String fileSize)

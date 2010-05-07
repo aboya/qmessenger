@@ -4,6 +4,7 @@
  */
 
 package clientapp;
+import Comunication.UserMessageHistory;
 import ReceiveFileDialog.ReceiveFileDialogView;
 import RegistrationForm.RegistrationData;
 import RegistrationForm.RegistrationForm;
@@ -215,6 +216,16 @@ public class User extends Thread {
     public ReceiveFileDialogView getReceiveFileDialogView()
     {
         return receiveFiles;
+    }
+    public UserMessageHistory getHistory()
+    {
+        try {
+             return message.getMessageHistory();
+        }catch(Exception e)
+        {
+           Log.WriteException(e);
+           return new UserMessageHistory();
+        }
     }
     public void CheckReceiveFiles() throws Exception
     {

@@ -23,6 +23,14 @@
                 <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="preferences_mousePress"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnLoadMessageHistory">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x417;&#x430;&#x433;&#x440;&#x443;&#x437;&#x438;&#x442;&#x44c; &#x438;&#x441;&#x442;&#x43e;&#x440;&#x438;&#x44e; &#x441;&#x43e;&#x43e;&#x431;&#x449;&#x435;&#x43d;&#x438;&#x439;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mnLoadMessageHistory_Click"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnAbout">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x41e; &#x43f;&#x440;&#x43e;&#x433;&#x440;&#x430;&#x43c;&#x43c;&#x435;"/>
@@ -209,9 +217,6 @@
                           <TreeModel code="&#x422;&#x41d;&#x423;&#xa; &#x424;&#x430;&#x43a;&#x443;&#x43b;&#x44c;&#x442;&#x435;&#x442;&#x44b;&#xa;  blue&#xa;  violet&#xa;  red&#xa;  yellow&#xa; &#x414;&#x435;&#x43a;&#x430;&#x442;&#x430;&#x442;&#x44b;&#xa;  basketball&#xa;  soccer&#xa;  football&#xa;  hockey&#xa; &#x414;&#x435;&#x43a;&#x430;&#x43d;&#x44b;&#xa;  hot dogs&#xa;  pizza&#xa;  ravioli&#xa;  bananas"/>
                         </Property>
                       </Properties>
-                      <Events>
-                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="facultyTreeMousePressed"/>
-                      </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="facultyTree.getSelectionModel().setSelectionMode(&#xa;    TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);&#xa;CheckBoxNodeRenderer renderer = new CheckBoxNodeRenderer();&#xa;facultyTree.setCellRenderer(renderer);&#xa;&#xa;facultyTree.setCellEditor(new CheckBoxNodeEditor(facultyTree));&#xa;    facultyTree.setEditable(true);"/>
                         <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="MessengerMainFrame_jTree1"/>

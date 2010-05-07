@@ -37,6 +37,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="chkFullPath" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="chkMinimizeOnClose" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkHistory" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
                   </Group>
@@ -56,7 +57,9 @@
               <Component id="chkMinimizeOnClose" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="chkFullPath" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="45" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="chkHistory" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
               <Component id="btnSavePreferences" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -204,6 +207,15 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="chkFullPath.setSelected(Global.getFullUserPath);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chkHistory">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x421;&#x43e;&#x445;&#x440;&#x430;&#x43d;&#x44f;&#x442;&#x44c; &#x441;&#x43e;&#x43e;&#x431;&#x449;&#x435;&#x43d;&#x438;&#x44f; &#x43d;&#x430; &#x441;&#x435;&#x440;&#x432;&#x435;&#x440;&#x435;"/>
+        <Property name="name" type="java.lang.String" value="chkHistory" noResource="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="chkHistory.setSelected(Global.saveHistoryOnServer);"/>
       </AuxValues>
     </Component>
   </SubComponents>

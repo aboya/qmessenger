@@ -27,4 +27,5 @@ public class FormatCharacters {
         public static String getUserStructureTree = "getUsrStruct";
         public static String updateUserTree = "updateUserTree";
         public static String getUserPath = "getUserPath";
+        public static String getUserHistory = "getUserHistory";
 }

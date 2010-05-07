@@ -4,6 +4,7 @@
  */
 
 package serverapp;
+import Comunication.TextMessage;
 import java.sql.ResultSet;
 import java.util.*;
 /**
@@ -95,40 +96,51 @@ public class ConnectionQueue {
                 u.updateUserTree();
         }
     }
-    public void SendMessageToUser(String txtMessage, Set <Integer> dstUsers, User srcUser)  
+    public void SendMessageToUser(TextMessage txt, User srcUser)
     {
        if(queue.isEmpty()) return;
        ListIterator <User> it = queue.listIterator();
-       User usr;
+       //User usr;
+       Set <Integer> dstUsers = txt.ids;
+
+
        //sending online messages
-       do {
-           try {
-                usr = it.next();
-                if(dstUsers.contains(usr.getUserID()))
-                {
-                    usr.SendMessageTo(txtMessage, srcUser);
+       for(User usr: queue)
+       {
+          try {
+              if(dstUsers.contains(usr.getUserID()))
+              {
+                    usr.SendMessageTo(txt.message, srcUser);
                     dstUsers.remove(usr.getUserID());
-                }
+                    // saving message history
+                    // for offline users saving message is automatically // see bellow
+                    if(txt.saveOnServer)
+                    {
+                        dbFunc.SaveMessageOnServer(connection, txt.message, usr.getUserID(), srcUser.getUserID());
+                    }
+              }
            }catch(Exception e)
            {
                Log.WriteException(e);
            }
+       }
 
-       }while(it.hasNext());
        // тем кто остался, посылаем оффлайновые мессаги
+       
        try {
           if(!dstUsers.isEmpty())
           {
               Object [] ids = dstUsers.toArray();
               for(int i = 0; i < ids.length; i++)
               {
-                  dbFunc.sendOfflineMessageToUser(connection, txtMessage, (Integer)ids[i], srcUser.getUserID());
+                  dbFunc.sendOfflineMessageToUser(connection, txt.message, (Integer)ids[i], srcUser.getUserID());
               }
           }
        }catch(Exception e)
        {
            Log.WriteException(e);
        }
+
        
     }
     public void FillUserPaths()
