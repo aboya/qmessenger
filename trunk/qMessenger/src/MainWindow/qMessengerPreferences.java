@@ -48,6 +48,7 @@ public class qMessengerPreferences extends javax.swing.JFrame {
         txtServerAddress = new javax.swing.JTextField();
         chkMinimizeOnClose = new javax.swing.JCheckBox();
         chkFullPath = new javax.swing.JCheckBox();
+        chkHistory = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setTitle("Настройки программы");
@@ -141,6 +142,9 @@ public class qMessengerPreferences extends javax.swing.JFrame {
         chkFullPath.setText("Выводить полный путь для пользователей");
         chkFullPath.setName("chkFullPath"); // NOI18N
 
+        chkHistory.setText("Сохранять сообщения на сервере");
+        chkHistory.setName("chkHistory"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -155,7 +159,8 @@ public class qMessengerPreferences extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chkFullPath)
-                            .addComponent(chkMinimizeOnClose))
+                            .addComponent(chkMinimizeOnClose)
+                            .addComponent(chkHistory))
                         .addGap(123, 123, 123)))
                 .addContainerGap())
         );
@@ -170,13 +175,16 @@ public class qMessengerPreferences extends javax.swing.JFrame {
                 .addComponent(chkMinimizeOnClose)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkFullPath)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkHistory)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(btnSavePreferences)
                 .addContainerGap())
         );
 
         chkMinimizeOnClose.setSelected(Global.minimizeOnClose);
         chkFullPath.setSelected(Global.getFullUserPath);
+        chkHistory.setSelected(Global.saveHistoryOnServer);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -187,6 +195,7 @@ public class qMessengerPreferences extends javax.swing.JFrame {
         Global.defaultSavePath = txtSavePath.getText();
         Global.minimizeOnClose = chkMinimizeOnClose.isSelected();
         Global.getFullUserPath = chkFullPath.isSelected();
+        Global.saveHistoryOnServer = chkHistory.isSelected();
         ApplicationSettings.saveProperties();
         Global.getUser().getScreenView().SetCloseOperation();
         this.setVisible(false);
@@ -232,6 +241,7 @@ public class qMessengerPreferences extends javax.swing.JFrame {
     private javax.swing.JButton btnExplore;
     private javax.swing.JButton btnSavePreferences;
     private javax.swing.JCheckBox chkFullPath;
+    private javax.swing.JCheckBox chkHistory;
     private javax.swing.JCheckBox chkMinimizeOnClose;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

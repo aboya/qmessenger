@@ -5,6 +5,8 @@
 
 package serverapp;
 
+import Comunication.ComunicationBase;
+import Comunication.UserMessageHistory;
 import java.sql.ResultSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -239,5 +241,50 @@ public class dbFunc {
         }catch(Exception e){}
         return res;
 
+    }
+    public static void SaveMessageOnServer(dbConnection connection,  String message, int UserID, int FromUserID)
+    {
+        try {
+            connection.Connect();
+            connection.ExecuteNonQuery(String.format("call save_message_on_server('%s',%d,%d)", message, UserID, FromUserID));
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        connection.Close();
+    }
+    public static UserMessageHistory GetMessageHistory(dbConnection connection, int UserID, boolean IsGetFullPaths)
+    {
+        ResultSet rs;
+        UserMessageHistory history = new UserMessageHistory();
+        try {
+            connection.Connect();
+            rs = connection.ExecuteQuery(String.format("call get_received_message_history(%d,%b)", UserID, IsGetFullPaths));
+            while(rs.next())
+            {
+                if(IsGetFullPaths)
+                {
+                    history.Add(rs.getDate("dateAdded"), rs.getString("message"),
+                            rs.getString("FirstName")+ " " + rs.getString("LastName"), rs.getString("TreeNamesPath"),false);
+                }else
+                {
+                  history.Add(rs.getDate("dateAdded"), rs.getString("message"),
+                         rs.getString("FirstName")+ " " + rs.getString("LastName"),"", false);
+                }
+            }
+            rs.close();
+            rs = connection.ExecuteQuery(String.format("call get_sended_message_history(%d)", UserID));
+            while(rs.next())
+            {
+                  history.Add(rs.getDate("dateAdded"), rs.getString("message"),
+                         rs.getString("FirstName")+ " " + rs.getString("LastName"),"", true);
+            }
+            rs.close();
+        }catch(Exception e)
+        {
+            Log.WriteException(e);
+        }
+        connection.Close();
+        return history;
     }
 }

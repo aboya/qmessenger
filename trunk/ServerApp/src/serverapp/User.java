@@ -4,8 +4,8 @@
  */
 
 package serverapp;
+import Comunication.UserMessageHistory;
 import java.net.Socket;
-import java.sql.ResultSet;
 /**
  *
  * @author Серёжа
@@ -63,10 +63,13 @@ public class User extends Thread{
     {
         messages.SendTextMessage(srcUser.getUserInfo().toString() + ":" + message);
     }
-    public void DisconnectUser() throws Exception
+    public void DisconnectUser() 
     {
         messages.CloseConnection();
-        this.interrupt();
+        try {
+          this.interrupt();
+        }catch(Exception e){}
+
     }
     public void AuthenticateUser()
     {
@@ -123,6 +126,10 @@ public class User extends Thread{
         {
             Log.WriteException(e);
         }
+    }
+    public UserMessageHistory getMessageHistory(boolean IsGetFullTreePath)
+    {
+        return dbFunc.GetMessageHistory(connection, getUserID(), IsGetFullTreePath);
     }
 
     public void updateUserTree()

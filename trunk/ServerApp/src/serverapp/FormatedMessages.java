@@ -5,6 +5,9 @@
 
 package serverapp;
 
+import Comunication.ComunicationBase;
+import Comunication.TextMessage;
+import Comunication.UserMessageHistory;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.net.Socket;
@@ -39,6 +42,20 @@ public class FormatedMessages extends Messages{
             else if(metaData.equals(FormatCharacters.getFiles)) this.getListFiles();
             else if(metaData.equals(FormatCharacters.getUserStructureTree)) this.ResponseUserStructureTree();
             else if(metaData.equals(FormatCharacters.getUserPath)) this.SendUserPath();
+            else if(metaData.equals(FormatCharacters.getUserHistory)) this.SendUserHistory();
+        }
+    }
+    public void SendUserHistory()
+    {
+        try {
+            String IsGetFullPaths = this.ReceiveMessage();
+            UserMessageHistory msg = getUser().getMessageHistory(Boolean.valueOf(IsGetFullPaths));
+            String _data = ComunicationBase.toString(msg);
+            this.SendMessageSync(_data);
+        }
+        catch(Exception e)
+        {
+            Log.WriteException(e);
         }
     }
     public void SendUserPath() throws Exception
@@ -56,17 +73,9 @@ public class FormatedMessages extends Messages{
     public void ReceiveTextMessage() throws Exception
     {
         // получаем от юзера мессагу и шлем(временно) всем юзерам через очередь юзеров
-        String ids = ReceiveMessage();
-        String [] SplitIds = ids.split(",");
-        Set <Integer> allIds = new TreeSet<Integer>();
-        for(int i = 0; i < SplitIds.length; i++)
-        {
-            allIds.add(Integer.parseInt(SplitIds[i].trim()));
-        }
-        //allIds.add(this.getUser().getTreeID());
-        String txtMessage = this.ReceiveMessage();
-        txtMessage = String.format("%s", txtMessage);
-        this.getUser().getQueue().SendMessageToUser(txtMessage, allIds, getUser());
+        String object = ReceiveMessage();
+        TextMessage txt = (TextMessage)ComunicationBase.fromString(object);
+        this.getUser().getQueue().SendMessageToUser(txt, getUser());
     }
     public void SendTextMessage(String txtMessage) throws Exception
     {
