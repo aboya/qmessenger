@@ -62,6 +62,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
  import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.jdesktop.application.FrameView;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
@@ -72,7 +73,7 @@ import qmessenger.ScreenView;
  *
  * @author oleksandr
  */
-public class MessengerMainFrame extends javax.swing.JFrame {
+public class MessengerMainFrame extends JFrame {
     Map <String, Integer> treeIds = new TreeMap<String, Integer>();
     Map <Integer, String> treeNames = new TreeMap<Integer, String>();
     Map <String, Boolean> isFaculty = new TreeMap<String, Boolean>();
@@ -90,6 +91,9 @@ public class MessengerMainFrame extends javax.swing.JFrame {
          this.setIconImage(Global.applicationIcon);
          trayIconCreate();
          SetCloseOperation();
+         setDropTarget(
+         jMenuBar1.getDropTarget());
+
 
 
     }
