@@ -91,10 +91,6 @@ public class MessengerMainFrame extends JFrame {
          this.setIconImage(Global.applicationIcon);
          trayIconCreate();
          SetCloseOperation();
-         setDropTarget(
-         jMenuBar1.getDropTarget());
-
-
 
     }
     public void SetCloseOperation()
