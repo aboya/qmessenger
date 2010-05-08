@@ -27,6 +27,7 @@ public class qMessengerPreferences extends javax.swing.JFrame {
     public qMessengerPreferences() {
         initComponents();
         this.setIconImage(Global.applicationIcon);
+        setLocationRelativeTo(Global.getUser().getScreenView().getMainFrame());
     }
 
     /** This method is called from within the constructor to
