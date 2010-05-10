@@ -7,8 +7,13 @@ package serverapp;
 
 
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Map;
 import java.util.TreeMap;
 import org.xml.sax.*;
@@ -90,10 +95,14 @@ public class FacutlyTree extends HandlerBase {
         if(errorMess != null  ) throw new SAXException(errorMess);
     }
     private static String readFileAsString(String filePath) throws java.io.IOException{
-        byte[] buffer = new byte[(int) new File(filePath).length()];
-        FileInputStream f = new FileInputStream(filePath);
-        f.read(buffer);
-        return new String(buffer);
+        int len = (int)new File(filePath).length();
+        char [] buf2 = new char[len];
+        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),Global.codePage));
+        in.read(buf2);
+        System.out.print("Xml File Read: тест\n");
+        for(int i = 0; i < len; i++)
+            System.out.print(buf2[i]);
+        return new String(buf2).trim();
     }
 
  

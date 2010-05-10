@@ -6,8 +6,6 @@
 package serverapp;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.LinkedList;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,7 +15,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -82,7 +79,7 @@ public class BuildTreePath {
         docBuilderFactory = DocumentBuilderFactory.newInstance();
         try{
             docBuilder = docBuilderFactory.newDocumentBuilder();
-            //xmlDocument = docBuilder.newDocument();
+            xmlDocument = docBuilder.newDocument();
             xmlDocument = docBuilder.parse(new InputSource(new StringReader(Global.XmlTree)));
         }catch(Exception e)
         {
