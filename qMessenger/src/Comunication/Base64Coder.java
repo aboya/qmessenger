@@ -227,7 +227,8 @@ public static byte[] decode (char[] in, int iOff, int iLen) {
       out[op++] = (byte)o0;
       if (op<oLen) out[op++] = (byte)o1;
       if (op<oLen) out[op++] = (byte)o2; }
-   return out; }
+   return out;
+}
 
 // Dummy constructor.
 private Base64Coder() {}
