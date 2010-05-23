@@ -29,10 +29,10 @@ public class Global {
         public static int DontDownloadThisFile = 23;
         public static int DownloadingOk = 12;
         public static Image applicationIcon = new ImageIcon("TrayIcon.png").getImage();
-        public static boolean minimizeOnClose;
+        public static boolean minimizeOnClose = true;
         public static String RootNode = "TNU";
-        public static boolean getFullUserPath = true;
-        public static boolean saveHistoryOnServer = false;
+        public static boolean getFullUserPath = true; // выводить полный путь в дереве tnu-faculty-username
+        public static boolean saveHistoryOnServer = true;
 
     /**
      * @return the user
