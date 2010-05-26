@@ -63,18 +63,14 @@ public class GenerateUserTree {
             Object id = element.getAttribute("id");
             if(id == null) continue;
             int treeId = Integer.valueOf(id.toString());
-            Vector<UserInfo> uInfo = dbFunc.getUsersByTreeID(Global.getConnection(), treeId);
+            Vector<UserInfo> uInfo = dbFunc.getUsersByTreeID(
+                            Global.getConnection(), treeId);
             for(UserInfo user : uInfo)
             {
                 v.appendChild(CreateElement(user));
             }
         }
-
-
-
-        //xmlDocument.createElement("asd").setAttribute(null, null);
         return getStringFromXml();
-
     }
     private static String getStringFromXml()
     {
